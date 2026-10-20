@@ -19,10 +19,10 @@ const { titulo } = Astro.props;
       <li>
         <strong>{s.corto}</strong>
         <a href={`https://wa.me/${site.ladaPais}${s.whatsapp.replace(/\s/g, '')}`} rel="noopener">
-          <Image src={wa} alt="WhatsApp" width={14} height={14} />{s.whatsapp}
+          <Image src={wa} alt="WhatsApp" width={16} height={16} densities={[2, 3]} />{s.whatsapp}
         </a>
         <a href={`tel:+${site.ladaPais}${s.telefono.replace(/\s/g, '')}`}>
-          <Image src={tel} alt="Teléfono" width={14} height={14} />{s.telefono}
+          <Image src={tel} alt="Teléfono" width={16} height={16} densities={[2, 3]} />{s.telefono}
         </a>
       </li>
     ))}
@@ -43,7 +43,7 @@ const { titulo } = Astro.props;
 <style>
   .footer {
     background: var(--red);
-    color: var(--yellow);
+    color: var(--yellow-text);
     padding: clamp(24px, 4vw, 48px) var(--gutter) clamp(20px, 3vw, 32px);
   }
   h2 {
@@ -71,7 +71,7 @@ const { titulo } = Astro.props;
     font-size: clamp(10px, 1vw, 13px);
   }
   .branches li:first-child { border-left: 0; }
-  strong { letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  strong { color: var(--yellow-text); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
   .branches a {
     display: inline-flex;
     align-items: center;
@@ -92,10 +92,17 @@ const { titulo } = Astro.props;
   .s1 { left: 0; } .s2 { left: 33%; } .s3 { right: 0; }
   .domicilio img { width: clamp(120px, 14vw, 170px); }
   @media (max-width: 860px) {
+    .footer { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+    h2 { font-size: 22px; }
+    .branches a { min-height: 44px; font-size: 15px; }
+    .branches a img { width: 16px; height: 16px; }
+    .social { width: 138px; }
+    .social a { width: 33.3%; }
+    .domicilio img { width: 150px; }
     .branches { grid-template-columns: repeat(2, 1fr); }
     .branches li { border-left: 0; padding: 8px; }
     .branches li:nth-child(odd) { border-right: 1px solid rgb(251 181 0 / .6); }
     .branches li:last-child { grid-column: 1 / -1; border-right: 0; }
-    .branches li { font-size: 12px; }
+    .branches li { font-size: 13px; gap: 0; }
   }
 </style>

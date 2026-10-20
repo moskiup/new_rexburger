@@ -15,10 +15,10 @@ import { sucursales, site } from '../data/config';
           <h2>{s.corto}</h2>
           <p class="dir">{s.direccion}</p>
           <a href={`https://wa.me/${site.ladaPais}${s.whatsapp.replace(/\s/g, '')}`} rel="noopener">
-            <Image src={wa} alt="WhatsApp" width={16} height={16} />{s.whatsapp}
+            <Image src={wa} alt="WhatsApp" width={16} height={16} densities={[2, 3]} />{s.whatsapp}
           </a>
           <a href={`tel:+${site.ladaPais}${s.telefono.replace(/\s/g, '')}`}>
-            <Image src={tel} alt="Teléfono" width={16} height={16} />{s.telefono}
+            <Image src={tel} alt="Teléfono" width={16} height={16} densities={[2, 3]} />{s.telefono}
           </a>
           <a class="mas" href={`/sucursales#${s.slug}`}>Ver sucursal</a>
         </li>
@@ -40,21 +40,21 @@ import { sucursales, site } from '../data/config';
     gap: 20px;
   }
   li { background: var(--red); color: var(--white); border-radius: 24px; padding: 24px; display: grid; gap: 8px; justify-items: start; align-content: start; }
-  h2 { color: var(--yellow); font-size: 14px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  h2 { color: var(--yellow-text); font-size: 15px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
   .dir { font-size: 14px; line-height: 1.4; margin-bottom: 4px; }
   li a { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; }
   li a:hover { text-decoration: underline; }
   .mas {
     margin-top: 8px;
     background: var(--orange);
-    color: var(--red);
+    color: #6a090c;
     font-weight: 700;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: .15em;
     text-transform: uppercase;
-    padding: 4px 16px;
+    padding: 12px 20px;
     border-radius: 999px;
   }
   li { transition: transform .3s ease, box-shadow .3s ease; }
-  li:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgb(0 0 0 / .25); }
+  @media (hover: hover) { li:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgb(0 0 0 / .25); } }
 </style>

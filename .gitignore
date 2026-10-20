@@ -37,3 +37,6 @@ meta/
 
 # planes de trabajo
 plan*.md
+
+# capturas de Playwright
+.playwright-mcp/

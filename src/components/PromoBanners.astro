@@ -25,7 +25,7 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .12em;
-    font-size: max(9px, 2.4cqw);
+    font-size: max(12px, 2.4cqw);
     padding-right: 4cqw;
   }
   .btn:hover { filter: brightness(1.1); }
@@ -50,9 +50,10 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     background: linear-gradient(90deg, #d89918, #e2a113);
     border-radius: 999px;
     position: absolute;
-    font-size: max(8px, 2cqw);
+    font-size: max(12px, 2cqw);
     letter-spacing: .1em;
     padding-right: 5cqw;
+    color: #6a090c;
   }
   .merch .btn::after {
     content: '';
@@ -60,10 +61,29 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     right: 3.2cqw;
     top: 50%;
     translate: 0 -50%;
-    border-left: 1.5cqw solid var(--red);
+    border-left: 1.5cqw solid #6a090c;
     border-top: .85cqw solid transparent;
     border-bottom: .85cqw solid transparent;
   }
+
+  /* ---------- Móvil: foto arriba y el texto debajo, con botón de ancho cómodo ---------- */
+  @media (max-width: 767px) {
+    .promo.merch { display: grid; justify-items: start; padding-bottom: 32px; background: var(--white); }
+    .promo.merch > :not(.bg) { position: static; }
+    .promo.merch > h2 { font-size: 15.5cqw; margin: 22px 22px 0; }
+    .promo.merch > .sub { font-size: 7cqw; margin: 4px 22px 0; }
+    .promo.merch > .btn {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: min(calc(100% - 44px), 320px);
+      height: 54px;
+      margin: 22px 22px 0;
+      font-size: 15px;
+      padding-right: 14px;
+    }
+    .promo.merch > .btn::after { right: 22px; border-left-width: 9px; border-top-width: 5.5px; border-bottom-width: 5.5px; }
+  }
   .merch .bg { transition: transform 1.2s ease; }
-  .merch:hover .bg { transform: scale(1.03); }
+  @media (hover: hover) { .merch:hover .bg { transform: scale(1.03); } }
 </style>

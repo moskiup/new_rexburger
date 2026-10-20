@@ -33,10 +33,10 @@ const fotosDe = (slug: string) =>
         <p class="dir">{s.direccion}</p>
         <p class="tels">
           <a href={`https://wa.me/${site.ladaPais}${s.whatsapp.replace(/\s/g, '')}`} rel="noopener">
-            <Image src={wa} alt="WhatsApp" width={16} height={16} />{s.whatsapp}
+            <Image src={wa} alt="WhatsApp" width={16} height={16} densities={[2, 3]} />{s.whatsapp}
           </a>
           <a href={`tel:+${site.ladaPais}${s.telefono.replace(/\s/g, '')}`}>
-            <Image src={tel} alt="Teléfono" width={16} height={16} />{s.telefono}
+            <Image src={tel} alt="Teléfono" width={16} height={16} densities={[2, 3]} />{s.telefono}
           </a>
         </p>
       </section>
@@ -66,9 +66,9 @@ const fotosDe = (slug: string) =>
     border: 2px solid var(--red);
     border-radius: clamp(14px, 2.2vw, 28px);
   }
-  .dir { font-size: clamp(14px, 1.9vw, 20px); margin-top: clamp(14px, 2.4vw, 28px); }
-  .tels { display: flex; gap: 24px; margin-top: 6px; font-size: clamp(11px, 1.4vw, 15px); }
-  .tels a { display: inline-flex; align-items: center; gap: 6px; }
+  .dir { font-size: clamp(15px, 1.9vw, 20px); margin-top: clamp(14px, 2.4vw, 28px); }
+  .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(14px, 1.4vw, 15px); }
+  .tels a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
   .tels a:hover { text-decoration: underline; }
   @media (max-width: 700px) {
     .fotos { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -80,5 +80,5 @@ const fotosDe = (slug: string) =>
   }
   .fotos { overflow: visible; }
   .fotos img { transition: transform .4s ease, box-shadow .4s ease; }
-  .fotos img:hover { transform: scale(1.03); box-shadow: 0 12px 26px rgb(0 0 0 / .2); position: relative; z-index: 1; }
+  @media (hover: hover) { .fotos img:hover { transform: scale(1.03); box-shadow: 0 12px 26px rgb(0 0 0 / .2); position: relative; z-index: 1; } }
 </style>

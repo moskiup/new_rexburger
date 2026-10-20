@@ -6,11 +6,14 @@ import { nav } from '../data/config';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<header class="header">
+<header class="header" id="site-header">
   <a href="/" class="logo" aria-label="Rex Burger, inicio">
-    <Image src={logo} alt="Rex Burger California Style" widths={[240, 360, 480]} sizes="(max-width: 700px) 200px, 280px" loading="eager" />
+    <Image src={logo} alt="Rex Burger California Style" widths={[240, 360, 480, 720]} sizes="(max-width: 767px) 140px, 34vw" loading="eager" fetchpriority="high" />
   </a>
-  <nav aria-label="Principal">
+  <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="menu-nav" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="menu-nav" aria-label="Principal">
     <ul>
       {nav.map((item) => (
         <li>
@@ -22,30 +25,128 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 </header>
 
 <style>
+  /* ---------- Móvil (por defecto): barra compacta fija + panel desplegable ---------- */
   .header {
-    padding: 5.8vw 6vw 3.2vw;
-    display: grid;
-    gap: 3.8vw;
-    justify-items: center;
-    background: var(--white);
-  }
-  .logo img { width: 34vw; }
-  nav { width: 100%; }
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 40;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    min-height: 60px;
+    padding: 6px max(16px, env(safe-area-inset-right)) 6px max(16px, env(safe-area-inset-left));
+    background: var(--white);
+    transition: box-shadow .25s ease;
   }
-  a {
-    font-size: 1.3vw;
-    font-weight: 500;
+  .header.scrolled { box-shadow: 0 4px 16px rgb(0 0 0 / .12); }
+  .logo { display: block; flex: none; }
+  .logo img { width: 128px; height: auto; }
+
+  .burger {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    margin-right: -8px;
+    display: grid;
+    place-content: center;
+    gap: 6px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .burger span {
+    display: block;
+    width: 26px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--red);
+    transition: transform .3s ease, opacity .2s ease;
+  }
+  .header.open .burger span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+  .header.open .burger span:nth-child(2) { opacity: 0; }
+  .header.open .burger span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+  nav {
+    position: fixed;
+    inset: 60px 0 0 0;
+    z-index: 41;
+    padding: 12px 24px calc(24px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    background: var(--white);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  }
+  .header.open nav { opacity: 1; visibility: visible; transform: none; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; }
+  li + li { border-top: 1px solid rgb(188 20 23 / .15); }
+  nav a {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    font-size: 16px;
+    font-weight: 600;
     letter-spacing: .2em;
     text-transform: uppercase;
-    padding: 4px 0;
-    border-bottom: 2px solid transparent;
   }
-  a:hover, a[aria-current='page'] { border-bottom-color: var(--yellow); }
+  nav a[aria-current='page'] { color: var(--red); text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 3px; text-underline-offset: 8px; }
+
+  /* ---------- Tablet y escritorio: logotipo centrado y menú en una fila (diseño de referencia) ---------- */
+  @media (min-width: 768px) {
+    .header {
+      position: static;
+      display: grid;
+      gap: 3.8vw;
+      justify-items: center;
+      padding: 5.8vw 6vw 3.2vw;
+      box-shadow: none;
+    }
+    .logo img { width: 34vw; }
+    .burger { display: none; }
+    nav {
+      position: static;
+      width: 100%;
+      padding: 0;
+      overflow: visible;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+    ul { display: flex; justify-content: space-between; gap: 8px; }
+    li + li { border-top: 0; }
+    nav a {
+      display: inline-block;
+      min-height: 0;
+      font-size: max(11px, 1.3vw);
+      font-weight: 500;
+      letter-spacing: .2em;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+    nav a[aria-current='page'] { text-decoration: none; color: inherit; }
+  }
 </style>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const burger = document.getElementById('burger')!;
+  const html = document.documentElement;
+
+  const setOpen = (open: boolean) => {
+    header.classList.toggle('open', open);
+    html.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  };
+  burger.addEventListener('click', () => setOpen(!header.classList.contains('open')));
+  header.querySelectorAll('nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  matchMedia('(min-width: 768px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+
+  // Sombra al desplazarse (solo se ve con la barra fija, en móvil).
+  const onScroll = () => header.classList.toggle('scrolled', scrollY > 8);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>

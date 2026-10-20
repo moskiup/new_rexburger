@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import fondo from '../assets/inicio/fondo-menu.webp';
+import cuadrosIzq from '../assets/inicio/menu-cuadros-izquierda.webp';
+import cuadrosDer from '../assets/inicio/menu-cuadros-derecha.webp';
 import hamburguesas from '../assets/inicio/hamburguesas.webp';
 import combos from '../assets/inicio/combos.webp';
 import complementos from '../assets/inicio/complementos.webp';
@@ -18,14 +19,16 @@ const items = [
   { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, cx: 790, cy: 1090, w: 190, lx: 788, ly: 1165 },
 ];
 const TOP = 588;
-const H = (fondo.height * 1000) / fondo.width;
+const FONDO = { width: 2400, height: 1654 };
+const H = (FONDO.height * 1000) / FONDO.width;
 const pct = (v: number) => `${v.toFixed(3)}%`;
 const px = (v: number) => pct(v / 10);
 const py = (v: number) => pct(((v - TOP) / H) * 100);
 ---
 
-<section class="menu" aria-labelledby="menu-title" style={`aspect-ratio:${fondo.width}/${fondo.height}`}>
-  <Image class="bg" src={fondo} alt="" widths={[800, 1600, 2400]} sizes="100vw" />
+<section class="menu" aria-labelledby="menu-title" style={`aspect-ratio:${FONDO.width}/${FONDO.height}`}>
+  <Image class="cuadros izq" src={cuadrosIzq} alt="" widths={[360, 640, 900]} sizes="36vw" loading="eager" />
+  <Image class="cuadros der" src={cuadrosDer} alt="" widths={[360, 640, 900]} sizes="36vw" loading="eager" />
   <h2 id="menu-title">Menú</h2>
   {items.map((it) => (
     <a class="item" href={it.href}>
@@ -36,8 +39,10 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
 </section>
 
 <style>
-  .menu { position: relative; container-type: inline-size; overflow: hidden; background: var(--cream); }
-  .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .menu { position: relative; container-type: inline-size; overflow: hidden; background: #f0ede2; }
+  .cuadros { position: absolute; top: 11.366%; width: 35.542%; height: auto; }
+  .izq { left: 0; }
+  .der { left: 64.458%; }
   h2 {
     position: absolute;
     left: 50%;
@@ -58,11 +63,15 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
     position: absolute;
     transform: translate(-50%, -50%);
     text-align: center;
-    white-space: pre;
-    font-size: 1.74cqw;
-    line-height: 1.2;
+    width: 30cqw;
+    text-wrap: balance;
+    font-size: max(11px, 1.74cqw);
+    line-height: 1.25;
     font-weight: 500;
     letter-spacing: .2em;
     text-transform: uppercase;
+  }
+  @media (max-width: 767px) {
+    span { font-size: 11.5px; letter-spacing: .1em; font-weight: 600; }
   }
 </style>

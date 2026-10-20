@@ -78,7 +78,7 @@ const box = (s: Sec, X: number, Y: number, w: number) => `left:${x(X)};top:${y(s
 const txt = (s: Sec, align: 'l' | 'r' | 'c', X: number, Yc: number, size: number) => {
   const pos = align === 'l' ? `left:${x(X)}` : align === 'r' ? `right:${x(REF_W - X)}` : `left:${x(X)};transform:translate(-50%,-50%)`;
   const t = align === 'c' ? '' : 'transform:translateY(-50%);';
-  return `${pos};top:${y(s, Yc)};${t}font-size:${cq(size)};text-align:${align === 'l' ? 'left' : align === 'r' ? 'right' : 'center'}`;
+  return `${pos};top:${y(s, Yc)};${t}font-size:${cq(size)};text-align:${align === 'l' ? 'left' : align === 'r' ? 'right' : 'center'}`.replace(`font-size:${cq(size)}`, `font-size:${size < 30 ? `max(12px,${cq(size)})` : cq(size)}`);
 };
 const title = (s: Sec, Yc: number, size: number) => `left:50%;top:${y(s, Yc)};transform:translate(-50%,-50%);font-size:${cq(size)}`;
 
@@ -250,6 +250,14 @@ const malteadas = [
   .shape { background: linear-gradient(to right, var(--cl) 50%, var(--cr) 50%); }
   .shape::before { content: ''; position: absolute; inset: 0; background: var(--fill); border-radius: var(--r); }
   .pill-bg { position: absolute; left: 37.29%; width: 25.5%; top: 78.04%; height: 3.8%; border-radius: 999px; background: #fff; }
+  @media (max-width: 767px) {
+    /* La píldora debe contener el texto de 12px de "ELIGE TU COMBO". */
+    .pill-bg { left: 50%; width: 176px; height: 30px; top: 79.94%; translate: -50% -50%; }
+    #cajita .desc:nth-of-type(1) { margin-top: 6px; }
+    #cajita .desc { margin-top: 6px; }
+    #cajita .desc + .desc { margin-top: 15px; }
+    #complementos .lbl:not(.c) { white-space: normal; max-width: 20cqw; line-height: 1.15; }
+  }
   .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .a { position: absolute; height: auto; max-width: none; }
   .t, .fun, .lbl { position: absolute; margin: 0; white-space: nowrap; line-height: 1.02; }

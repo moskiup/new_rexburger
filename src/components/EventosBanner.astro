@@ -15,12 +15,14 @@ const Heading = heading;
 ---
 
 <section class="eventos">
+  <div class="escena">
   <Image class="pieza circulo" src={circulo} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
-  <Image class="pieza camion" src={camion} alt="Camión de Rex Burger para eventos" widths={[600, 1200]} sizes="60vw" loading="eager" />
+  <Image class="pieza camion" src={camion} alt="Camión de Rex Burger para eventos" widths={[400, 600]} sizes="(max-width: 767px) 95vw, 58vw" loading="eager" fetchpriority={heading === 'h1' ? 'high' : undefined} />
   <Image class="pieza asterisco" src={asterisco} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
+  </div>
   <p class="kicker">Llévanos a tus</p>
   <Heading class="titulo" data-typing>Eventos</Heading>
-  <a class="btn" href={ctaHref}>{ctaLabel}</a>
+  <a class="btn" href={ctaHref}>{ctaLabel}{ctaHref === '/eventos' && <span class="sr-only"> sobre nuestros eventos</span>}</a>
   <p class="cities">Atotonilco | La Barca | Arandas | Capilla de GPE | Zapotlanejo</p>
 </section>
 
@@ -85,11 +87,11 @@ const Heading = heading;
     place-items: center;
     background: var(--yellow);
     border-radius: 999px;
-    color: var(--red);
+    color: var(--on-yellow);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .12em;
-    font-size: max(9px, 2.4cqw);
+    font-size: max(12px, 2.4cqw);
     padding-right: 3.5cqw;
   }
   .btn:hover { filter: brightness(1.1); }
@@ -99,17 +101,46 @@ const Heading = heading;
     right: 3.4cqw;
     top: 50%;
     translate: 0 -50%;
-    border-left: 1.5cqw solid var(--red);
+    border-left: 1.5cqw solid var(--on-yellow);
     border-top: .85cqw solid transparent;
     border-bottom: .85cqw solid transparent;
   }
   .cities {
     left: 0; right: 0; top: 87%;
     text-align: center;
-    color: var(--yellow);
-    font-size: max(7px, 1.9cqw);
+    color: var(--yellow-text);
+    font-size: max(11px, 1.9cqw);
     letter-spacing: .15em;
     text-transform: uppercase;
+  }
+  .escena { display: contents; }
+
+  /* ---------- Móvil: se apila (texto, botón y camión) en vez de encoger el banner de escritorio ---------- */
+  @media (max-width: 767px) {
+    .eventos {
+      aspect-ratio: auto;
+      display: grid;
+      justify-items: start;
+      gap: 12px;
+      padding: 44px 22px 30px;
+    }
+    .eventos > :not(.escena) { position: static; margin: 0; }
+    .kicker { font-size: 24px; }
+    .titulo { font-size: 17.5cqw; margin-top: -4px; }
+    .btn {
+      width: min(100%, 320px);
+      height: 54px;
+      margin-top: 10px;
+      font-size: 15px;
+      padding-right: 14px;
+    }
+    .btn::after { right: 22px; border-left-width: 9px; border-top-width: 5.5px; border-bottom-width: 5.5px; }
+    .eventos > .escena { display: block; position: relative; order: 4; width: 100%; aspect-ratio: 1.55; margin-top: 8px; }
+    .escena .pieza { position: absolute; }
+    .escena .camion { left: 14%; top: 14%; width: 100%; }
+    .escena .circulo { left: 31%; top: 0; width: 24%; }
+    .escena .asterisco { left: -8%; top: 62%; width: 22%; }
+    .cities { order: 5; text-align: left; font-size: 12px; line-height: 1.7; text-wrap: balance; padding-right: 8px; }
   }
 </style>
 
