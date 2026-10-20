@@ -1,0 +1,177 @@
+---
+import { Image } from 'astro:assets';
+import camion from '../assets/inicio/camion-rex-burger-eventos.webp';
+import circulo from '../assets/inicio/circulo-punteado-decorativo-amarillo.webp';
+import asterisco from '../assets/inicio/asterisco-decorativo-crema.webp';
+
+interface Props {
+  /** Nivel del título: h1 en la página de eventos, h2 en el inicio. */
+  heading?: 'h1' | 'h2';
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+const { heading = 'h2', ctaLabel = 'Más información', ctaHref = '/eventos' } = Astro.props;
+const Heading = heading;
+---
+
+<section class="eventos">
+  <Image class="pieza circulo" src={circulo} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
+  <Image class="pieza camion" src={camion} alt="Camión de Rex Burger para eventos" widths={[600, 1200]} sizes="60vw" loading="eager" />
+  <Image class="pieza asterisco" src={asterisco} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
+  <p class="kicker">Llévanos a tus</p>
+  <Heading class="titulo" data-typing>Eventos</Heading>
+  <a class="btn" href={ctaHref}>{ctaLabel}</a>
+  <p class="cities">Atotonilco | La Barca | Arandas | Capilla de GPE | Zapotlanejo</p>
+</section>
+
+<style>
+  .eventos {
+    position: relative;
+    container-type: inline-size;
+    overflow: hidden;
+    background: var(--red);
+    aspect-ratio: 2400 / 1344;
+  }
+  .eventos > :not(.pieza) { position: absolute; margin: 0; }
+  /* Piezas sueltas (posiciones sobre el diseño original de 1000 x 560). */
+  .pieza { position: absolute; display: block; height: auto; max-width: none; }
+  .camion { left: 59.6%; top: 17.5%; width: 58.33%; animation: camion-bob 5s ease-in-out infinite; transform-origin: 50% 100%; }
+  .circulo { left: 65.5%; top: 19%; width: 11%; animation: spin 16s linear infinite; }
+  .asterisco { left: -3.75%; top: 61.7%; width: 11.3%; animation: spin 24s linear infinite reverse; }
+  /* Entrada: el camión llega deslizándose desde la derecha (la clase la pone el script, sin JS queda en su sitio). */
+  .eventos.slide .camion {
+    translate: 115% 0;
+    transition: translate 1.6s cubic-bezier(.16, .84, .3, 1), opacity .4s ease;
+  }
+  .eventos.slide.go .camion { translate: 0 0; }
+  .eventos.slide.instant .camion { transition: none; }
+  @keyframes camion-bob {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-1.2%) rotate(-.4deg); }
+  }
+  .kicker {
+    left: 9.5%; top: 24%;
+    color: var(--white);
+    font-size: 4.9cqw;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .titulo {
+    left: 9.5%; top: 33%;
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--yellow);
+    font-size: 11.5cqw;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  /* Efecto de escritura: el texto restante reserva su espacio para que el diseño no se mueva. */
+  .typing :global(.typed)::after {
+    content: '';
+    display: inline-block;
+    width: .06em;
+    height: .8em;
+    margin-left: .04em;
+    background: var(--cream);
+    vertical-align: -.05em;
+    animation: caret .8s steps(1) infinite;
+  }
+  .typing :global(.rest) { visibility: hidden; }
+  @keyframes caret { 50% { opacity: 0; } }
+  /* La píldora amarilla se dibuja aquí, con su triángulo. */
+  .btn {
+    left: 12.8%; width: 33.8%; top: 59.5%; height: 7.7%;
+    display: grid;
+    place-items: center;
+    background: var(--yellow);
+    border-radius: 999px;
+    color: var(--red);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: max(9px, 2.4cqw);
+    padding-right: 3.5cqw;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn::after {
+    content: '';
+    position: absolute;
+    right: 3.4cqw;
+    top: 50%;
+    translate: 0 -50%;
+    border-left: 1.5cqw solid var(--red);
+    border-top: .85cqw solid transparent;
+    border-bottom: .85cqw solid transparent;
+  }
+  .cities {
+    left: 0; right: 0; top: 87%;
+    text-align: center;
+    color: var(--yellow);
+    font-size: max(7px, 1.9cqw);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+</style>
+
+<script>
+  // El camión se desliza desde la derecha cada vez que la sección entra en pantalla.
+  // Si ya está a la vista al cargar la página, aparece en su sitio sin deslizarse la primera vez.
+  const banner = document.querySelector<HTMLElement>('.eventos');
+  if (banner && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    banner.classList.add('slide', 'instant');
+    let first = true;
+    new IntersectionObserver((entries) => {
+      const visible = entries[0].isIntersecting;
+      if (first) {
+        first = false;
+        if (!visible) banner.classList.remove('instant');
+        banner.classList.toggle('go', visible);
+        if (visible) requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.remove('instant')));
+        return;
+      }
+      banner.classList.toggle('go', visible);
+    }, { threshold: 0.35 }).observe(banner);
+  }
+  // Escribe "Eventos" letra por letra al entrar en pantalla, y lo repite de vez en cuando.
+  const h2 = document.querySelector<HTMLElement>('[data-typing]');
+  if (h2 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const text = h2.textContent!.trim();
+    h2.setAttribute('aria-label', text);
+    h2.classList.add('typing');
+    const typed = document.createElement('span');
+    const rest = document.createElement('span');
+    typed.className = 'typed';
+    rest.className = 'rest';
+    typed.setAttribute('aria-hidden', 'true');
+    rest.setAttribute('aria-hidden', 'true');
+    h2.replaceChildren(typed, rest);
+    const show = (n: number) => {
+      typed.textContent = text.slice(0, n);
+      rest.textContent = text.slice(n);
+    };
+    show(0);
+    let running = false;
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const run = async () => {
+      if (running) return;
+      running = true;
+      for (let i = 0; i <= text.length; i++) {
+        show(i);
+        await sleep(120);
+      }
+      await sleep(4500);
+      for (let i = text.length; i >= 0; i--) {
+        show(i);
+        await sleep(70);
+      }
+      await sleep(500);
+      running = false;
+      if (visible) run();
+    };
+    let visible = false;
+    new IntersectionObserver((entries) => {
+      visible = entries[0].isIntersecting;
+      if (visible) run();
+    }, { threshold: 0.4 }).observe(h2);
+  }
+</script>

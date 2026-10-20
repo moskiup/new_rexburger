@@ -1,18 +1,11 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import fondoEventos from '../assets/inicio/fondo-eventos.webp';
+import EventosBanner from '../components/EventosBanner.astro';
 import { sucursales, site } from '../data/config';
 ---
 
 <Layout title="Eventos | Rex Burger" description="Llevamos Rex Burger a tus eventos: cumpleaños, bodas y reuniones en Atotonilco, La Barca, Arandas, Capilla de Guadalupe y Zapotlanejo.">
-  <section class="hero">
-    <Image class="bg" src={fondoEventos} alt="Camión de Rex Burger para eventos" widths={[800, 1600, 2400]} sizes="100vw" loading="eager" />
-    <p class="kicker">Llévanos a tus</p>
-    <h1>Eventos</h1>
-    <a class="btn" href="/contacto">Cotiza tu evento</a>
-    <p class="cities">Atotonilco | La Barca | Arandas | Capilla de GPE | Zapotlanejo</p>
-  </section>
+  <EventosBanner heading="h1" ctaLabel="Cotiza tu evento" ctaHref="/contacto" />
 
   <section class="info">
     <h2>Pide tu Rex donde quieras</h2>
@@ -29,40 +22,6 @@ import { sucursales, site } from '../data/config';
 </Layout>
 
 <style>
-  .hero { position: relative; container-type: inline-size; overflow: hidden; background: var(--red); }
-  .bg { display: block; width: 100%; height: auto; }
-  .hero > :not(.bg) { position: absolute; margin: 0; }
-  .kicker { left: 9.5%; top: 24%; color: var(--white); font-size: 4.9cqw; line-height: 1; text-transform: uppercase; }
-  h1 {
-    left: 9.5%; top: 33%;
-    font-family: var(--font-display);
-    font-weight: 400;
-    color: var(--yellow);
-    font-size: 11.5cqw;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-  .btn {
-    left: 12.7%; top: 58.5%; width: 34%; height: 9%;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background: var(--orange);
-    color: var(--red);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    font-size: max(9px, 2.4cqw);
-  }
-  .btn:hover { filter: brightness(1.1); }
-  .cities {
-    left: 0; right: 0; top: 87%;
-    text-align: center;
-    color: var(--yellow);
-    font-size: max(7px, 1.9cqw);
-    letter-spacing: .15em;
-    text-transform: uppercase;
-  }
   .info { background: var(--cream); padding: clamp(32px, 6vw, 80px) var(--gutter); text-align: center; }
   h2 { font-family: var(--font-display-light); font-weight: 400; font-size: clamp(28px, 5vw, 60px); text-transform: uppercase; }
   .info > p { max-width: 640px; margin: 16px auto 0; font-size: clamp(14px, 1.8vw, 18px); line-height: 1.5; }

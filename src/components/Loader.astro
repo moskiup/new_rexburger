@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import sello from '../assets/inicio/sello-circular-rex-burger-crema.webp';
+import isotipo from '../assets/inicio/isotipo-rex-burger-amarillo.webp';
+const palabra = 'CARGANDO'.split('');
+---
+
+<div id="loader" role="status" aria-live="polite" aria-label="Cargando">
+  <div class="caja">
+    <Image class="sello" src={sello} alt="" width={180} height={181} loading="eager" decoding="sync" />
+    <Image class="iso" src={isotipo} alt="" width={84} height={76} loading="eager" decoding="sync" />
+  </div>
+  <p class="texto" aria-hidden="true">{palabra.map((c, i) => <span class="wv" style={`--i:${i}`}>{c}</span>)}</p>
+</div>
+<noscript><style>#loader { display: none !important; }</style></noscript>
+
+<style>
+  #loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: clamp(18px, 4vw, 30px);
+    background: var(--red);
+    transition: opacity .55s ease, visibility .55s ease;
+  }
+  #loader.listo { opacity: 0; visibility: hidden; pointer-events: none; }
+  .caja { position: relative; width: clamp(130px, 22vw, 180px); aspect-ratio: 1; display: grid; place-items: center; }
+  .caja img { position: absolute; max-width: none; height: auto; }
+  .sello { width: 100%; animation: spin 6s linear infinite; }
+  .iso { width: 46%; animation: latido 1.4s ease-in-out infinite; }
+  /* Mismo estilo que el título "Rexquisito": letras en Super Plants con sombra desplazada y ola con rebote. */
+  .texto {
+    margin: 0;
+    font-family: var(--font-fun);
+    font-size: clamp(30px, 7vw, 44px);
+    letter-spacing: .04em;
+    color: var(--cream);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .wv {
+    display: inline-block;
+    transform-origin: 50% 85%;
+    text-shadow: .09em .12em 0 #8e0f14;
+    animation: wave 1.8s cubic-bezier(.3, .6, .4, 1) infinite;
+    animation-delay: calc(var(--i) * .08s);
+  }
+  @keyframes wave {
+    0%, 62%, 100% { transform: translateY(0) rotate(0) scale(1, 1); }
+    12% { transform: translateY(.07em) rotate(0) scale(1.12, .88); }
+    28% { transform: translateY(-.4em) rotate(-7deg) scale(.94, 1.12); }
+    42% { transform: translateY(.04em) rotate(5deg) scale(1.06, .94); }
+    52% { transform: translateY(-.07em) rotate(-2deg) scale(.99, 1.02); }
+  }
+  @keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.14); }
+  }
+</style>
+
+<script>
+  // Se muestra hasta que la página y sus imágenes terminan de descargarse (mínimo 700 ms para evitar parpadeos).
+  const loader = document.getElementById('loader');
+  if (loader) {
+    const inicio = performance.now();
+    let cerrado = false;
+    const cerrar = () => {
+      if (cerrado) return;
+      cerrado = true;
+      const espera = Math.max(0, 700 - (performance.now() - inicio));
+      setTimeout(() => {
+        loader.classList.add('listo');
+        setTimeout(() => loader.remove(), 700);
+      }, espera);
+    };
+    const fuentes = document.fonts ? document.fonts.ready : Promise.resolve();
+    const listo = new Promise<void>((ok) => {
+      if (document.readyState === 'complete') ok();
+      else window.addEventListener('load', () => ok(), { once: true });
+    });
+    Promise.all([listo, fuentes]).then(cerrar);
+    setTimeout(cerrar, 8000); // seguro: nunca bloquea la página más de 8 s
+  }
+</script>

@@ -5,16 +5,18 @@ import tel from '../assets/sucursales/telefono-icono.webp';
 import wa from '../assets/sucursales/whatsapp-icono.webp';
 import { sucursales, site } from '../data/config';
 
-const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/sucursales/*-[123].webp', { eager: true });
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/sucursales/sucursal-*-[123].png', { eager: true });
 const slugFoto: Record<string, string> = {
   atotonilco: 'atoto',
   arandas: 'arandas',
-  'la-barca': 'la-barca',
+  'la-barca': 'barca',
   'capilla-de-gpe': 'capilla',
   zapotlanejo: 'zapo',
 };
+/* Ajuste vertical del recorte para fotos cuyo sujeto no está al centro. */
+const posicion: Record<string, string> = { 'atotonilco-2': '50% 72%' };
 const fotosDe = (slug: string) =>
-  [1, 2, 3].map((n) => fotos[`../assets/sucursales/${slugFoto[slug]}-${n}.webp`].default);
+  [1, 2, 3].map((n) => fotos[`../assets/sucursales/sucursal-${slugFoto[slug]}-${n}.png`].default);
 ---
 
 <Layout title="Sucursales | Rex Burger" description="Encuentra tu sucursal Rex Burger: Atotonilco, Arandas, La Barca, Capilla de Guadalupe y Zapotlanejo.">
@@ -25,7 +27,7 @@ const fotosDe = (slug: string) =>
         <h2>{s.nombre}</h2>
         <div class="fotos" data-swap={s.slug === 'la-barca' || s.slug === 'zapotlanejo' ? '' : undefined}>
           {fotosDe(s.slug).map((f, n) => (
-            <Image src={f} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 700px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
+            <Image src={f} style={posicion[`${s.slug}-${n + 1}`] ? `object-position:${posicion[`${s.slug}-${n + 1}`]}` : undefined} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 700px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
         <p class="dir">{s.direccion}</p>

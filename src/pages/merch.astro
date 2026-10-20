@@ -34,7 +34,7 @@ const productos = [
       <li>
         <button type="button" class="card" data-producto data-nombre={p.nombre} data-tallas={p.tallas.join(',')} aria-label={`Elegir ${p.nombre}`}>
           <div class="foto">
-            <Image src={p.img} alt={p.nombre} widths={[400, 800]} sizes="(max-width: 700px) 45vw, 480px" loading={i < 2 ? 'eager' : 'lazy'} />
+            <Image class="prod" src={p.img} alt={p.nombre} widths={[400, 800]} sizes="(max-width: 700px) 45vw, 480px" loading={i < 2 ? 'eager' : 'lazy'} />
           </div>
           <h2>{p.nombre}</h2>
           <p>{p.tallas.join('  |  ')}</p>
@@ -65,7 +65,7 @@ const productos = [
     place-items: center;
     padding: 6%;
   }
-  .foto img { width: 100%; height: 100%; object-fit: contain; }
+  .foto .prod { width: 100%; height: 100%; object-fit: contain; }
   h2 {
     margin-top: clamp(14px, 2.6vw, 30px);
     font-size: 2.2vw;
@@ -82,7 +82,7 @@ const productos = [
     text-transform: uppercase;
   }
   .foto { transition: transform .35s ease, box-shadow .35s ease; }
-  .foto img { transition: transform .45s ease; }
+  .foto .prod { transition: transform .45s ease; }
   li:hover .foto { transform: translateY(-6px); box-shadow: 0 14px 28px rgb(0 0 0 / .12); }
-  li:hover .foto img { transform: scale(1.08); }
+  li:hover .foto .prod { transform: scale(1.08); }
 </style>

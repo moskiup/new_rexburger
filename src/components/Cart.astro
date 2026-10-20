@@ -160,7 +160,7 @@ import { site } from '../data/config';
   const setQty = (n: number) => { qty = Math.max(1, Math.min(20, n)); $('q-val').textContent = String(qty); };
   document.querySelectorAll<HTMLElement>('[data-producto]').forEach((card) => {
     card.addEventListener('click', () => {
-      const img = card.querySelector('img')!;
+      const img = card.querySelector<HTMLImageElement>('.prod')!;
       current = { nombre: card.dataset.nombre!, img: img.currentSrc || img.src };
       $<HTMLImageElement>('add-img').src = current.img;
       $<HTMLImageElement>('add-img').alt = current.nombre;
