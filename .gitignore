@@ -34,3 +34,6 @@ meta/
 
 # configuración del editor
 .vscode/
+
+# planes de trabajo
+plan*.md
