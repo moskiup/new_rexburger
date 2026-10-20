@@ -33,8 +33,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 60px;
-    padding: 6px max(16px, env(safe-area-inset-right)) 6px max(16px, env(safe-area-inset-left));
+    min-height: 68px;
+    padding: 8px max(16px, env(safe-area-inset-right)) 6px max(16px, env(safe-area-inset-left));
     background: var(--white);
     transition: box-shadow .25s ease;
   }
@@ -44,32 +44,35 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   .burger {
     flex: none;
-    width: 48px;
-    height: 48px;
-    margin-right: -8px;
+    width: 52px;
+    height: 52px;
     display: grid;
     place-content: center;
     gap: 6px;
     border: 0;
-    background: none;
+    border-radius: 16px;
+    background: var(--red);
+    box-shadow: 0 4px 12px rgb(188 20 23 / .35);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    transition: background .2s ease, transform .15s ease;
   }
+  .burger:active { transform: scale(.94); }
   .burger span {
     display: block;
     width: 26px;
-    height: 3px;
+    height: 3.5px;
     border-radius: 3px;
-    background: var(--red);
+    background: var(--white);
     transition: transform .3s ease, opacity .2s ease;
   }
-  .header.open .burger span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+  .header.open .burger span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
   .header.open .burger span:nth-child(2) { opacity: 0; }
-  .header.open .burger span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+  .header.open .burger span:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
 
   nav {
     position: fixed;
-    inset: 60px 0 0 0;
+    inset: 68px 0 0 0;
     z-index: 41;
     padding: 12px 24px calc(24px + env(safe-area-inset-bottom));
     overflow-y: auto;
