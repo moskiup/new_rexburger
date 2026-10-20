@@ -66,19 +66,41 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     border-bottom: .85cqw solid transparent;
   }
 
-  /* ---------- Móvil: foto arriba y el texto debajo, con botón de ancho cómodo ---------- */
+  /* ---------- Móvil: la foto cubre todo el banner y el texto va encima, sobre un degradado blanco ---------- */
   @media (max-width: 767px) {
-    .promo.merch { display: grid; justify-items: start; padding-bottom: 32px; background: var(--white); }
-    .promo.merch > :not(.bg) { position: static; }
-    .promo.merch > h2 { font-size: 15.5cqw; margin: 22px 22px 0; }
-    .promo.merch > .sub { font-size: 7cqw; margin: 4px 22px 0; }
+    .promo.merch {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      min-height: 340px;
+      padding: 0 22px 26px;
+      background: var(--white);
+    }
+    .promo.merch > .bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 22% 0;
+    }
+    .promo.merch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgb(255 255 255 / .96) 0%, rgb(255 255 255 / .86) 36%, rgb(255 255 255 / 0) 66%);
+      pointer-events: none;
+    }
+    .promo.merch > :not(.bg) { position: relative; z-index: 1; }
+    .promo.merch > h2 { left: auto; top: auto; font-size: 16cqw; line-height: .88; margin: 0; }
+    .promo.merch > .sub { left: auto; top: auto; font-size: 6.6cqw; line-height: 1; margin: 2px 0 0; }
     .promo.merch > .btn {
-      position: relative;
       left: auto;
       top: auto;
-      width: min(calc(100% - 44px), 320px);
-      height: 54px;
-      margin: 22px 22px 0;
+      width: min(100%, 320px);
+      height: 50px;
+      margin: 12px 0 0;
       font-size: 15px;
       padding-right: 14px;
     }
