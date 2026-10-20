@@ -70,6 +70,14 @@ const fotosDe = (slug: string) =>
   .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(14px, 1.4vw, 15px); }
   .tels a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
   .tels a:hover { text-decoration: underline; }
+  @media (max-width: 767px) {
+    section { padding-bottom: 14px; }
+    h2 { font-size: clamp(56px, 17vw, 72px); line-height: .95; letter-spacing: .02em; padding: 30px 0 14px; }
+    .dir { font-size: 19px; font-weight: 500; line-height: 1.35; margin-top: 18px; }
+    .tels { margin-top: 4px; gap: 0 26px; }
+    .tels a { font-size: 18px; font-weight: 600; }
+    .tels a img { width: 20px; height: 20px; }
+  }
   @media (max-width: 700px) {
     .fotos { grid-template-columns: 1fr 1fr; gap: 8px; }
     .fotos img { aspect-ratio: 5 / 4; }
