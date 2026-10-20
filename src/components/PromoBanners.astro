@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import fondoEventos from '../assets/inicio/fondo-eventos.webp';
+import fondoMerch from '../assets/inicio/fondo-merch.webp';
+---
+
+<section class="promo eventos">
+  <Image class="bg" src={fondoEventos} alt="Camión de Rex Burger para eventos" widths={[800, 1600, 2400]} sizes="100vw" loading="eager" />
+  <p class="kicker">Llévanos a tus</p>
+  <h2>Eventos</h2>
+  <a class="btn" href="/eventos">Más información</a>
+  <p class="cities">Atotonilco | La Barca | Arandas | Capilla de GPE | Zapotlanejo</p>
+</section>
+
+<section class="promo merch">
+  <Image class="bg" src={fondoMerch} alt="Persona usando playera y gorra Rex Burger" widths={[800, 1600, 2400]} sizes="100vw" loading="eager" />
+  <h2>Descubre</h2>
+  <p class="sub">nuestra merch</p>
+  <a class="btn" href="/merch">Compra ahora</a>
+</section>
+
+<style>
+  .promo {
+    position: relative;
+    container-type: inline-size;
+    overflow: hidden;
+  }
+  .bg { display: block; width: 100%; height: auto; }
+  .promo > :not(.bg) { position: absolute; margin: 0; }
+  /* The artwork already paints the pill; the link sits exactly on top of it. */
+  .btn {
+    display: grid;
+    place-items: center;
+    color: var(--red);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: max(9px, 2.4cqw);
+    padding-right: 4cqw;
+  }
+  .btn:hover { filter: brightness(1.1); }
+
+  .eventos { background: var(--red); }
+  .kicker {
+    left: 9.5%; top: 24%;
+    color: var(--white);
+    font-size: 4.9cqw;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .eventos h2 {
+    left: 9.5%; top: 33%;
+    font-family: var(--font-display);
+    font-weight: 400;
+    color: var(--yellow);
+    font-size: 11.5cqw;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .eventos .btn { left: 12.7%; width: 34%; top: 58.5%; height: 9%; }
+  .cities {
+    left: 0; right: 0; top: 87%;
+    text-align: center;
+    color: var(--yellow);
+    font-size: max(7px, 1.9cqw);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+
+  .merch h2 {
+    left: 51%; top: 24%;
+    font-family: var(--font-display-light);
+    font-weight: 400;
+    font-size: 14cqw;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .sub {
+    left: 51%; top: 50%;
+    font-size: 4.2cqw;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .merch .btn { left: 53%; width: 30%; top: 70.5%; height: 10.5%; }
+  .eventos .bg { transition: transform 1.2s ease; }
+  .eventos:hover .bg { transform: scale(1.03); }
+  .merch .bg { transition: transform 1.2s ease; }
+  .merch:hover .bg { transform: scale(1.03); }
+</style>

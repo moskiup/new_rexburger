@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import b1 from '../assets/inicio/banner-1.webp';
+import b2 from '../assets/inicio/banner-2.webp';
+import b3 from '../assets/inicio/banner-3.webp';
+
+const slides = [
+  { src: b1, alt: '¡Haz tu día más rexquisito!' },
+  { src: b2, alt: 'Hambre de Rex' },
+  { src: b3, alt: 'Pide tu Rex favorita: crujiente y exquisita' },
+];
+---
+
+<section class="hero" aria-roledescription="carrusel" aria-label="Promociones">
+  <div class="track" tabindex="0">
+    {slides.map((s, i) => (
+      <div class="slide" aria-label={`${i + 1} de ${slides.length}`}>
+        <Image src={s.src} alt={s.alt} widths={[640, 1024, 1600, 2400]} sizes="100vw" loading={i === 0 ? 'eager' : 'lazy'} />
+      </div>
+    ))}
+  </div>
+  <div class="dots">
+    {slides.map((_, i) => <button type="button" aria-label={`Ir al banner ${i + 1}`} data-i={i}></button>)}
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; background: var(--red); }
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+  .slide { flex: 0 0 100%; scroll-snap-align: start; }
+  .slide img { width: 100%; }
+  .dots {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .dots button {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--cream);
+    background: transparent;
+    cursor: pointer;
+  }
+  .dots button[aria-current='true'] { background: var(--yellow); border-color: var(--yellow); }
+</style>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('.hero');
+  if (hero) {
+    const track = hero.querySelector<HTMLElement>('.track')!;
+    const dots = [...hero.querySelectorAll<HTMLButtonElement>('.dots button')];
+    const count = dots.length;
+    let paused = false;
+    const current = () => Math.round(track.scrollLeft / track.clientWidth);
+    const go = (i: number) => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+    const mark = () => dots.forEach((d, i) => d.setAttribute('aria-current', String(i === current())));
+    track.addEventListener('scroll', mark, { passive: true });
+    dots.forEach((d) => d.addEventListener('click', () => go(Number(d.dataset.i))));
+    ['pointerenter', 'focusin', 'touchstart'].forEach((e) => hero.addEventListener(e, () => (paused = true), { passive: true }));
+    ['pointerleave', 'focusout'].forEach((e) => hero.addEventListener(e, () => (paused = false)));
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(() => { if (!paused) go((current() + 1) % count); }, 5000);
+    }
+    mark();
+  }
+</script>

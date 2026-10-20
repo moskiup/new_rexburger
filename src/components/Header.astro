@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/inicio/logotipo.webp';
+import { nav } from '../data/config';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="header">
+  <a href="/" class="logo" aria-label="Rex Burger, inicio">
+    <Image src={logo} alt="Rex Burger California Style" widths={[240, 360, 480]} sizes="(max-width: 700px) 200px, 280px" loading="eager" />
+  </a>
+  <nav aria-label="Principal">
+    <ul>
+      {nav.map((item) => (
+        <li>
+          <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .header {
+    padding: 5.8vw 6vw 3.2vw;
+    display: grid;
+    gap: 3.8vw;
+    justify-items: center;
+    background: var(--white);
+  }
+  .logo img { width: 34vw; }
+  nav { width: 100%; }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  a {
+    font-size: 1.3vw;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+  }
+  a:hover, a[aria-current='page'] { border-bottom-color: var(--yellow); }
+</style>

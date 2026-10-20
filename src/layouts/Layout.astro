@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  footerTitle?: string;
+}
+const {
+  title = site.titulo,
+  description = site.descripcion,
+  footerTitle,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.idioma}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={site.colorTema} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/outfit-regular.ttf" as="font" type="font/ttf" crossorigin />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header />
+    <main><slot /></main>
+    <Footer titulo={footerTitle} />
+    <script>
+      const targets = [
+        '.menu h2', '.menu .item',
+        '.eventos > *:not(.bg)', '.merch > *:not(.bg)',
+        '.ubicaciones .frase', '.ubicaciones li',
+        '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl',
+        '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
+      ];
+      const els = [...document.querySelectorAll<HTMLElement>(targets.join(','))];
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+        els.forEach((el, i) => {
+          if (el.closest('.hero')) return;
+          el.classList.add('reveal');
+          if (el.matches('.sec .a, .sec .fun, .sec .lbl')) {
+            // Menú: entran desde el lado en el que están colocados.
+            const r = el.getBoundingClientRect();
+            const sec = el.closest('.sec')!.getBoundingClientRect();
+            el.classList.add(r.left + r.width / 2 < sec.left + sec.width / 2 ? 'reveal-left' : 'reveal-right');
+          } else if (el.matches('.a, .ico')) el.classList.add('reveal-zoom');
+          el.style.setProperty('--d', `${(i % 3) * 0.08}s`);
+          io.observe(el);
+        });
+      }
+    </script>
+  </body>
+</html>

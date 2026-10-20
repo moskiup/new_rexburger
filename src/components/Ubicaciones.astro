@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import frase from '../assets/inicio/frase-ubicaciones.webp';
+import pin from '../assets/inicio/icono-ubicacion.webp';
+import asterisco from '../assets/inicio/grafico-1-ubicaciones.webp';
+import equis from '../assets/inicio/grafico-2-ubicaciones.webp';
+import isotipo from '../assets/inicio/isotipo-mapa.webp';
+import { sucursales } from '../data/config';
+---
+
+<section class="ubicaciones" aria-labelledby="ubic-title">
+  <Image class="deco a" src={asterisco} alt="" width={56} />
+  <Image class="deco b" src={equis} alt="" width={56} />
+  <h2 id="ubic-title" class="sr-only">El sabor rexquisito más cerca de ti</h2>
+  <Image class="frase" src={frase} alt="El sabor Rexquisito, más cerca de ti" widths={[400, 700, 1000]} sizes="(max-width: 700px) 80vw, 480px" />
+  <ul>
+    {sucursales.map((s) => (
+      <li>
+        <Image src={pin} alt="" width={22} />
+        <strong>{s.nombre}</strong>
+        <a class="mas" href={`/sucursales#${s.slug}`} aria-label={`Más información de ${s.nombre}`}>Más</a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<div
+  id="mapa"
+  role="region"
+  aria-label="Mapa de sucursales"
+  data-sucursales={JSON.stringify(sucursales.map((s) => ({ n: s.nombre, d: s.direccion, c: s.coords, slug: s.slug })))}
+  data-icon={isotipo.src}
+></div>
+
+<style>
+  .ubicaciones {
+    position: relative;
+    background: var(--cream);
+    padding: clamp(30px, 5vw, 70px) var(--gutter) clamp(30px, 5vw, 60px);
+    display: grid;
+    justify-items: center;
+    gap: clamp(20px, 3vw, 40px);
+    overflow: hidden;
+  }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .frase { width: clamp(260px, 38vw, 480px); }
+  .deco { position: absolute; width: clamp(24px, 4vw, 56px); height: auto; }
+  .a { left: 6%; top: 18%; }
+  .b { right: 8%; top: 22%; }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px 12px;
+  }
+  li { display: grid; justify-items: center; gap: 8px; min-width: 110px; }
+  li img { width: 18px; }
+  strong { font-weight: 500; text-transform: uppercase; font-size: clamp(11px, 1.3vw, 16px); }
+  .mas {
+    background: var(--orange);
+    color: var(--red);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: 2px 14px;
+    border-radius: 999px;
+  }
+  .mas:hover { filter: brightness(1.08); }
+
+  #mapa { height: clamp(300px, 45vw, 560px); background: #e6e6e6; z-index: 0; }
+  #mapa.mapa-vacio { display: grid; place-items: center; color: var(--red); text-align: center; padding: 16px; }
+  li img { animation: pop 2.4s ease-in-out infinite; }
+  li:nth-child(2) img { animation-delay: .2s; } li:nth-child(3) img { animation-delay: .4s; }
+  li:nth-child(4) img { animation-delay: .6s; } li:nth-child(5) img { animation-delay: .8s; }
+  .a { animation: spin 14s linear infinite; }
+  .b { animation: spin 18s linear infinite reverse; }
+</style>
+
+<script>
+  const el = document.getElementById('mapa');
+  const key = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
+
+  type Sucursal = { n: string; d: string; c: [number, number]; slug: string };
+
+  function fallback(el: HTMLElement, msg: string) {
+    el.textContent = msg;
+    el.classList.add('mapa-vacio');
+  }
+
+  if (el) {
+    if (!key) {
+      fallback(el, 'Mapa no disponible: falta PUBLIC_GOOGLE_MAPS_API_KEY.');
+    } else {
+      const data: Sucursal[] = JSON.parse(el.dataset.sucursales || '[]');
+      (window as any).__initMapa = () => {
+        const g = (window as any).google.maps;
+        const bounds = new g.LatLngBounds();
+        const map = new g.Map(el, {
+          center: { lat: data[0].c[0], lng: data[0].c[1] },
+          zoom: 9,
+          disableDefaultUI: true,
+          zoomControl: true,
+          gestureHandling: 'cooperative',
+          styles: [
+            { stylers: [{ saturation: -100 }, { lightness: 12 }] },
+            { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+            { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+          ],
+        });
+        const info = new g.InfoWindow();
+        data.forEach((s) => {
+          const position = { lat: s.c[0], lng: s.c[1] };
+          bounds.extend(position);
+          const marker = new g.Marker({
+            map,
+            position,
+            title: s.n,
+            icon: { url: el.dataset.icon, scaledSize: new g.Size(36, 33), anchor: new g.Point(18, 33) },
+          });
+          marker.addListener('click', () => {
+            info.setContent(
+              `<div style="font-family:Outfit,sans-serif;color:#bc1417"><strong>${s.n}</strong><br>${s.d}<br>` +
+                `<a style="color:#bc1417;font-weight:600" href="/sucursales#${s.slug}">Más información</a></div>`,
+            );
+            info.open({ map, anchor: marker });
+          });
+        });
+        map.fitBounds(bounds, 48);
+      };
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&callback=__initMapa&loading=async`;
+      script.async = true;
+      script.onerror = () => fallback(el, 'No se pudo cargar el mapa.');
+      document.head.appendChild(script);
+    }
+  }
+</script>

@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import fondo from '../assets/inicio/fondo-menu.webp';
+import hamburguesas from '../assets/inicio/hamburguesas.webp';
+import combos from '../assets/inicio/combos.webp';
+import complementos from '../assets/inicio/complementos.webp';
+import bebidas from '../assets/inicio/bebidas.webp';
+import postres from '../assets/inicio/postres-malteadas.webp';
+import cajita from '../assets/inicio/cajita-rexy-kids.webp';
+
+/* Posiciones en coordenadas de la referencia (1000px de ancho, sección de 689px): centro del icono, ancho del icono y centro de la etiqueta. */
+const items = [
+  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, cx: 200, cy: 878, w: 175, lx: 200, ly: 948 },
+  { label: 'Combos', href: '/menu#combos', img: combos, cx: 505, cy: 868, w: 160, lx: 505, ly: 948 },
+  { label: 'Complementos', href: '/menu#complementos', img: complementos, cx: 785, cy: 865, w: 130, lx: 788, ly: 948 },
+  { label: 'Bebidas', href: '/menu#bebidas', img: bebidas, cx: 200, cy: 1085, w: 101, lx: 200, ly: 1165 },
+  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, cx: 505, cy: 1083, w: 135, lx: 505, ly: 1176 },
+  { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, cx: 790, cy: 1090, w: 190, lx: 788, ly: 1165 },
+];
+const TOP = 588;
+const H = (fondo.height * 1000) / fondo.width;
+const pct = (v: number) => `${v.toFixed(3)}%`;
+const px = (v: number) => pct(v / 10);
+const py = (v: number) => pct(((v - TOP) / H) * 100);
+---
+
+<section class="menu" aria-labelledby="menu-title" style={`aspect-ratio:${fondo.width}/${fondo.height}`}>
+  <Image class="bg" src={fondo} alt="" widths={[800, 1600, 2400]} sizes="100vw" />
+  <h2 id="menu-title">Menú</h2>
+  {items.map((it) => (
+    <a class="item" href={it.href}>
+      <Image class="ico" style={`left:${px(it.cx)};top:${py(it.cy)};width:${px(it.w)}`} src={it.img} alt="" widths={[200, 360, 480]} sizes="20vw" />
+      <span style={`left:${px(it.lx)};top:${py(it.ly)}`}>{it.label.replace(' & ', ' &\n')}</span>
+    </a>
+  ))}
+</section>
+
+<style>
+  .menu { position: relative; container-type: inline-size; overflow: hidden; background: var(--cream); }
+  .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  h2 {
+    position: absolute;
+    left: 50%;
+    top: 16.2%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display-light);
+    font-weight: 400;
+    font-size: 11.5cqw;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .ico { position: absolute; height: auto; max-width: none; transform: translate(-50%, -50%); transition: transform .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1), scale .7s cubic-bezier(.2, .7, .2, 1); }
+  @media (hover: hover) and (min-width: 768px) {
+    .item:hover .ico, .item:focus-visible .ico { transform: translate(-50%, -50%) scale(1.4); }
+  }
+  span {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    white-space: pre;
+    font-size: 1.74cqw;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+</style>

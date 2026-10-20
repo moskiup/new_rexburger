@@ -1,0 +1,223 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+
+import fHamb from '../assets/menu/fondo-hamburguesas.webp';
+import fCombos from '../assets/menu/fondo-combos.webp';
+import fCompl from '../assets/menu/fondo-complementos.webp';
+import fCajita from '../assets/menu/fondo-cajita-rexy-kids.webp';
+import fBebidas from '../assets/menu/fondo-bebidas.webp';
+import fMalt from '../assets/menu/fondo-malteadas.webp';
+
+import rexClasica from '../assets/menu/rex-clasica.webp';
+import rexDoble from '../assets/menu/rex-doble.webp';
+import rexPollo from '../assets/menu/rex-pollo.webp';
+import rexGreen from '../assets/menu/green-burger.webp';
+import rexKids from '../assets/menu/rex-kids.webp';
+import comboClasica from '../assets/menu/combo-rex-clasica.webp';
+import comboDoble from '../assets/menu/combo-rex-doble.webp';
+import comboPollo from '../assets/menu/combo-rex-pollo.webp';
+import comboGreen from '../assets/menu/combo-rex-green.webp';
+import papasFrancesa from '../assets/menu/papas-a-la-francesa.webp';
+import papasRex from '../assets/menu/papas-rex.webp';
+import papasWaffle from '../assets/menu/papas-waffle.webp';
+import aros from '../assets/menu/aros-de-cebolla-y-nuggets.webp';
+import cajita from '../assets/menu/cajita-rexy-kids.webp';
+import aguaNatural from '../assets/menu/agua-natural.webp';
+import refrescos from '../assets/menu/refrescos.webp';
+import aguaFresca from '../assets/menu/agua-fresca.webp';
+import logosRefrescos from '../assets/menu/logotipos-refrescos.webp';
+import cajeta from '../assets/menu/malteada-cajeta.webp';
+import vainilla from '../assets/menu/malteada-vainilla.webp';
+import mazapan from '../assets/menu/malteada-mazapan.webp';
+import oreo from '../assets/menu/malteada-oreo.webp';
+import cono from '../assets/menu/cono-de-vainilla.webp';
+
+/*
+ * Layout is a faithful port of the 900px-wide reference: every element is placed
+ * in reference coordinates (x, Y) and converted to percentages of its section, so
+ * the whole page scales uniformly. Fonts use cqw so they scale with the section.
+ */
+const REF_W = 900;
+const sec = (top: number, bg: ImageMetadata) => ({ top, h: (bg.height * REF_W) / bg.width });
+const S = {
+  hamb: sec(172.9, fHamb),
+  combos: sec(1708.9, fCombos),
+  compl: sec(2621.6, fCompl),
+  cajita: sec(3199.9, fCajita),
+  bebidas: sec(4029.8, fBebidas),
+  malt: sec(4576.9, fMalt),
+};
+type Sec = { top: number; h: number };
+
+const y = (s: Sec, Y: number) => `${(((Y - s.top) / s.h) * 100).toFixed(3)}%`;
+const x = (X: number) => `${((X / REF_W) * 100).toFixed(3)}%`;
+const cq = (px: number) => `${((px / REF_W) * 100).toFixed(3)}cqw`;
+/** Image box: left/top in reference coords, width in reference px. */
+const box = (s: Sec, X: number, Y: number, w: number) => `left:${x(X)};top:${y(s, Y)};width:${x(w)}`;
+/** Text anchored left (align 'l'), right ('r') or centered ('c') on a vertical center. */
+const txt = (s: Sec, align: 'l' | 'r' | 'c', X: number, Yc: number, size: number) => {
+  const pos = align === 'l' ? `left:${x(X)}` : align === 'r' ? `right:${x(REF_W - X)}` : `left:${x(X)};transform:translate(-50%,-50%)`;
+  const t = align === 'c' ? '' : 'transform:translateY(-50%);';
+  return `${pos};top:${y(s, Yc)};${t}font-size:${cq(size)};text-align:${align === 'l' ? 'left' : align === 'r' ? 'right' : 'center'}`;
+};
+const title = (s: Sec, Yc: number, size: number) => `left:50%;top:${y(s, Yc)};transform:translate(-50%,-50%);font-size:${cq(size)}`;
+
+const C = { orange: '#f39c12', brown: '#7a2a10', red: '#bc1417', green: '#3fa34d', dark: '#8e0f14', navy: '#1f3059', cream: '#efebe0' };
+
+const hamburguesas = [
+  { img: rexClasica, box: [5.8, 417.5, 578], label: ['REX', 'CLÁSICA'], color: C.orange, side: 'l', Y: 407 },
+  { img: rexDoble, box: [333, 542.5, 581], label: ['REX', 'DOBLE'], color: C.brown, side: 'r', Y: 552 },
+  { img: rexPollo, box: [-9.5, 840, 577], label: ['REX', 'POLLO'], color: C.red, side: 'l', Y: 857 },
+  { img: rexGreen, box: [350.4, 1048, 572], label: ['REX', 'GREEN'], color: C.green, side: 'r', Y: 1088 },
+  { img: rexKids, box: [-84, 1321.5, 635], label: ['REX', 'KIDS'], color: C.dark, side: 'l', Y: 1312 },
+] as const;
+
+const combos = [
+  { img: comboClasica, cx: 237.5, Y: 593, ly: 517, label: ['REX', 'CLÁSICA'], color: C.orange },
+  { img: comboDoble, cx: 664, Y: 593, ly: 517, label: ['REX', 'DOBLE'], color: C.red },
+  { img: comboPollo, cx: 237.5, Y: 950, ly: 884, label: ['REX', 'POLLO'], color: C.brown },
+  { img: comboGreen, cx: 664, Y: 950, ly: 884, label: ['REX', 'GREEN'], color: C.green },
+] as const;
+const COMBO_W = 371;
+
+const malteadas = [
+  { img: cajeta, box: [220.5, 4716.2, 288], label: 'CAJETA', side: 'r', lx: 280, ly: 4904.5 },
+  { img: vainilla, box: [388.4, 4816.2, 287], label: 'VAINILLA', side: 'l', lx: 633, ly: 4985.5 },
+  { img: mazapan, box: [220.5, 4973, 288], label: 'MAZAPÁN', side: 'r', lx: 280, ly: 5161.5 },
+  { img: oreo, box: [389, 5060, 288], label: 'OREO', side: 'l', lx: 633, ly: 5249.5 },
+] as const;
+---
+
+<Layout title="Menú | Rex Burger" description="Hamburguesas, combos, complementos, bebidas, malteadas y la Cajita Rexy Kids de Rex Burger California Style.">
+  <h1 class="sr-only">Menú Rex Burger</h1>
+
+  <!-- HAMBURGUESAS -->
+  <section class="sec" id="hamburguesas" style={`aspect-ratio:${fHamb.width}/${fHamb.height}`}>
+    <Image class="bg" src={fHamb} alt="" widths={[800, 1600, 2400]} sizes="100vw" loading="eager" />
+    <h2 class="t t-hecto" style={title(S.hamb, 270, 125)}>Hamburguesas</h2>
+    {hamburguesas.map((b) => (
+      <>
+        <Image class="a" style={box(S.hamb, ...b.box)} src={b.img} alt={`${b.label.join(' ')}`} widths={[400, 800, 1200]} sizes="60vw" />
+        <p class="fun" style={`${txt(S.hamb, b.side, b.side === 'l' ? 120 : 778, b.Y + 23, 49)};color:${b.color}`}>
+          {b.label[0]}<br />{b.label[1]}
+        </p>
+      </>
+    ))}
+  </section>
+
+  <!-- COMBOS -->
+  <section class="sec" id="combos" style={`aspect-ratio:${fCombos.width}/${fCombos.height}`}>
+    <Image class="bg" src={fCombos} alt="" widths={[800, 1600, 2400]} sizes="100vw" />
+    <h2 class="t t-hecto" style={`${title(S.combos, 1814.5, 130)};color:${C.dark}`}>Combos</h2>
+    {combos.map((c) => (
+      <>
+        <p class="fun c" style={`${txt(S.combos, 'c', c.cx, c.ly + 1437.5, 46)};color:${c.color}`}>
+          {c.label[0]}<br />{c.label[1]}
+        </p>
+        <Image class="a" style={box(S.combos, c.cx - COMBO_W / 2, c.Y + 1437.5 - 5, COMBO_W)} src={c.img} alt={`Combo ${c.label.join(' ')}`} widths={[400, 800]} sizes="45vw" />
+      </>
+    ))}
+  </section>
+
+  <!-- COMPLEMENTOS -->
+  <section class="sec" id="complementos" style={`aspect-ratio:${fCompl.width}/${fCompl.height}`}>
+    <Image class="bg" src={fCompl} alt="" widths={[800, 1600]} sizes="100vw" />
+    <h2 class="t t-hecto" style={`${title(S.compl, 2707.5, 122)};color:${C.orange}`}>Complementos</h2>
+
+    <Image class="a" style={box(S.compl, 0, 2787.5, 450)} src={papasFrancesa} alt="Papas a la francesa" widths={[400, 800]} sizes="50vw" />
+    <p class="lbl" style={`${txt(S.compl, 'l', 120, 2863, 19)};color:${C.red}`}>PAPAS A LA<br />FRANCESA</p>
+    <Image class="a" style={box(S.compl, 450, 2787.5, 450)} src={papasRex} alt="Papas Rex" widths={[400, 800]} sizes="50vw" />
+    <p class="lbl" style={`${txt(S.compl, 'l', 675, 2863, 19)};color:${C.red}`}>PAPAS REX</p>
+
+    <Image class="a" style={box(S.compl, 0, 2971, 450)} src={papasWaffle} alt="Papas waffle" widths={[400, 800]} sizes="50vw" />
+    <p class="lbl" style={`${txt(S.compl, 'l', 120, 3049, 19)};color:${C.orange}`}>PAPAS WAFFLE</p>
+    <Image class="a" style={box(S.compl, 450, 2971, 450)} src={aros} alt="Aros de cebolla y nuggets" widths={[400, 800]} sizes="50vw" />
+    <p class="lbl" style={`${txt(S.compl, 'r', 780, 3049, 19)};color:${C.red}`}>AROS DE<br />CEBOLLA Y<br />NUGGETS</p>
+
+    <p class="lbl c" style={`${txt(S.compl, 'c', 450, 3165, 17)};color:${C.orange}`}>¡AGREGA SALSA DE QUESO EXTRA!</p>
+  </section>
+
+  <!-- CAJITA REXY KIDS -->
+  <section class="sec" id="cajita" style={`aspect-ratio:${fCajita.width}/${fCajita.height}`}>
+    <Image class="bg" src={fCajita} alt="" widths={[800, 1600, 2400]} sizes="100vw" />
+    <h2 class="fun c" style={`${txt(S.cajita, 'c', 450, 3330, 112)};color:#fff;line-height:1`}>CAJITA</h2>
+    <p class="fun c" style={`${txt(S.cajita, 'c', 450, 3420, 78)};color:${C.navy};line-height:1`}>REXY KIDS</p>
+    <Image class="a" style={box(S.cajita, 117, 3462, 672)} src={cajita} alt="Cajita Rexy Kids con hamburguesa, papas, nuggets, bebida y juguete" widths={[600, 1200]} sizes="75vw" />
+    <p class="lbl pillt c" style={`${txt(S.cajita, 'c', 450, 3863, 21)};color:#0bb9ef`}>ELIGE TU COMBO</p>
+    <p class="lbl desc c" style={`${txt(S.cajita, 'c', 450, 3930, 16.5)};color:#fff`}>Hamburguesa Kids con queso o nuggets de pollo<br />+ papas y bebida kids.</p>
+    <p class="lbl desc c" style={`${txt(S.cajita, 'c', 450, 3974, 17.5)};color:#fff;font-weight:700`}>¡Incluye juguete sorpresa!</p>
+  </section>
+
+  <!-- BEBIDAS -->
+  <section class="sec" id="bebidas" style={`aspect-ratio:${fBebidas.width}/${fBebidas.height}`}>
+    <Image class="bg" src={fBebidas} alt="" widths={[800, 1600, 2400]} sizes="100vw" />
+    <h2 class="t t-hecto" style={`${title(S.bebidas, 4107, 112)};color:${C.red}`}>Bebidas</h2>
+    <p class="lbl c" style={`${txt(S.bebidas, 'c', 450, 4216, 22)};color:${C.red};font-weight:600`}>REFRESCOS</p>
+    <Image class="a float" style={`--fd:0s;${box(S.bebidas, 241, 4198, 209)}`} src={aguaNatural} alt="Agua natural" widths={[300, 600]} sizes="25vw" />
+    <Image class="a float" style={`--fd:-1.4s;${box(S.bebidas, 339, 4240, 218)}`} src={refrescos} alt="Refresco" widths={[300, 600]} sizes="25vw" />
+    <Image class="a float" style={`--fd:-2.8s;${box(S.bebidas, 441, 4268, 226)}`} src={aguaFresca} alt="Agua fresca" widths={[300, 600]} sizes="25vw" />
+    <p class="lbl bold" style={`${txt(S.bebidas, 'r', 275, 4341, 22)};color:${C.red}`}>AGUA<br />NATURAL</p>
+    <p class="lbl bold" style={`${txt(S.bebidas, 'l', 628, 4381, 22)};color:${C.red}`}>AGUA<br />FRESCA</p>
+    <Image class="a" style={box(S.bebidas, 118, 4469, 662)} src={logosRefrescos} alt="Coca-Cola, Coca-Cola Zero, Coca-Cola Light, Sprite, Mundet, Fanta y Fuze Tea" widths={[600, 1200]} sizes="75vw" />
+  </section>
+
+  <!-- MALTEADAS -->
+  <section class="sec" id="malteadas" style={`aspect-ratio:${fMalt.width}/${fMalt.height}`}>
+    <Image class="bg" src={fMalt} alt="" widths={[800, 1600, 2400]} sizes="100vw" />
+    <h2 class="t t-hecto" style={`${title(S.malt, 4664.5, 115)};color:${C.brown}`}>Malteadas</h2>
+    {malteadas.map((m) => (
+      <>
+        <Image class="a" style={box(S.malt, ...m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[300, 600]} sizes="35vw" />
+        <p class="fun" style={`${txt(S.malt, m.side, m.lx, m.ly, 40)};color:${C.cream}`}>{m.label}</p>
+      </>
+    ))}
+    <Image class="a" style={box(S.malt, 299.7, 5265, 130)} src={cono} alt="Cono de vainilla" widths={[200, 400]} sizes="15vw" />
+    <p class="t t-hecto left" style={`${txt(S.malt, 'l', 458, 5417.5, 72)};color:${C.brown};line-height:.95`}>CONO DE<br />VAINILLA</p>
+  </section>
+</Layout>
+
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .sec { position: relative; container-type: inline-size; overflow: hidden; }
+  .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .a { position: absolute; height: auto; max-width: none; }
+  .t, .fun, .lbl { position: absolute; margin: 0; white-space: nowrap; line-height: 1.02; }
+  .t { font-weight: 400; text-transform: uppercase; color: var(--red); }
+  .t-hecto { font-family: var(--font-display-light); }
+  .fun { font-family: var(--font-fun); text-transform: uppercase; line-height: 1.05; }
+  .lbl { font-family: var(--font-body); font-weight: 600; text-transform: uppercase; line-height: 1.12; }
+  .lbl.bold { font-weight: 700; }
+  .pillt { letter-spacing: .1em; font-weight: 700; }
+  @media (hover: hover) {
+    #complementos .a, #combos .a { transition: transform .35s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1), scale .7s cubic-bezier(.2, .7, .2, 1); }
+    #complementos .a:hover, #combos .a:hover, #complementos .a.zoom, #combos .a.zoom { transform: scale(1.15); }
+  }
+  /* El texto usa la propiedad scale porque su transform ya se usa para centrarlo. */
+  #complementos .lbl.zoom, #combos .fun.zoom { scale: 1.15; }
+  #complementos .lbl, #combos .fun { transition: scale .35s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1); }
+  .float { animation: bebida-float 4.2s ease-in-out infinite; animation-delay: var(--fd, 0s); transform-origin: 50% 90%; }
+  @keyframes bebida-float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-2.2%) rotate(2deg); }
+  }
+  .desc { text-transform: none; font-weight: 400; }
+</style>
+
+<script>
+  // Cada texto activa el zoom de su imagen y al revés; ambos crecen, en Complementos y Combos.
+  const pair = (imgs: NodeListOf<HTMLElement>, texts: NodeListOf<HTMLElement>) => {
+    imgs.forEach((img, i) => {
+      const t = texts[i];
+      if (!t) return;
+      const on = () => { img.classList.add('zoom'); t.classList.add('zoom'); };
+      const off = () => { img.classList.remove('zoom'); t.classList.remove('zoom'); };
+      [img, t].forEach((el) => {
+        el.addEventListener('pointerenter', on);
+        el.addEventListener('pointerleave', off);
+      });
+    });
+  };
+  pair(document.querySelectorAll<HTMLElement>('#complementos .a'), document.querySelectorAll<HTMLElement>('#complementos .lbl'));
+  pair(document.querySelectorAll<HTMLElement>('#combos .a'), document.querySelectorAll<HTMLElement>('#combos .fun'));
+</script>

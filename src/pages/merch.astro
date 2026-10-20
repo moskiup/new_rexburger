@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Cart from '../components/Cart.astro';
+import tsOverWhite from '../assets/merch/t-shirt-oversize-white.webp';
+import tsOverBlack from '../assets/merch/t-shirt-oversize-black.webp';
+import hoodBlack from '../assets/merch/hoodie-black.webp';
+import hoodGray from '../assets/merch/hoodie-gray.webp';
+import tsKidsWhite from '../assets/merch/t-shirt-kids-white.webp';
+import tsKidsBlack from '../assets/merch/t-shirt-kids-black.webp';
+import gorraRed from '../assets/merch/gorra-red.webp';
+import gorraBlack from '../assets/merch/gorra-black.webp';
+import gorraCamo from '../assets/merch/gorra-camuflaje.webp';
+
+const adulto = ['CH', 'M', 'GDE'];
+const kids = ['4A', '6A', '8A'];
+const productos = [
+  { nombre: 'T-Shirt Oversize White', img: tsOverWhite, tallas: adulto },
+  { nombre: 'T-Shirt Oversize Black', img: tsOverBlack, tallas: adulto },
+  { nombre: 'Hoodie Black', img: hoodBlack, tallas: adulto },
+  { nombre: 'Hoodie Gray', img: hoodGray, tallas: adulto },
+  { nombre: 'T-Shirt Kids White', img: tsKidsWhite, tallas: kids },
+  { nombre: 'T-Shirt Kids Black', img: tsKidsBlack, tallas: kids },
+  { nombre: 'Gorra Red', img: gorraRed, tallas: ['Unitalla'] },
+  { nombre: 'Gorra Black', img: gorraBlack, tallas: ['Unitalla'] },
+  { nombre: 'Gorra Camuflaje', img: gorraCamo, tallas: ['Unitalla'] },
+];
+---
+
+<Layout title="Merch | Rex Burger" description="Playeras, hoodies y gorras oficiales de Rex Burger.">
+  <h1 class="sr-only">Merch Rex Burger</h1>
+  <ul class="grid">
+    {productos.map((p, i) => (
+      <li>
+        <button type="button" class="card" data-producto data-nombre={p.nombre} data-tallas={p.tallas.join(',')} aria-label={`Elegir ${p.nombre}`}>
+          <div class="foto">
+            <Image src={p.img} alt={p.nombre} widths={[400, 800]} sizes="(max-width: 700px) 45vw, 480px" loading={i < 2 ? 'eager' : 'lazy'} />
+          </div>
+          <h2>{p.nombre}</h2>
+          <p>{p.tallas.join('  |  ')}</p>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <Cart />
+</Layout>
+
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .grid {
+    list-style: none;
+    margin: 0 auto;
+    padding: clamp(20px, 5vw, 60px) var(--gutter) clamp(40px, 6vw, 80px);
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(28px, 5vw, 56px) clamp(14px, 3vw, 36px);
+  }
+  .card { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .foto {
+    background: var(--cream);
+    border-radius: clamp(14px, 2.4vw, 30px);
+    aspect-ratio: 1 / 1.04;
+    display: grid;
+    place-items: center;
+    padding: 6%;
+  }
+  .foto img { width: 100%; height: 100%; object-fit: contain; }
+  h2 {
+    margin-top: clamp(14px, 2.6vw, 30px);
+    font-size: 2.2vw;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+  p {
+    margin: 6px 0 0;
+    color: #6b6b6b;
+    font-size: clamp(9px, 1.2vw, 13px);
+    letter-spacing: .15em;
+    white-space: pre;
+    text-transform: uppercase;
+  }
+  .foto { transition: transform .35s ease, box-shadow .35s ease; }
+  .foto img { transition: transform .45s ease; }
+  li:hover .foto { transform: translateY(-6px); box-shadow: 0 14px 28px rgb(0 0 0 / .12); }
+  li:hover .foto img { transform: scale(1.08); }
+</style>
