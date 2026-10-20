@@ -107,10 +107,21 @@ const logos = [
   { img: logoFuze, alt: 'Fuze Tea', bb: [0, 0, 299, 214] as BB, ...logoRect(2194, 46, 2399, 193) },
 ];
 /* Piezas de la Cajita Rexy Kids: posición dentro de la composición original (1000 de ancho) colocada en x=117, y=3462, 672px. */
-const KK = 672 / 1000;
-const kid = (img: ImageMetadata, alt: string, bb: BB, cx: number, cy: number, w: number, dur: number, delay: number, rot: number) => ({
-  img, alt, bb, cx: 117 + cx * KK, cy: 3462 + cy * KK, w: w * KK, dur, delay, rot,
-});
+/* Cajita Rexy Kids: las piezas se colocan dentro de un "escenario" con la proporción de la composición original (1000 x 556). */
+const STAGE_W = 1000;
+const STAGE_H = 556;
+const pct = (l: number, t: number, w: number) => `left:${(l / STAGE_W) * 100}%;top:${(t / STAGE_H) * 100}%;width:${(w / STAGE_W) * 100}%`;
+const kid = (img: ImageMetadata, alt: string, bb: BB, cx: number, cy: number, w: number, dur: number, delay: number, rot: number) => {
+  const bw = bb[2] - bb[0] + 1;
+  const bh = bb[3] - bb[1] + 1;
+  const k = w / bw;
+  return {
+    img, alt, dur, delay, rot,
+    piece: pct(cx - (bb[0] + bw / 2) * k, cy - (bb[1] + bh / 2) * k, img.width * k),
+    // Sombra: 1.5 veces el ancho de la pieza, apoyada en su base.
+    shadow: pct(cx - w * 0.75, cy + (bh * k) / 2 - ((w * 1.5 * 80) / 600) / 2 + 9, w * 1.5),
+  };
+};
 const kids = [
   kid(kCaja, 'Caja Rexy Kids', [48, 56, 533, 519], 492, 215, 385, 6, 0, 1.5),
   kid(kNuggets, 'Nuggets de pollo', [81, 137, 485, 463], 745, 255, 200, 5, -1.2, 3),
@@ -119,12 +130,25 @@ const kids = [
   kid(kHamb, 'Hamburguesa Kids', [85, 78, 547, 458], 604, 411, 208, 5.2, -3, 3),
   kid(kJugo, 'Jugo', [74, 42, 209, 348], 815, 361, 100, 4.6, -1.8, 4),
 ];
-/** Sombra bajo cada pieza: ancho de la sombra y posición de su centro. */
-const shadow = (k: (typeof kids)[number], bh: number, bw: number) => {
-  const sw = k.w * 1.5;
-  const bottom = k.cy + ((bh * k.w) / bw) / 2;
-  return box(S.cajita, k.cx - sw / 2, bottom - (sw * 80) / 600 / 2 + 6, sw);
-};
+const stageStyle = `left:${x(117)};top:${y(S.cajita, 3462)};width:${x(672)}`;
+
+/* Complementos en móvil: posición del texto dentro de cada imagen (en % del ancho y del alto de la imagen). */
+const cmPos = (img: ImageMetadata, boxX: number, boxY: number, tx: number, ty: number) => ({
+  lx: ((tx - boxX) / 450) * 100,
+  ly: ((ty - boxY) / ((450 * img.height) / img.width)) * 100,
+});
+const complM = [
+  { img: papasFrancesa, alt: 'Papas a la francesa', texto: 'PAPAS A LA<br>FRANCESA', color: '#bc1417', lado: 'l', ...cmPos(papasFrancesa, 0, 2787.5, 120, 2863) },
+  { img: papasRex, alt: 'Papas Rex', texto: 'PAPAS REX', color: '#bc1417', lado: 'l', ...cmPos(papasRex, 450, 2787.5, 675, 2863) },
+  { img: papasWaffle, alt: 'Papas waffle', texto: 'PAPAS WAFFLE', color: '#f39c12', lado: 'l', ...cmPos(papasWaffle, 0, 2971, 120, 3049) },
+  { img: aros, alt: 'Aros de cebolla y nuggets', texto: 'AROS DE<br>CEBOLLA Y<br>NUGGETS', color: '#bc1417', lado: 'r', ...cmPos(aros, 450, 2971, 780, 3049) },
+];
+
+const bebM = [
+  { img: aguaNatural, alt: 'Agua natural', texto: 'AGUA<br>NATURAL' },
+  { img: refrescos, alt: 'Refresco', texto: 'REFRESCO' },
+  { img: aguaFresca, alt: 'Agua fresca', texto: 'AGUA<br>FRESCA' },
+];
 
 const C = { orange: '#f39c12', brown: '#7a2a10', red: '#bc1417', green: '#3fa34d', dark: '#8e0f14', navy: '#1f3059', cream: '#efebe0' };
 
@@ -171,6 +195,7 @@ const malteadas = [
   <!-- COMBOS -->
   <section class="sec shape" id="combos" style={shape(fCombos, '#ffffff', '#f6b100', '#77290f', `${R} ${R} 0 0`)}>
     <h2 class="t t-hecto" style={`${title(S.combos, 1814.5, 130)};color:${C.dark}`}>Combos</h2>
+    <div class="comb-d">
     {combos.map((c) => (
       <>
         <p class="fun c" style={`${txt(S.combos, 'c', c.cx, c.ly + 1437.5, 46)};color:${c.color}`}>
@@ -179,12 +204,23 @@ const malteadas = [
         <Image class="a" style={box(S.combos, c.cx - COMBO_W / 2, c.Y + 1437.5 - 5, COMBO_W)} src={c.img} alt={`Combo ${c.label.join(' ')}`} widths={[400, 800]} sizes="45vw" />
       </>
     ))}
+    </div>
+    <!-- Móvil: una columna, cada combo a gran tamaño -->
+    <div class="comb-m">
+      {combos.map((c) => (
+        <div class="cb-item">
+          <p class="cb-lbl" style={`color:${c.color}`}>{c.label[0]} {c.label[1]}</p>
+          <Image class="cb-img" src={c.img} alt={`Combo ${c.label.join(' ')}`} widths={[480, 800]} sizes="(max-width: 767px) 90vw, 45vw" />
+        </div>
+      ))}
+    </div>
   </section>
 
   <!-- COMPLEMENTOS -->
   <section class="sec" id="complementos" style={`aspect-ratio:${COMPL_BG.width}/${COMPL_BG.height};background:#bb060a`}>
     <h2 class="t t-hecto" style={`${title(S.compl, 2707.5, 122)};color:${C.orange}`}>Complementos</h2>
 
+    <div class="compl-d">
     <Image class="a" style={box(S.compl, 0, 2787.5, 450)} src={papasFrancesa} alt="Papas a la francesa" widths={[400, 800]} sizes="50vw" />
     <p class="lbl" style={`${txt(S.compl, 'l', 120, 2863, 19)};color:${C.red}`}>PAPAS A LA<br />FRANCESA</p>
     <Image class="a" style={box(S.compl, 450, 2787.5, 450)} src={papasRex} alt="Papas Rex" widths={[400, 800]} sizes="50vw" />
@@ -196,22 +232,36 @@ const malteadas = [
     <p class="lbl" style={`${txt(S.compl, 'r', 780, 3049, 19)};color:${C.red}`}>AROS DE<br />CEBOLLA Y<br />NUGGETS</p>
 
     <p class="lbl c" style={`${txt(S.compl, 'c', 450, 3165, 17)};color:${C.orange}`}>¡AGREGA SALSA DE QUESO EXTRA!</p>
+    </div>
+
+    <!-- Móvil: cuatro filas a ancho completo, producto grande y texto legible -->
+    <div class="compl-m">
+      {complM.map((c) => (
+        <div class="cm-row" style={`--lx:${c.lx};--ly:${c.ly}`} data-lado={c.lado}>
+          <Image class="cm-img" src={c.img} alt={c.alt} widths={[480, 800, 1000]} sizes="100vw" />
+          <p class="cm-lbl" style={`color:${c.color}`} set:html={c.texto} />
+        </div>
+      ))}
+      <p class="cm-nota">¡AGREGA SALSA DE QUESO EXTRA!</p>
+    </div>
   </section>
 
   <!-- CAJITA REXY KIDS -->
   <section class="sec shape" id="cajita" style={shape(fCajita, '#0cbcf0', '#b8effa', '#1f2f57', `0 0 ${R} ${R}`)}>
     <span class="pill-bg" aria-hidden="true"></span>
-    <h2 class="fun c" style={`${txt(S.cajita, 'c', 450, 3330, 112)};color:#fff;line-height:1`}>CAJITA</h2>
-    <p class="fun c" style={`${txt(S.cajita, 'c', 450, 3420, 78)};color:${C.navy};line-height:1`}>REXY KIDS</p>
-    {kids.map((k) => (
-      <Image class="a sombra" style={`${shadow(k, k.bb[3] - k.bb[1] + 1, k.bb[2] - k.bb[0] + 1)};--dur:${k.dur}s;--fd:${k.delay}s`} src={kSombra} alt="" widths={[300, 600]} sizes="30vw" />
-    ))}
-    {kids.map((k) => (
-      <Image class="a kid" style={`${fit(S.cajita, k.img, k.bb, k.cx, k.cy, k.w)};--dur:${k.dur}s;--fd:${k.delay}s;--rot:${k.rot}deg`} src={k.img} alt={k.alt} widths={[300, 600]} sizes="30vw" />
-    ))}
-    <p class="lbl pillt c" style={`${txt(S.cajita, 'c', 450, 3863, 21)};color:#0bb9ef`}>ELIGE TU COMBO</p>
-    <p class="lbl desc c" style={`${txt(S.cajita, 'c', 450, 3930, 16.5)};color:#fff`}>Hamburguesa Kids con queso o nuggets de pollo<br />+ papas y bebida kids.</p>
-    <p class="lbl desc c" style={`${txt(S.cajita, 'c', 450, 3974, 17.5)};color:#fff;font-weight:700`}>¡Incluye juguete sorpresa!</p>
+    <h2 class="fun c cj-t1" style={`${txt(S.cajita, 'c', 450, 3330, 112)};color:#fff;line-height:1`}>CAJITA</h2>
+    <p class="fun c cj-t2" style={`${txt(S.cajita, 'c', 450, 3420, 78)};color:${C.navy};line-height:1`}>REXY KIDS</p>
+    <div class="stage" style={stageStyle}>
+      {kids.map((k) => (
+        <Image class="a sombra" style={`${k.shadow};--dur:${k.dur}s;--fd:${k.delay}s`} src={kSombra} alt="" widths={[300, 600]} sizes="40vw" />
+      ))}
+      {kids.map((k) => (
+        <Image class="a kid" style={`${k.piece};--dur:${k.dur}s;--fd:${k.delay}s;--rot:${k.rot}deg`} src={k.img} alt={k.alt} widths={[400, 700]} sizes="(max-width: 767px) 50vw, 30vw" />
+      ))}
+    </div>
+    <p class="lbl pillt c cj-pill" style={`${txt(S.cajita, 'c', 450, 3863, 21)};color:#0bb9ef`}>ELIGE TU COMBO</p>
+    <p class="lbl desc c cj-d" style={`${txt(S.cajita, 'c', 450, 3930, 16.5)};color:#fff`}>Hamburguesa Kids con queso o nuggets de pollo<br />+ papas y bebida kids.</p>
+    <p class="lbl desc c cj-d" style={`${txt(S.cajita, 'c', 450, 3974, 17.5)};color:#fff;font-weight:700`}>¡Incluye juguete sorpresa!</p>
   </section>
 
   <!-- BEBIDAS -->
@@ -219,6 +269,7 @@ const malteadas = [
     <Image class="a" style={box(S.bebidas, 0, 4078.9, 279.75)} src={chkL} alt="" widths={[300, 600]} sizes="35vw" />
     <Image class="a" style={box(S.bebidas, 619.9, 4078.9, 280.1)} src={chkR} alt="" widths={[300, 600]} sizes="35vw" />
     <h2 class="t t-hecto" style={`${title(S.bebidas, 4107, 112)};color:${C.red}`}>Bebidas</h2>
+    <div class="beb-d">
     <p class="lbl c" style={`${txt(S.bebidas, 'c', 450, 4216, 22)};color:${C.red};font-weight:600`}>REFRESCOS</p>
     <Image class="a float" style={`--fd:0s;${box(S.bebidas, 241, 4198, 209)}`} src={aguaNatural} alt="Agua natural" widths={[300, 600]} sizes="25vw" />
     <Image class="a float" style={`--fd:-1.4s;${box(S.bebidas, 339, 4240, 218)}`} src={refrescos} alt="Refresco" widths={[300, 600]} sizes="25vw" />
@@ -228,11 +279,30 @@ const malteadas = [
     {logos.map((l, i) => (
       <Image class="a logo" style={`${fit(S.bebidas, l.img, l.bb, l.cx, l.cy, l.w)};--fd:${-i * 0.7}s`} src={l.img} alt={l.alt} widths={[300, 600]} sizes="25vw" />
     ))}
+    </div>
+    <!-- Móvil: botellas grandes en fila y logos en cuadrícula -->
+    <div class="beb-m">
+      <p class="bm-tit">REFRESCOS</p>
+      <div class="bm-bot">
+        {bebM.map((b, i) => (
+          <div class="bm-b" style={`--fd:${-i * 1.4}s`}>
+            <Image class="bm-img" src={b.img} alt={b.alt} widths={[300, 500]} sizes="34vw" />
+            <p class="bm-t" set:html={b.texto} />
+          </div>
+        ))}
+      </div>
+      <div class="bm-logos">
+        {logos.map((l, i) => (
+          <Image class="bm-logo" style={`--fd:${-i * 0.7}s`} src={l.img} alt={l.alt} widths={[300, 500]} sizes="30vw" />
+        ))}
+      </div>
+    </div>
   </section>
 
   <!-- MALTEADAS -->
   <section class="sec shape" id="malteadas" style={shape(fMalt, '#cca368', '#8a5628', '#77290f', `0 0 ${R} ${R}`)}>
     <h2 class="t t-hecto" style={`${title(S.malt, 4664.5, 115)};color:${C.brown}`}>Malteadas</h2>
+    <div class="malt-d">
     {malteadas.map((m) => (
       <>
         <Image class="a" style={box(S.malt, ...m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[300, 600]} sizes="35vw" />
@@ -241,6 +311,20 @@ const malteadas = [
     ))}
     <Image class="a" style={box(S.malt, 299.7, 5265, 130)} src={cono} alt="Cono de vainilla" widths={[200, 400]} sizes="15vw" />
     <p class="t t-hecto left" style={`${txt(S.malt, 'l', 458, 5417.5, 72)};color:${C.brown};line-height:.95`}>CONO DE<br />VAINILLA</p>
+    </div>
+    <!-- Móvil: dos columnas con los vasos grandes y el cono al final -->
+    <div class="malt-m">
+      {malteadas.map((m) => (
+        <div class="mm-item">
+          <Image class="mm-img" src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[400, 700]} sizes="(max-width: 767px) 50vw, 35vw" />
+          <p class="mm-lbl">{m.label}</p>
+        </div>
+      ))}
+      <div class="mm-cono">
+        <Image class="mm-cono-img" src={cono} alt="Cono de vainilla" widths={[300, 500]} sizes="(max-width: 767px) 40vw, 15vw" />
+        <p class="mm-cono-t">CONO DE<br />VAINILLA</p>
+      </div>
+    </div>
   </section>
 </Layout>
 
@@ -248,15 +332,86 @@ const malteadas = [
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .sec { position: relative; container-type: inline-size; overflow: hidden; }
   .shape { background: linear-gradient(to right, var(--cl) 50%, var(--cr) 50%); }
-  .shape::before { content: ''; position: absolute; inset: 0; background: var(--fill); border-radius: var(--r); }
+  .shape { isolation: isolate; }
+  .shape::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fill); border-radius: var(--r); }
   .pill-bg { position: absolute; left: 37.29%; width: 25.5%; top: 78.04%; height: 3.8%; border-radius: 999px; background: #fff; }
+  .stage { position: absolute; aspect-ratio: 1000 / 556; }
+  .comb-d, .malt-d { display: contents; }
+  .comb-m, .malt-m, .beb-m { display: none; }
+  .beb-d { display: contents; }
+  .compl-d { display: contents; }
+  .compl-m { display: none; }
+
+  /* ---------- Móvil: Complementos y Cajita pasan a flujo normal, con piezas y textos grandes ---------- */
   @media (max-width: 767px) {
-    /* La píldora debe contener el texto de 12px de "ELIGE TU COMBO". */
-    .pill-bg { left: 50%; width: 176px; height: 30px; top: 79.94%; translate: -50% -50%; }
-    #cajita .desc:nth-of-type(1) { margin-top: 6px; }
-    #cajita .desc { margin-top: 6px; }
-    #cajita .desc + .desc { margin-top: 15px; }
-    #complementos .lbl:not(.c) { white-space: normal; max-width: 20cqw; line-height: 1.15; }
+    /* Complementos: cuatro filas a ancho completo */
+    #complementos { aspect-ratio: auto !important; padding: 34px 0 36px; }
+    #complementos > h2 { position: static !important; transform: none !important; text-align: center; font-size: 15cqw !important; margin-bottom: 18px; }
+    .compl-d { display: none; }
+    .compl-m { display: grid; gap: 12px; }
+    .cm-row { position: relative; container-type: inline-size; }
+    .cm-img { display: block; width: 100%; height: auto; max-width: none; }
+    .cm-lbl {
+      position: absolute;
+      top: calc(var(--ly) * 1%);
+      transform: translateY(-50%);
+      margin: 0;
+      font-size: max(14px, 4.7cqw);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: .02em;
+    }
+    .cm-row[data-lado='l'] .cm-lbl { left: calc(var(--lx) * 1%); text-align: left; }
+    .cm-row[data-lado='r'] .cm-lbl { right: calc((100 - var(--lx)) * 1%); text-align: right; }
+    .cm-nota { margin: 14px 20px 0; text-align: center; font-size: 15px; font-weight: 700; color: #f39c12; }
+
+    /* Combos: una columna, grandes */
+    #combos { aspect-ratio: auto !important; padding: 36px 20px 64px; }
+    #combos > h2 { position: static !important; transform: none !important; text-align: center; font-size: 19cqw !important; margin-bottom: 8px; }
+    .comb-d { display: none; }
+    .comb-m { display: grid; gap: 18px; }
+    .cb-item { display: grid; justify-items: center; gap: 2px; }
+    .cb-lbl { margin: 0; font-family: var(--font-fun); font-size: 11cqw; line-height: 1; text-align: center; text-transform: uppercase; }
+    .cb-img { width: 100%; max-width: 440px; height: auto; }
+
+    /* Bebidas: botellas grandes en fila, logos en cuadrícula de 3 */
+    #bebidas { aspect-ratio: auto !important; padding: 0 0 54px; overflow: hidden; }
+    #bebidas > .a { top: 34px !important; width: 24% !important; }
+    #bebidas > h2 { position: static !important; transform: none !important; text-align: center; font-size: 15.5cqw !important; padding: 28px 0 10px; }
+    .beb-d { display: none; }
+    .beb-m { display: block; padding: 0 12px; }
+    .bm-tit { margin: 0 0 4px; text-align: center; font-weight: 700; font-size: 17px; letter-spacing: .12em; color: var(--red); }
+    .bm-bot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; align-items: end; }
+    .bm-b { display: grid; justify-items: center; align-content: end; gap: 4px; animation: logo-bob 3.8s ease-in-out infinite; animation-delay: var(--fd, 0s); }
+    .bm-img { width: 100%; height: auto; max-height: 230px; object-fit: contain; }
+    .bm-t { margin: 0; text-align: center; font-weight: 700; font-size: 14px; line-height: 1.2; color: var(--red); letter-spacing: .02em; }
+    .bm-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 6px; align-items: center; margin-top: 30px; padding: 0 4px; }
+    .bm-logo { flex: 0 0 calc(25% - 6px); max-width: 92px; height: 50px; object-fit: contain; animation: logo-bob 3.6s ease-in-out infinite; animation-delay: var(--fd, 0s); }
+
+    /* Malteadas: cuadrícula de 2 columnas con los vasos grandes */
+    #malteadas { aspect-ratio: auto !important; padding: 36px 14px 70px; }
+    #malteadas > h2 { position: static !important; transform: none !important; text-align: center; font-size: 17cqw !important; margin-bottom: 14px; }
+    .malt-d { display: none; }
+    .malt-m { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; align-items: start; }
+    .mm-item { display: grid; justify-items: center; gap: 0; }
+    .mm-item:nth-child(even) { margin-top: 34px; }
+    .mm-img { width: 100%; max-width: 230px; height: auto; }
+    .mm-lbl { margin: -6px 0 0; font-family: var(--font-fun); font-size: 8.6cqw; color: var(--cream); text-align: center; text-shadow: .06em .08em 0 rgb(119 41 15 / .55); }
+    .mm-cono { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
+    .mm-cono-img { width: 38%; max-width: 170px; height: auto; }
+    .mm-cono-t { margin: 0; font-family: var(--font-display-light); font-size: 16cqw; line-height: .95; color: #77290f; text-transform: uppercase; }
+
+    /* Cajita Rexy Kids: título, escenario grande, botón y textos en columna */
+    #cajita { aspect-ratio: auto !important; display: flex; flex-direction: column; align-items: center; padding: 40px 14px 70px; }
+    #cajita > :not(.stage) { position: static !important; transform: none !important; margin: 0; }
+    #cajita .cj-t1 { font-size: 22cqw !important; }
+    #cajita .cj-t2 { font-size: 13cqw !important; margin-top: -2px; }
+    #cajita .stage { position: relative !important; left: auto !important; top: auto !important; width: min(128%, 520px) !important; margin: 14px 0 0; }
+    .pill-bg { display: none; }
+    #cajita .cj-pill { background: #fff; padding: 13px 30px; border-radius: 999px; font-size: 16px !important; margin-top: 10px; }
+    #cajita .cj-d { font-size: 17px !important; line-height: 1.35; text-align: center; max-width: 330px; white-space: normal; text-wrap: balance; margin-top: 16px; }
+    #cajita .cj-pill + .cj-d { margin-top: 18px; }
+    #cajita .cj-d + .cj-d { margin-top: 8px; }
   }
   .bg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .a { position: absolute; height: auto; max-width: none; }
