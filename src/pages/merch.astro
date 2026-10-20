@@ -89,7 +89,10 @@ const productos = [
   }
   .card:active .foto { transform: scale(.97); }
   @media (max-width: 767px) {
-    .grid { gap: 28px 14px; }
+    .grid { grid-template-columns: 1fr; gap: 34px; max-width: 460px; }
+    .foto { aspect-ratio: 1 / .92; }
+    h2 { font-size: 17px; margin-top: 14px; }
+    p { font-size: 13px; }
     h2 { letter-spacing: .08em; line-height: 1.25; }
     p { letter-spacing: .08em; }
   }
