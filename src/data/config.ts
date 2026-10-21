@@ -22,12 +22,26 @@ if (import.meta.env.PROD && !import.meta.env.PUBLIC_WHATSAPP_PEDIDOS) {
   console.warn('[config] Falta PUBLIC_WHATSAPP_PEDIDOS en .env: los pedidos del carrito irán al número provisional.');
 }
 
+export type Dia = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+export const TODOS_LOS_DIAS: Dia[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+/** Un tramo de horario: los días en que aplica y la hora de apertura y cierre (24 h, "HH:MM"). */
+export interface TramoHorario {
+  dias: Dia[];
+  abre: string;
+  cierra: string;
+}
+
 export interface Sucursal {
   slug: string;
   nombre: string;
   corto: string;
   /** Ciudad y estado, para los datos estructurados de Google. */
   ciudad: string;
+  /** Código postal (opcional), para los datos estructurados de Google. */
+  codigoPostal?: string;
+  /** Horario de atención (opcional). Si falta, Google no recibe horario de esa sucursal. */
+  horario?: TramoHorario[];
   direccion: string;
   whatsapp: string;
   telefono: string;
@@ -45,6 +59,9 @@ export const sucursales: Sucursal[] = [
     slug: 'atotonilco',
     nombre: 'Atotonilco',
     ciudad: 'Atotonilco el Alto',
+    codigoPostal: '47750',
+    // Ficha de Google Maps: todos los días de 1:00 p. m. a 10:00 p. m.
+    horario: [{ dias: TODOS_LOS_DIAS, abre: '13:00', cierra: '22:00' }],
     corto: 'Suc. Atotonilco',
     direccion: 'Hidalgo #102. Col. Centro, Atotonilco el Alto, Jal.',
     whatsapp: '391 125 5845',
@@ -107,6 +124,11 @@ export const sucursales: Sucursal[] = [
     slug: 'zapotlanejo',
     nombre: 'Zapotlanejo',
     ciudad: 'Zapotlanejo',
+    // Ficha de Google Maps: sábado hasta la medianoche, el resto de la semana hasta las 10:30 p. m.
+    horario: [
+      { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'], abre: '12:00', cierra: '22:30' },
+      { dias: ['Saturday'], abre: '12:00', cierra: '00:00' },
+    ],
     corto: 'Suc. Zapotlanejo',
     direccion: 'Alvaro Obregón #42 A. Frente a Banamex',
     whatsapp: '373 106 6923',

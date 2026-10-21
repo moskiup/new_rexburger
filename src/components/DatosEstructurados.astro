@@ -1,7 +1,7 @@
 ---
 /*
  * Datos estructurados (JSON-LD) para Google: la empresa y cada sucursal como restaurante.
- * Se usa en el inicio y en Sucursales. Falta agregar los horarios (openingHoursSpecification) cuando los tengas.
+ * Se usa en el inicio y en Sucursales. El horario sale de `horario` en config.ts; las sucursales que aún no lo tienen se omiten.
  */
 import { redes, site, sucursales } from '../data/config';
 import { telLink } from '../lib/contacto';
@@ -34,10 +34,21 @@ const grafo = {
         '@type': 'PostalAddress',
         streetAddress: s.direccion,
         addressLocality: s.ciudad,
+        ...(s.codigoPostal ? { postalCode: s.codigoPostal } : {}),
         addressRegion: 'Jalisco',
         addressCountry: 'MX',
       },
       geo: { '@type': 'GeoCoordinates', latitude: s.coords[0], longitude: s.coords[1] },
+      ...(s.horario
+        ? {
+            openingHoursSpecification: s.horario.map((t) => ({
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: t.dias,
+              opens: t.abre,
+              closes: t.cierra,
+            })),
+          }
+        : {}),
     })),
   ],
 };
