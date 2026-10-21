@@ -78,6 +78,9 @@ export const sucursales: Sucursal[] = [
     slug: 'arandas',
     nombre: 'Arandas',
     ciudad: 'Arandas',
+    codigoPostal: '47180',
+    // Ficha de Google Maps: todos los días de 12:00 p. m. a 10:30 p. m.
+    horario: [{ dias: TODOS_LOS_DIAS, abre: '12:00', cierra: '22:30' }],
     corto: 'Suc. Arandas',
     direccion: 'Hernández #82. Arandas, Jal.',
     whatsapp: '348 129 0888',
