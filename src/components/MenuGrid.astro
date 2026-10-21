@@ -65,7 +65,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
     text-align: center;
     width: 30cqw;
     text-wrap: balance;
-    font-size: max(11px, 1.74cqw);
+    font-size: max(var(--fs-xs), 1.74cqw);
     line-height: 1.25;
     font-weight: 500;
     letter-spacing: .2em;
@@ -97,7 +97,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
       align-content: start;
       gap: 10px;
       padding: 6px 0;
-      min-height: 44px;
+      min-height: var(--tap);
     }
     .item .ico {
       position: static !important;
@@ -112,7 +112,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
       transform: none !important;
       width: auto;
       max-width: 100%;
-      font-size: 14px;
+      font-size: var(--fs-sm);
       letter-spacing: .1em;
       font-weight: 600;
       line-height: 1.25;

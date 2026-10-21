@@ -89,7 +89,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     display: flex;
     align-items: center;
     min-height: 56px;
-    font-size: 16px;
+    font-size: var(--fs-md);
     font-weight: 600;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -125,7 +125,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     nav a {
       display: inline-block;
       min-height: 0;
-      font-size: max(11px, 1.3vw);
+      font-size: max(var(--fs-xs), 1.3vw);
       font-weight: 500;
       letter-spacing: .2em;
       padding: 4px 0;

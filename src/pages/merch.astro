@@ -34,7 +34,7 @@ const productos = [
       <li>
         <button type="button" class="card" data-producto data-nombre={p.nombre} data-tallas={p.tallas.join(',')}>
           <div class="foto">
-            <Image class="prod" src={p.img} alt={p.nombre} widths={[400, 800]} sizes="(max-width: 700px) 45vw, 480px" loading={i < 2 ? 'eager' : 'lazy'} />
+            <Image class="prod" src={p.img} alt={p.nombre} widths={[400, 800]} sizes="(max-width: 767px) 45vw, 480px" loading={i < 2 ? 'eager' : 'lazy'} />
           </div>
           <h2>{p.nombre}</h2>
           <p>{p.tallas.join('  |  ')}</p>
@@ -68,7 +68,7 @@ const productos = [
   .foto .prod { width: 100%; height: 100%; object-fit: contain; }
   h2 {
     margin-top: clamp(14px, 2.6vw, 30px);
-    font-size: max(13px, 2.2vw);
+    font-size: max(var(--fs-sm), 2.2vw);
     font-weight: 500;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -76,7 +76,7 @@ const productos = [
   p {
     margin: 6px 0 0;
     color: #5c5c5c;
-    font-size: clamp(12px, 1.2vw, 13px);
+    font-size: clamp(var(--fs-xs), 1.2vw, var(--fs-sm));
     letter-spacing: .15em;
     white-space: pre;
     text-transform: uppercase;
@@ -91,8 +91,8 @@ const productos = [
   @media (max-width: 767px) {
     .grid { grid-template-columns: 1fr; gap: 34px; max-width: 460px; }
     .foto { aspect-ratio: 1 / .92; }
-    h2 { font-size: 17px; margin-top: 14px; }
-    p { font-size: 13px; }
+    h2 { font-size: var(--fs-lg); margin-top: 14px; }
+    p { font-size: var(--fs-sm); }
     h2 { letter-spacing: .08em; line-height: 1.25; }
     p { letter-spacing: .08em; }
   }

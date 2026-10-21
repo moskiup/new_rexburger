@@ -48,8 +48,8 @@ const slides = [
   /* Área táctil de 44px alrededor del punto visible de 10px. */
   .dots button {
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: var(--tap);
+    height: var(--tap);
     padding: 0;
     border: 0;
     background: none;
@@ -58,7 +58,7 @@ const slides = [
   .dots button::before {
     content: '';
     position: absolute;
-    inset: 17px;
+    inset: calc((var(--tap) - 10px) / 2);
     border-radius: 50%;
     border: 2px solid var(--cream);
     background: rgb(0 0 0 / .15);

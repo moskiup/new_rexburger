@@ -27,7 +27,7 @@ const fotosDe = (slug: string) =>
         <h2>{s.nombre}</h2>
         <div class="fotos" data-swap={s.slug === 'la-barca' || s.slug === 'zapotlanejo' ? '' : undefined}>
           {fotosDe(s.slug).map((f, n) => (
-            <Image src={f} style={posicion[`${s.slug}-${n + 1}`] ? `object-position:${posicion[`${s.slug}-${n + 1}`]}` : undefined} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 700px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
+            <Image src={f} style={posicion[`${s.slug}-${n + 1}`] ? `object-position:${posicion[`${s.slug}-${n + 1}`]}` : undefined} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 767px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
         <p class="dir">{s.direccion}</p>
@@ -66,19 +66,19 @@ const fotosDe = (slug: string) =>
     border: 2px solid var(--red);
     border-radius: clamp(14px, 2.2vw, 28px);
   }
-  .dir { font-size: clamp(15px, 1.9vw, 20px); margin-top: clamp(14px, 2.4vw, 28px); }
-  .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(14px, 1.4vw, 15px); }
-  .tels a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+  .dir { font-size: clamp(var(--fs-md), 1.9vw, var(--fs-xl)); margin-top: clamp(14px, 2.4vw, 28px); }
+  .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(var(--fs-sm), 1.4vw, var(--fs-md)); }
+  .tels a { display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); }
   .tels a:hover { text-decoration: underline; }
   @media (max-width: 767px) {
     section { padding-bottom: 14px; }
     h2 { font-size: clamp(56px, 17vw, 72px); line-height: .95; letter-spacing: .02em; padding: 30px 0 14px; }
-    .dir { font-size: 19px; font-weight: 500; line-height: 1.35; margin-top: 18px; text-align: center; text-wrap: balance; }
+    .dir { font-size: var(--fs-xl); font-weight: 500; line-height: 1.35; margin-top: 18px; text-align: center; text-wrap: balance; }
     .tels { margin-top: 4px; gap: 0 26px; justify-content: center; }
-    .tels a { font-size: 18px; font-weight: 600; }
+    .tels a { font-size: var(--fs-lg); font-weight: 600; }
     .tels a img { width: 20px; height: 20px; }
   }
-  @media (max-width: 700px) {
+  @media (max-width: 767px) {
     .fotos { grid-template-columns: 1fr 1fr; gap: 8px; }
     .fotos img { aspect-ratio: 5 / 4; }
     .fotos img:nth-child(3) { grid-column: 2; grid-row: 1 / 3; aspect-ratio: auto; }

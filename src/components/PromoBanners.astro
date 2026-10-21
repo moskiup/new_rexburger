@@ -25,7 +25,7 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .12em;
-    font-size: max(12px, 2.4cqw);
+    font-size: max(var(--fs-xs), 2.4cqw);
     padding-right: 4cqw;
   }
   .btn:hover { filter: brightness(1.1); }
@@ -50,10 +50,10 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     background: linear-gradient(90deg, #d89918, #e2a113);
     border-radius: 999px;
     position: absolute;
-    font-size: max(12px, 2cqw);
+    font-size: max(var(--fs-xs), 2cqw);
     letter-spacing: .1em;
     padding-right: 5cqw;
-    color: #6a090c;
+    color: var(--on-orange);
   }
   .merch .btn::after {
     content: '';
@@ -61,7 +61,7 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
     right: 3.2cqw;
     top: 50%;
     translate: 0 -50%;
-    border-left: 1.5cqw solid #6a090c;
+    border-left: 1.5cqw solid var(--on-orange);
     border-top: .85cqw solid transparent;
     border-bottom: .85cqw solid transparent;
   }
@@ -101,7 +101,7 @@ import fondoMerch from '../assets/inicio/fondo-merch.webp';
       width: min(100%, 320px);
       height: 50px;
       margin: 12px 0 0;
-      font-size: 15px;
+      font-size: var(--fs-md);
       padding-right: 14px;
     }
     .promo.merch > .btn::after { right: 22px; border-left-width: 9px; border-top-width: 5.5px; border-bottom-width: 5.5px; }

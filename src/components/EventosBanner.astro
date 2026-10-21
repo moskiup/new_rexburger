@@ -91,7 +91,7 @@ const Heading = heading;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .12em;
-    font-size: max(12px, 2.4cqw);
+    font-size: max(var(--fs-xs), 2.4cqw);
     padding-right: 3.5cqw;
   }
   .btn:hover { filter: brightness(1.1); }
@@ -109,7 +109,7 @@ const Heading = heading;
     left: 0; right: 0; top: 87%;
     text-align: center;
     color: var(--yellow-text);
-    font-size: max(11px, 1.9cqw);
+    font-size: max(var(--fs-xs), 1.9cqw);
     letter-spacing: .15em;
     text-transform: uppercase;
   }
@@ -131,7 +131,7 @@ const Heading = heading;
       width: min(100%, 320px);
       height: 54px;
       margin-top: 10px;
-      font-size: 15px;
+      font-size: var(--fs-md);
       padding-right: 14px;
     }
     .btn::after { right: 22px; border-left-width: 9px; border-top-width: 5.5px; border-bottom-width: 5.5px; }
@@ -140,7 +140,7 @@ const Heading = heading;
     .escena .camion { left: 14%; top: 14%; width: 100%; }
     .escena .circulo { left: 31%; top: 0; width: 24%; }
     .escena .asterisco { left: -8%; top: 62%; width: 22%; }
-    .cities { order: 5; text-align: left; font-size: 15px; font-weight: 600; letter-spacing: .12em; line-height: 1.75; text-wrap: balance; padding-right: 8px; }
+    .cities { order: 5; text-align: left; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; line-height: 1.75; text-wrap: balance; padding-right: 8px; }
   }
 </style>
 

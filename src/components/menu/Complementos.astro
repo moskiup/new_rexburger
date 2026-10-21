@@ -46,13 +46,13 @@ import { C, complementos, complementosMovil } from '../../data/menu';
       top: calc(var(--ly) * 1%);
       transform: translateY(-50%);
       margin: 0;
-      font-size: max(14px, 4.7cqw);
+      font-size: max(var(--fs-sm), 4.7cqw);
       font-weight: 700;
       line-height: 1.15;
       letter-spacing: .02em;
     }
     .fila[data-lado='l'] .texto { left: calc(var(--lx) * 1%); text-align: left; }
     .fila[data-lado='r'] .texto { right: calc((100 - var(--lx)) * 1%); text-align: right; }
-    .nota { margin: 14px 20px 0; text-align: center; font-size: 15px; font-weight: 700; color: #f39c12; }
+    .nota { margin: 14px 20px 0; text-align: center; font-size: var(--fs-md); font-weight: 700; color: #f39c12; }
   }
 </style>

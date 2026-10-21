@@ -22,6 +22,19 @@
   /* Colores de texto pequeño con contraste AA sobre rojo y sobre amarillo. */
   --yellow-text: #ffdb55;
   --on-yellow: #8f0c10;
+  --on-orange: #6a090c;
+
+  /* ---------- Sistema de diseño ---------- */
+  /* Breakpoint único: 768px. Móvil = (max-width: 767px), tablet y escritorio = (min-width: 768px).
+     Las media queries no admiten variables, así que el valor se escribe tal cual. */
+  /* Área táctil mínima (WCAG 2.5.8 / guía de Apple y Google). */
+  --tap: 44px;
+  /* Escala tipográfica del texto de lectura: nunca se baja de --fs-xs. */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -54,7 +67,7 @@ h1, h2, h3, p { margin: 0; }
   font-weight: 600;
   letter-spacing: .12em;
   text-transform: uppercase;
-  font-size: clamp(12px, 1.3vw, 16px);
+  font-size: clamp(var(--fs-xs), 1.3vw, var(--fs-md));
   transition: transform .15s ease, filter .15s ease;
 }
 .pill:hover { transform: translateY(-2px); filter: brightness(1.05); }

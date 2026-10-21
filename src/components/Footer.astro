@@ -48,7 +48,7 @@ const { titulo } = Astro.props;
   }
   h2 {
     color: var(--white);
-    font-size: clamp(18px, 2.4vw, 28px);
+    font-size: clamp(var(--fs-lg), 2.4vw, 28px);
     letter-spacing: .15em;
     margin-bottom: 20px;
   }
@@ -68,7 +68,7 @@ const { titulo } = Astro.props;
     text-align: center;
     padding: 4px 8px;
     border-left: 1px solid rgb(251 181 0 / .6);
-    font-size: clamp(10px, 1vw, 13px);
+    font-size: clamp(var(--fs-xs), 1vw, var(--fs-sm));
   }
   .branches li:first-child { border-left: 0; }
   strong { color: var(--yellow-text); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
@@ -91,10 +91,10 @@ const { titulo } = Astro.props;
   .social a { position: absolute; top: 0; bottom: 0; width: 33%; }
   .s1 { left: 0; } .s2 { left: 33%; } .s3 { right: 0; }
   .domicilio img { width: clamp(120px, 14vw, 170px); }
-  @media (max-width: 860px) {
+  @media (max-width: 767px) {
     .footer { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
     h2 { font-size: 22px; }
-    .branches a { min-height: 44px; font-size: 15px; }
+    .branches a { min-height: var(--tap); font-size: var(--fs-md); }
     .branches a img { width: 16px; height: 16px; }
     .social { width: 138px; }
     .social a { width: 33.3%; }
@@ -103,6 +103,6 @@ const { titulo } = Astro.props;
     .branches li { border-left: 0; padding: 8px; }
     .branches li:nth-child(odd) { border-right: 1px solid rgb(251 181 0 / .6); }
     .branches li:last-child { grid-column: 1 / -1; border-right: 0; }
-    .branches li { font-size: 13px; gap: 0; }
+    .branches li { font-size: var(--fs-sm); gap: 0; }
   }
 </style>

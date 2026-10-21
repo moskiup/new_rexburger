@@ -40,16 +40,16 @@ import { sucursales, site } from '../data/config';
     gap: 20px;
   }
   li { background: var(--red); color: var(--white); border-radius: 24px; padding: 24px; display: grid; gap: 8px; justify-items: start; align-content: start; }
-  h2 { color: var(--yellow-text); font-size: 15px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
-  .dir { font-size: 14px; line-height: 1.4; margin-bottom: 4px; }
-  li a { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; }
+  h2 { color: var(--yellow-text); font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .dir { font-size: var(--fs-sm); line-height: 1.4; margin-bottom: 4px; }
+  li a { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-md); }
   li a:hover { text-decoration: underline; }
   .mas {
     margin-top: 8px;
     background: var(--orange);
-    color: #6a090c;
+    color: var(--on-orange);
     font-weight: 700;
-    font-size: 13px;
+    font-size: var(--fs-sm);
     letter-spacing: .15em;
     text-transform: uppercase;
     padding: 12px 20px;

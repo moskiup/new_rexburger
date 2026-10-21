@@ -60,8 +60,8 @@ export const txt = (s: Sec, align: 'l' | 'r' | 'c', X: number, Yc: number, size:
   const pos = align === 'r' ? `--r:${x(REF_W - X)}` : `--l:${x(X)}`;
   const tf = align === 'c' ? 'translate(-50%,-50%)' : 'translateY(-50%)';
   const ta = align === 'l' ? 'left' : align === 'r' ? 'right' : 'center';
-  // El texto pequeño nunca baja de 12px.
-  const fs = size < 30 ? `max(12px,${cq(size)})` : cq(size);
+  // El texto pequeño nunca baja del mínimo de la escala (--fs-xs).
+  const fs = size < 30 ? `max(var(--fs-xs),${cq(size)})` : cq(size);
   return `${pos};--t:${y(s, Yc)};--tf:${tf};--fs:${fs};--ta:${ta}`;
 };
 
