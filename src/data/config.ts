@@ -130,6 +130,7 @@ export const sucursales: Sucursal[] = [
     slug: 'zapotlanejo',
     nombre: 'Zapotlanejo',
     ciudad: 'Zapotlanejo',
+    codigoPostal: '45430',
     // Ficha de Google Maps: sábado hasta la medianoche, el resto de la semana hasta las 10:30 p. m.
     horario: [
       { dias: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'], abre: '12:00', cierra: '22:30' },
