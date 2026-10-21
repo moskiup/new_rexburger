@@ -25,9 +25,9 @@ const { titulo } = Astro.props;
   <div class="bottom">
     <div class="social">
       <Image src={redesImg} alt="" width={96} />
-      <a class="s1" href={redes.facebook} aria-label="Facebook"></a>
-      <a class="s2" href={redes.instagram} aria-label="Instagram"></a>
-      <a class="s3" href={redes.tiktok} aria-label="TikTok"></a>
+      {redes.facebook && <a class="s1" href={redes.facebook} aria-label="Facebook"></a>}
+      {redes.instagram && <a class="s2" href={redes.instagram} aria-label="Instagram"></a>}
+      {redes.tiktok && <a class="s3" href={redes.tiktok} aria-label="TikTok"></a>}
     </div>
     <div class="domicilio">
       <Image src={domicilio} alt="Servicio a domicilio" width={170} />

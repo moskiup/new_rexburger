@@ -5,9 +5,13 @@ import MenuGrid from '../components/MenuGrid.astro';
 import EventosBanner from '../components/EventosBanner.astro';
 import PromoBanners from '../components/PromoBanners.astro';
 import Ubicaciones from '../components/Ubicaciones.astro';
+import DatosEstructurados from '../components/DatosEstructurados.astro';
+import { inicio } from '../data/contenido';
 ---
 
 <Layout footerTitle="Contactos">
+  <h1 class="sr-only">{inicio.h1}</h1>
+  <DatosEstructurados />
   <HeroCarousel />
   <MenuGrid />
   <EventosBanner />

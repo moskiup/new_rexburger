@@ -1,0 +1,14 @@
+{
+  "name": "Rex Burger California Style",
+  "short_name": "Rex Burger",
+  "description": "Hamburguesas Rex Burger California Style. ¡Haz tu día más rexquisito!",
+  "lang": "es-MX",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#bc1417",
+  "theme_color": "#bc1417",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,46 @@
+---
+/*
+ * Datos estructurados (JSON-LD) para Google: la empresa y cada sucursal como restaurante.
+ * Se usa en el inicio y en Sucursales. Falta agregar los horarios (openingHoursSpecification) cuando los tengas.
+ */
+import { redes, site, sucursales } from '../data/config';
+import { telLink } from '../lib/contacto';
+
+const redesActivas = Object.values(redes).filter(Boolean);
+
+const grafo = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site.url}/#organizacion`,
+      name: site.nombre,
+      alternateName: `${site.nombre} ${site.lema}`,
+      url: site.url,
+      logo: `${site.url}/icon-512.png`,
+      image: `${site.url}${site.imagenCompartir}`,
+      ...(redesActivas.length ? { sameAs: redesActivas } : {}),
+    },
+    ...sucursales.map((s) => ({
+      '@type': 'Restaurant',
+      '@id': `${site.url}/sucursales/#${s.slug}`,
+      name: `${site.nombre} ${s.nombre}`,
+      url: `${site.url}/sucursales/#${s.slug}`,
+      image: `${site.url}${site.imagenCompartir}`,
+      telephone: telLink(s.telefono).replace('tel:', ''),
+      servesCuisine: 'Hamburguesas',
+      parentOrganization: { '@id': `${site.url}/#organizacion` },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: s.direccion,
+        addressLocality: s.ciudad,
+        addressRegion: 'Jalisco',
+        addressCountry: 'MX',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: s.coords[0], longitude: s.coords[1] },
+    })),
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(grafo)} />

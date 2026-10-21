@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ContactoLink from '../components/ContactoLink.astro';
+import DatosEstructurados from '../components/DatosEstructurados.astro';
 import { sucursales } from '../data/config';
 import { paginas } from '../data/contenido';
 
@@ -13,13 +14,14 @@ const fotosDe = (slug: string) =>
 
 <Layout title={paginas.sucursales.titulo} description={paginas.sucursales.descripcion}>
   <h1 class="sr-only">{paginas.sucursales.h1}</h1>
+  <DatosEstructurados />
   <div class="wrap">
     {sucursales.map((s, i) => (
       <section id={s.slug}>
         <h2>{s.nombre}</h2>
         <div class="fotos" data-swap={s.mosaicoInvertido ? '' : undefined}>
           {fotosDe(s.slug).map((f, n) => (
-            <Image src={f} style={s.encuadreFotos?.[n + 1] ? `object-position:${s.encuadreFotos[n + 1]}` : undefined} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 767px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
+            <Image src={f} style={s.encuadreFotos?.[n + 1] ? `object-position:${s.encuadreFotos[n + 1]}` : undefined} alt={s.altFotos[n]} widths={[400, 800]} sizes="(max-width: 767px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
         <p class="dir">{s.direccion}</p>

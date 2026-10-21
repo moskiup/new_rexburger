@@ -1,0 +1,5 @@
+# https://rexburger.com.mx
+User-agent: *
+Allow: /
+
+Sitemap: https://rexburger.com.mx/sitemap-index.xml

@@ -4,28 +4,36 @@
  */
 export const paginas = {
   menu: {
-    titulo: 'Menú | Rex Burger',
-    descripcion: 'Hamburguesas, combos, complementos, bebidas, malteadas y la Cajita Rexy Kids de Rex Burger California Style.',
+    titulo: 'Menú de hamburguesas, combos y malteadas | Rex Burger',
+    descripcion:
+      'Conoce el menú de Rex Burger California Style: hamburguesas, combos, complementos, bebidas, malteadas y la Cajita Rexy Kids con juguete sorpresa.',
   },
   sucursales: {
-    titulo: 'Sucursales | Rex Burger',
-    descripcion: 'Encuentra tu sucursal Rex Burger: Atotonilco, Arandas, La Barca, Capilla de Guadalupe y Zapotlanejo.',
+    titulo: 'Sucursales en Atotonilco, Arandas y La Barca | Rex Burger',
+    descripcion:
+      'Encuentra tu sucursal Rex Burger en Jalisco: Atotonilco el Alto, Arandas, La Barca, Capilla de Guadalupe y Zapotlanejo. Direcciones, teléfonos y WhatsApp.',
     h1: 'Sucursales Rex Burger',
   },
   merch: {
-    titulo: 'Merch | Rex Burger',
-    descripcion: 'Playeras, hoodies y gorras oficiales de Rex Burger.',
+    titulo: 'Merch: playeras, hoodies y gorras | Rex Burger',
+    descripcion:
+      'Merch oficial de Rex Burger: playeras oversize y kids, hoodies y gorras. Elige tu talla y haz tu pedido por WhatsApp.',
     h1: 'Merch Rex Burger',
   },
   eventos: {
-    titulo: 'Eventos | Rex Burger',
+    titulo: 'Rex Burger para eventos: cumpleaños, bodas y reuniones',
     descripcion:
       'Llevamos Rex Burger a tus eventos: cumpleaños, bodas y reuniones en Atotonilco, La Barca, Arandas, Capilla de Guadalupe y Zapotlanejo.',
   },
   contacto: {
-    titulo: 'Contacto | Rex Burger',
-    descripcion: 'Teléfonos y WhatsApp de todas las sucursales Rex Burger.',
+    titulo: 'Contacto y WhatsApp de todas las sucursales | Rex Burger',
+    descripcion:
+      'Teléfonos, WhatsApp y direcciones de las sucursales Rex Burger en Atotonilco, Arandas, La Barca, Capilla de Guadalupe y Zapotlanejo.',
   },
+} as const;
+
+export const inicio = {
+  h1: 'Rex Burger California Style: hamburguesas en Atotonilco, Arandas, La Barca, Capilla de Guadalupe y Zapotlanejo',
 } as const;
 
 export const bannerEventos = {

@@ -30,3 +30,9 @@ Los tipos de estas variables están en `src/env.d.ts`.
 4. Si debe salir en el banner de Eventos, agrega su `slug` a `ordenCiudadesEventos`.
 
 El pie de página, Contacto, Eventos, Sucursales y el mapa se actualizan solos.
+
+## Dominio y SEO
+
+- El dominio está en dos sitios: `site` de `astro.config.mjs` (sitemap, canonical y Open Graph) y `site.url` de `src/data/config.ts` (datos estructurados). Si cambia, actualiza ambos y `public/robots.txt`.
+- La imagen para compartir es `public/og-rex-burger.jpg` (1200 × 630). Reemplázala por la definitiva con el mismo nombre.
+- Los datos estructurados de las sucursales salen de `sucursales` (nombre, ciudad, dirección, teléfono y coordenadas). Cada sucursal necesita su campo `ciudad`.
