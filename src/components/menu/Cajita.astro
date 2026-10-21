@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import { DIM, R, S, shape, stageStyle, txt } from '../../lib/menu-layout';
+import { C, kids } from '../../data/menu';
+import kSombra from '../../assets/menu/menukids-sombra.webp';
+---
+
+<section class="sec shape cajita" id="cajita" style={shape(DIM.cajita, '#0cbcf0', '#b8effa', '#1f2f57', `0 0 ${R} ${R}`)}>
+  <span class="pill-bg" aria-hidden="true"></span>
+  <h2 class="fun c cj-t1" style={`${txt(S.cajita, 'c', 450, 3330, 112)};color:#fff;line-height:1`}>CAJITA</h2>
+  <p class="fun c cj-t2" style={`${txt(S.cajita, 'c', 450, 3420, 78)};color:${C.navy};line-height:1`}>REXY KIDS</p>
+
+  <!-- Las piezas flotan sobre un "escenario" con la proporción de la composición original -->
+  <div class="stage" style={stageStyle}>
+    {kids.map((k) => (
+      <Image class="a sombra" style={`${k.shadow};--dur:${k.dur}s;--fd:${k.delay}s`} src={kSombra} alt="" widths={[300, 600]} sizes="40vw" />
+    ))}
+    {kids.map((k) => (
+      <Image class="a kid" style={`${k.piece};--dur:${k.dur}s;--fd:${k.delay}s;--rot:${k.rot}deg`} src={k.img} alt={k.alt} widths={[400, 700]} sizes="(max-width: 767px) 50vw, 30vw" />
+    ))}
+  </div>
+
+  <p class="lbl pillt c cj-pill" style={`${txt(S.cajita, 'c', 450, 3863, 21)};color:#0bb9ef`}>ELIGE TU COMBO</p>
+  <p class="lbl desc c cj-d" style={`${txt(S.cajita, 'c', 450, 3930, 16.5)};color:#fff`}>Hamburguesa Kids con queso o nuggets de pollo<br />+ papas y bebida kids.</p>
+  <p class="lbl desc c cj-d" style={`${txt(S.cajita, 'c', 450, 3974, 17.5)};color:#fff;font-weight:700`}>¡Incluye juguete sorpresa!</p>
+</section>
+
+<style>
+  .pill-bg { position: absolute; left: 37.29%; width: 25.5%; top: 78.04%; height: 3.8%; border-radius: 999px; background: #fff; }
+  .stage { position: absolute; left: var(--l); top: var(--t); width: var(--w); aspect-ratio: 1000 / 556; }
+
+  .sombra { pointer-events: none; animation: sombra-pulse var(--dur, 5s) ease-in-out infinite; animation-delay: var(--fd, 0s); }
+  @keyframes sombra-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(.82); opacity: .55; }
+  }
+  .kid {
+    animation: kid-float var(--dur, 5s) ease-in-out infinite;
+    animation-delay: var(--fd, 0s);
+    transition: scale .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  @keyframes kid-float {
+    0%, 100% { transform: translateY(0) rotate(calc(var(--rot, 2deg) * -1)); }
+    50% { transform: translateY(-3.5%) rotate(var(--rot, 2deg)); }
+  }
+  @media (hover: hover) {
+    .kid:hover { scale: 1.15; }
+  }
+
+  /* ---------- Móvil: título, escenario grande, botón y textos en columna ---------- */
+  @media (max-width: 767px) {
+    .cajita { aspect-ratio: auto; display: flex; flex-direction: column; align-items: center; padding: 40px 14px 70px; }
+    .pill-bg { display: none; }
+    .cj-t1, .cj-t2, .cj-pill, .cj-d { position: static; transform: none; margin: 0; }
+    .cj-t1 { font-size: 22cqw; }
+    .cj-t2 { font-size: 13cqw; margin-top: -2px; }
+    .stage { position: relative; left: auto; top: auto; width: min(128%, 520px); margin: 14px 0 0; }
+    .cj-pill { background: #fff; padding: 13px 30px; border-radius: 999px; font-size: 16px; margin-top: 10px; }
+    .cj-d { font-size: 17px; line-height: 1.35; text-align: center; max-width: 330px; white-space: normal; text-wrap: balance; margin-top: 16px; }
+    .cj-pill + .cj-d { margin-top: 18px; }
+    .cj-d + .cj-d { margin-top: 8px; }
+  }
+</style>

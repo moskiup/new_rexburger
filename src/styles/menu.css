@@ -1,0 +1,44 @@
+/*
+ * Estilos compartidos de la página Menú.
+ * La geometría llega en propiedades personalizadas (--l, --r, --t, --w, --tf, --fs, --ta, --ar), calculadas en
+ * `src/lib/menu-layout.ts`. Cada componente de `src/components/menu/` sobrescribe en móvil las propiedades reales.
+ */
+
+/* ---------- Sección ---------- */
+.sec { position: relative; container-type: inline-size; overflow: hidden; aspect-ratio: var(--ar); }
+
+/* Fondo de color liso: mitad izquierda / mitad derecha para las esquinas, y relleno redondeado encima. */
+.shape { isolation: isolate; background: linear-gradient(to right, var(--cl) 50%, var(--cr) 50%); }
+.shape::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fill); border-radius: var(--r); }
+
+/* ---------- Piezas posicionadas ---------- */
+.a { position: absolute; left: var(--l); top: var(--t); width: var(--w); height: auto; max-width: none; }
+
+.t, .fun, .lbl {
+  position: absolute;
+  left: var(--l, auto);
+  right: var(--r, auto);
+  top: var(--t, auto);
+  transform: var(--tf, none);
+  font-size: var(--fs);
+  text-align: var(--ta, start);
+  margin: 0;
+  white-space: nowrap;
+  line-height: 1.02;
+}
+.t { font-weight: 400; text-transform: uppercase; color: var(--red); }
+.t-hecto { font-family: var(--font-display-light); }
+.fun { font-family: var(--font-fun); text-transform: uppercase; line-height: 1.05; }
+.lbl { font-family: var(--font-body); font-weight: 600; text-transform: uppercase; line-height: 1.12; }
+.lbl.bold { font-weight: 700; }
+.pillt { letter-spacing: .1em; font-weight: 700; }
+.desc { text-transform: none; font-weight: 400; }
+
+/* ---------- Zoom en pareja (Combos y Complementos): imagen y texto crecen juntos ---------- */
+@media (hover: hover) {
+  [data-zoom-img] { transition: transform .35s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1), scale .7s cubic-bezier(.2, .7, .2, 1); }
+  [data-zoom-img]:hover, [data-zoom-img].zoom { transform: scale(1.15); }
+}
+/* El texto usa la propiedad scale porque su transform ya se usa para centrarlo. */
+[data-zoom-txt] { transition: scale .35s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1); }
+[data-zoom-txt].zoom { scale: 1.15; }

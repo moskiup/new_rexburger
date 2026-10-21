@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { DIM, S, box, ratio, title, txt } from '../../lib/menu-layout';
+import { C, complementos, complementosMovil } from '../../data/menu';
+---
+
+<section class="sec complementos" id="complementos" data-zoom-par style={`${ratio(DIM.compl)};background:#bb060a`}>
+  <h2 class="t t-hecto titulo" style={`${title(S.compl, 2707.5, 122)};color:${C.orange}`}>Complementos</h2>
+
+  <!-- Escritorio: posiciones calculadas sobre la referencia -->
+  <div class="desk">
+    {complementos.map((c) => (
+      <>
+        <Image class="a" data-zoom-img style={box(S.compl, ...c.box)} src={c.img} alt={c.alt} widths={[400, 800]} sizes="50vw" />
+        <p class="lbl" data-zoom-txt style={`${txt(S.compl, c.lado, c.tx, c.ty, 19)};color:${c.color}`} set:html={c.texto} />
+      </>
+    ))}
+    <p class="lbl c" style={`${txt(S.compl, 'c', 450, 3165, 17)};color:${C.orange}`}>¡AGREGA SALSA DE QUESO EXTRA!</p>
+  </div>
+
+  <!-- Móvil: cuatro filas a ancho completo, producto grande y texto legible -->
+  <div class="movil">
+    {complementosMovil.map((c) => (
+      <div class="fila" style={`--lx:${c.lx};--ly:${c.ly}`} data-lado={c.lado}>
+        <Image class="foto" src={c.img} alt={c.alt} widths={[480, 800, 1000]} sizes="100vw" />
+        <p class="texto" style={`color:${c.color}`} set:html={c.texto} />
+      </div>
+    ))}
+    <p class="nota">¡AGREGA SALSA DE QUESO EXTRA!</p>
+  </div>
+</section>
+
+<style>
+  .desk { display: contents; }
+  .movil { display: none; }
+
+  @media (max-width: 767px) {
+    .complementos { aspect-ratio: auto; padding: 34px 0 36px; }
+    .titulo { position: static; transform: none; text-align: center; font-size: 15cqw; margin-bottom: 18px; }
+    .desk { display: none; }
+    .movil { display: grid; gap: 12px; }
+    .fila { position: relative; container-type: inline-size; }
+    .foto { display: block; width: 100%; height: auto; max-width: none; }
+    .texto {
+      position: absolute;
+      top: calc(var(--ly) * 1%);
+      transform: translateY(-50%);
+      margin: 0;
+      font-size: max(14px, 4.7cqw);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: .02em;
+    }
+    .fila[data-lado='l'] .texto { left: calc(var(--lx) * 1%); text-align: left; }
+    .fila[data-lado='r'] .texto { right: calc((100 - var(--lx)) * 1%); text-align: right; }
+    .nota { margin: 14px 20px 0; text-align: center; font-size: 15px; font-weight: 700; color: #f39c12; }
+  }
+</style>

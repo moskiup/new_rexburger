@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import { DIM, S, box, fit, ratio, title, txt } from '../../lib/menu-layout';
+import { C, botellas, logos } from '../../data/menu';
+import cuadrosIzq from '../../assets/menu/bebidas-fondo-izquierdo.webp';
+import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
+---
+
+<section class="sec bebidas" id="bebidas" style={`${ratio(DIM.bebidas)};background:#fff`}>
+  <Image class="a cuadros" style={box(S.bebidas, 0, 4078.9, 279.75)} src={cuadrosIzq} alt="" widths={[300, 600]} sizes="35vw" />
+  <Image class="a cuadros" style={box(S.bebidas, 619.9, 4078.9, 280.1)} src={cuadrosDer} alt="" widths={[300, 600]} sizes="35vw" />
+  <h2 class="t t-hecto titulo" style={`${title(S.bebidas, 4107, 112)};color:${C.red}`}>Bebidas</h2>
+
+  <!-- Escritorio: posiciones calculadas sobre la referencia -->
+  <div class="desk">
+    <p class="lbl c" style={`${txt(S.bebidas, 'c', 450, 4216, 22)};color:${C.red};font-weight:600`}>REFRESCOS</p>
+    {botellas.map((b) => (
+      <Image class="a float" style={`--fd:${b.delay};${box(S.bebidas, ...b.box)}`} src={b.img} alt={b.alt} widths={[300, 600]} sizes="25vw" />
+    ))}
+    <p class="lbl bold" style={`${txt(S.bebidas, 'r', 275, 4341, 22)};color:${C.red}`}>AGUA<br />NATURAL</p>
+    <p class="lbl bold" style={`${txt(S.bebidas, 'l', 628, 4381, 22)};color:${C.red}`}>AGUA<br />FRESCA</p>
+    {logos.map((l, i) => (
+      <Image class="a logo" style={`${fit(S.bebidas, l.img, l.bb, l.cx, l.cy, l.w)};--fd:${-i * 0.7}s`} src={l.img} alt={l.alt} widths={[300, 600]} sizes="25vw" />
+    ))}
+  </div>
+
+  <!-- Móvil: botellas grandes en fila y logos en dos filas -->
+  <div class="movil">
+    <p class="rotulo">REFRESCOS</p>
+    <div class="botellas">
+      {botellas.map((b, i) => (
+        <div class="botella" style={`--fd:${-i * 1.4}s`}>
+          <Image class="foto" src={b.img} alt={b.alt} widths={[300, 500]} sizes="34vw" />
+          <p class="nombre" set:html={b.texto} />
+        </div>
+      ))}
+    </div>
+    <div class="logos">
+      {logos.map((l, i) => (
+        <Image class="logo-m" style={`--fd:${-i * 0.7}s`} src={l.img} alt={l.alt} widths={[300, 500]} sizes="30vw" />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .desk { display: contents; }
+  .movil { display: none; }
+
+  .logo {
+    animation: logo-bob 3.6s ease-in-out infinite;
+    animation-delay: var(--fd, 0s);
+    transition: scale .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1);
+  }
+  @keyframes logo-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7%); }
+  }
+  @media (hover: hover) {
+    .logo:hover { scale: 1.15; }
+  }
+  .float { animation: bebida-float 4.2s ease-in-out infinite; animation-delay: var(--fd, 0s); transform-origin: 50% 90%; }
+  @keyframes bebida-float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-2.2%) rotate(2deg); }
+  }
+
+  /* ---------- Móvil ---------- */
+  @media (max-width: 767px) {
+    .bebidas { aspect-ratio: auto; padding: 0 0 54px; overflow: hidden; }
+    .cuadros { top: 34px; width: 24%; }
+    .titulo { position: static; transform: none; text-align: center; font-size: 15.5cqw; padding: 28px 0 10px; }
+    .desk { display: none; }
+    .movil { display: block; padding: 0 12px; }
+    .rotulo { margin: 0 0 4px; text-align: center; font-weight: 700; font-size: 17px; letter-spacing: .12em; color: var(--red); }
+    .botellas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; align-items: end; }
+    .botella { display: grid; justify-items: center; align-content: end; gap: 4px; animation: logo-bob 3.8s ease-in-out infinite; animation-delay: var(--fd, 0s); }
+    .foto { width: 100%; height: auto; max-height: 230px; object-fit: contain; }
+    .nombre { margin: 0; text-align: center; font-weight: 700; font-size: 14px; line-height: 1.2; color: var(--red); letter-spacing: .02em; }
+    .logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 6px; align-items: center; margin-top: 30px; padding: 0 4px; }
+    .logo-m { flex: 0 0 calc(25% - 6px); max-width: 92px; height: 50px; object-fit: contain; animation: logo-bob 3.6s ease-in-out infinite; animation-delay: var(--fd, 0s); }
+  }
+</style>

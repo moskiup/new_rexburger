@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import { DIM, R, S, box, shape, title, txt } from '../../lib/menu-layout';
+import { C, COMBO_W, combos } from '../../data/menu';
+---
+
+<section class="sec shape combos" id="combos" data-zoom-par style={shape(DIM.combos, '#ffffff', '#f6b100', '#77290f', `${R} ${R} 0 0`)}>
+  <h2 class="t t-hecto titulo" style={`${title(S.combos, 1814.5, 130)};color:${C.dark}`}>Combos</h2>
+
+  <!-- Escritorio: posiciones calculadas sobre la referencia -->
+  <div class="desk">
+    {combos.map((c) => (
+      <>
+        <p class="fun c" data-zoom-txt style={`${txt(S.combos, 'c', c.cx, c.ly + 1437.5, 46)};color:${c.color}`}>
+          {c.label[0]}<br />{c.label[1]}
+        </p>
+        <Image class="a" data-zoom-img style={box(S.combos, c.cx - COMBO_W / 2, c.Y + 1437.5 - 5, COMBO_W)} src={c.img} alt={`Combo ${c.label.join(' ')}`} widths={[400, 800]} sizes="45vw" />
+      </>
+    ))}
+  </div>
+
+  <!-- Móvil: una columna, cada combo a gran tamaño -->
+  <div class="movil">
+    {combos.map((c) => (
+      <div class="item">
+        <p class="nombre" style={`color:${c.color}`}>{c.label[0]} {c.label[1]}</p>
+        <Image class="foto" src={c.img} alt={`Combo ${c.label.join(' ')}`} widths={[480, 800]} sizes="(max-width: 767px) 90vw, 45vw" />
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .desk { display: contents; }
+  .movil { display: none; }
+
+  @media (max-width: 767px) {
+    .combos { aspect-ratio: auto; padding: 36px 20px 64px; }
+    .titulo { position: static; transform: none; text-align: center; font-size: 19cqw; margin-bottom: 8px; }
+    .desk { display: none; }
+    .movil { display: grid; gap: 18px; }
+    .item { display: grid; justify-items: center; gap: 2px; }
+    .nombre { margin: 0; font-family: var(--font-fun); font-size: 11cqw; line-height: 1; text-align: center; text-transform: uppercase; }
+    .foto { width: 100%; max-width: 440px; height: auto; }
+  }
+</style>

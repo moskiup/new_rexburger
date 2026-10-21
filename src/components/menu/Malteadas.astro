@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import { DIM, R, S, box, shape, title, txt } from '../../lib/menu-layout';
+import { C, conoVainilla, malteadas } from '../../data/menu';
+---
+
+<section class="sec shape malteadas" id="malteadas" style={shape(DIM.malt, '#cca368', '#8a5628', '#77290f', `0 0 ${R} ${R}`)}>
+  <h2 class="t t-hecto titulo" style={`${title(S.malt, 4664.5, 115)};color:${C.brown}`}>Malteadas</h2>
+
+  <!-- Escritorio: posiciones calculadas sobre la referencia -->
+  <div class="desk">
+    {malteadas.map((m) => (
+      <>
+        <Image class="a" style={box(S.malt, ...m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[300, 600]} sizes="35vw" />
+        <p class="fun" style={`${txt(S.malt, m.side, m.lx, m.ly, 40)};color:${C.cream}`}>{m.label}</p>
+      </>
+    ))}
+    <Image class="a" style={box(S.malt, ...conoVainilla.box)} src={conoVainilla.img} alt="Cono de vainilla" widths={[200, 400]} sizes="15vw" />
+    <p class="t t-hecto" style={`${txt(S.malt, 'l', conoVainilla.textoX, conoVainilla.textoY, 72)};color:${C.brown};line-height:.95`}>CONO DE<br />VAINILLA</p>
+  </div>
+
+  <!-- Móvil: dos columnas con los vasos grandes y el cono al final -->
+  <div class="movil">
+    {malteadas.map((m) => (
+      <div class="item">
+        <Image class="foto" src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[400, 700]} sizes="(max-width: 767px) 50vw, 35vw" />
+        <p class="nombre">{m.label}</p>
+      </div>
+    ))}
+    <div class="cono">
+      <Image class="cono-foto" src={conoVainilla.img} alt="Cono de vainilla" widths={[300, 500]} sizes="(max-width: 767px) 40vw, 15vw" />
+      <p class="cono-texto">CONO DE<br />VAINILLA</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .desk { display: contents; }
+  .movil { display: none; }
+
+  @media (max-width: 767px) {
+    .malteadas { aspect-ratio: auto; padding: 36px 14px 70px; }
+    .titulo { position: static; transform: none; text-align: center; font-size: 17cqw; margin-bottom: 14px; }
+    .desk { display: none; }
+    .movil { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; align-items: start; }
+    .item { display: grid; justify-items: center; gap: 0; }
+    .item:nth-child(even) { margin-top: 34px; }
+    .foto { width: 100%; max-width: 230px; height: auto; }
+    .nombre { margin: -6px 0 0; font-family: var(--font-fun); font-size: 8.6cqw; color: var(--cream); text-align: center; text-shadow: .06em .08em 0 rgb(119 41 15 / .55); }
+    .cono { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
+    .cono-foto { width: 38%; max-width: 170px; height: auto; }
+    .cono-texto { margin: 0; font-family: var(--font-display-light); font-size: 16cqw; line-height: .95; color: #77290f; text-transform: uppercase; }
+  }
+</style>
