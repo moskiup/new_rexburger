@@ -55,6 +55,9 @@ export const ratio = (d: Dim) => `--ar:${d.width}/${d.height}`;
 /** Caja de una imagen: left/top en coordenadas de referencia y ancho en px de referencia. */
 export const box = (s: Sec, X: number, Y: number, w: number) => `--l:${x(X)};--t:${y(s, Y)};--w:${x(w)}`;
 
+/** Igual que `box`, con la caja como tupla [X, Y, ancho]. */
+export const boxDe = (s: Sec, c: readonly [number, number, number]) => box(s, c[0], c[1], c[2]);
+
 /** Texto anclado a la izquierda ('l'), a la derecha ('r') o centrado ('c') sobre un centro vertical. */
 export const txt = (s: Sec, align: 'l' | 'r' | 'c', X: number, Yc: number, size: number) => {
   const pos = align === 'r' ? `--r:${x(REF_W - X)}` : `--l:${x(X)}`;

@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { DIM, R, S, box, shape, title, txt } from '../../lib/menu-layout';
+import { DIM, R, S, boxDe, shape, title, txt } from '../../lib/menu-layout';
 import { hamburguesas } from '../../data/menu';
 ---
 
@@ -8,7 +8,7 @@ import { hamburguesas } from '../../data/menu';
   <h2 class="t t-hecto" style={title(S.hamb, 270, 125)}>Hamburguesas</h2>
   {hamburguesas.map((b) => (
     <>
-      <Image class="a" style={box(S.hamb, ...b.box)} src={b.img} alt={b.label.join(' ')} widths={[400, 800, 1200]} sizes="60vw" />
+      <Image class="a" style={boxDe(S.hamb, b.box)} src={b.img} alt={b.label.join(' ')} widths={[400, 800, 1200]} sizes="60vw" />
       <p class="fun" style={`${txt(S.hamb, b.side, b.side === 'l' ? 120 : 778, b.Y + 23, 49)};color:${b.color}`}>
         {b.label[0]}<br />{b.label[1]}
       </p>

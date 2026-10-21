@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { DIM, R, S, box, shape, title, txt } from '../../lib/menu-layout';
+import { DIM, R, S, boxDe, shape, title, txt } from '../../lib/menu-layout';
 import { C, conoVainilla, malteadas } from '../../data/menu';
 ---
 
@@ -11,11 +11,11 @@ import { C, conoVainilla, malteadas } from '../../data/menu';
   <div class="desk">
     {malteadas.map((m) => (
       <>
-        <Image class="a" style={box(S.malt, ...m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[300, 600]} sizes="35vw" />
+        <Image class="a" style={boxDe(S.malt, m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[300, 600]} sizes="35vw" />
         <p class="fun" style={`${txt(S.malt, m.side, m.lx, m.ly, 40)};color:${C.cream}`}>{m.label}</p>
       </>
     ))}
-    <Image class="a" style={box(S.malt, ...conoVainilla.box)} src={conoVainilla.img} alt="Cono de vainilla" widths={[200, 400]} sizes="15vw" />
+    <Image class="a" style={boxDe(S.malt, conoVainilla.box)} src={conoVainilla.img} alt="Cono de vainilla" widths={[200, 400]} sizes="15vw" />
     <p class="t t-hecto" style={`${txt(S.malt, 'l', conoVainilla.textoX, conoVainilla.textoY, 72)};color:${C.brown};line-height:.95`}>CONO DE<br />VAINILLA</p>
   </div>
 

@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { DIM, S, box, fit, ratio, title, txt } from '../../lib/menu-layout';
+import { DIM, S, box, boxDe, fit, ratio, title, txt } from '../../lib/menu-layout';
 import { C, botellas, logos } from '../../data/menu';
 import cuadrosIzq from '../../assets/menu/bebidas-fondo-izquierdo.webp';
 import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
@@ -15,7 +15,7 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
   <div class="desk">
     <p class="lbl c" style={`${txt(S.bebidas, 'c', 450, 4216, 22)};color:${C.red};font-weight:600`}>REFRESCOS</p>
     {botellas.map((b) => (
-      <Image class="a float" style={`--fd:${b.delay};${box(S.bebidas, ...b.box)}`} src={b.img} alt={b.alt} widths={[300, 600]} sizes="25vw" />
+      <Image class="a float" style={`--fd:${b.delay};${boxDe(S.bebidas, b.box)}`} src={b.img} alt={b.alt} widths={[300, 600]} sizes="25vw" />
     ))}
     <p class="lbl bold" style={`${txt(S.bebidas, 'r', 275, 4341, 22)};color:${C.red}`}>AGUA<br />NATURAL</p>
     <p class="lbl bold" style={`${txt(S.bebidas, 'l', 628, 4381, 22)};color:${C.red}`}>AGUA<br />FRESCA</p>

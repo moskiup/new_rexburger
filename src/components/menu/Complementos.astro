@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { DIM, S, box, ratio, title, txt } from '../../lib/menu-layout';
+import { DIM, S, boxDe, ratio, title, txt } from '../../lib/menu-layout';
 import { C, complementos, complementosMovil } from '../../data/menu';
 ---
 
@@ -11,7 +11,7 @@ import { C, complementos, complementosMovil } from '../../data/menu';
   <div class="desk">
     {complementos.map((c) => (
       <>
-        <Image class="a" data-zoom-img style={box(S.compl, ...c.box)} src={c.img} alt={c.alt} widths={[400, 800]} sizes="50vw" />
+        <Image class="a" data-zoom-img style={boxDe(S.compl, c.box)} src={c.img} alt={c.alt} widths={[400, 800]} sizes="50vw" />
         <p class="lbl" data-zoom-txt style={`${txt(S.compl, c.lado, c.tx, c.ty, 19)};color:${c.color}`} set:html={c.texto} />
       </>
     ))}
