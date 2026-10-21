@@ -1,9 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import tel from '../assets/sucursales/telefono-icono.webp';
-import wa from '../assets/sucursales/whatsapp-icono.webp';
-import { sucursales, site } from '../data/config';
+import ContactoLink from '../components/ContactoLink.astro';
+import { sucursales } from '../data/config';
 
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/sucursales/sucursal-*-[123].png', { eager: true });
 const slugFoto: Record<string, string> = {
@@ -32,12 +31,8 @@ const fotosDe = (slug: string) =>
         </div>
         <p class="dir">{s.direccion}</p>
         <p class="tels">
-          <a href={`https://wa.me/${site.ladaPais}${s.whatsapp.replace(/\s/g, '')}`} rel="noopener">
-            <Image src={wa} alt="WhatsApp" width={16} height={16} densities={[2, 3]} />{s.whatsapp}
-          </a>
-          <a href={`tel:+${site.ladaPais}${s.telefono.replace(/\s/g, '')}`}>
-            <Image src={tel} alt="Teléfono" width={16} height={16} densities={[2, 3]} />{s.telefono}
-          </a>
+          <ContactoLink tipo="whatsapp" numero={s.whatsapp} tono="rojo" />
+          <ContactoLink tipo="telefono" numero={s.telefono} tono="rojo" />
         </p>
       </section>
     ))}
@@ -45,7 +40,6 @@ const fotosDe = (slug: string) =>
 </Layout>
 
 <style>
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .wrap { max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter) clamp(30px, 5vw, 70px); }
   section { scroll-margin-top: 8px; }
   h2 {
@@ -68,15 +62,14 @@ const fotosDe = (slug: string) =>
   }
   .dir { font-size: clamp(var(--fs-md), 1.9vw, var(--fs-xl)); margin-top: clamp(14px, 2.4vw, 28px); }
   .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(var(--fs-sm), 1.4vw, var(--fs-md)); }
-  .tels a { display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); }
-  .tels a:hover { text-decoration: underline; }
+  .tels a { min-height: var(--tap); }
   @media (max-width: 767px) {
     section { padding-bottom: 14px; }
     h2 { font-size: clamp(56px, 17vw, 72px); line-height: .95; letter-spacing: .02em; padding: 30px 0 14px; }
     .dir { font-size: var(--fs-xl); font-weight: 500; line-height: 1.35; margin-top: 18px; text-align: center; text-wrap: balance; }
     .tels { margin-top: 4px; gap: 0 26px; justify-content: center; }
     .tels a { font-size: var(--fs-lg); font-weight: 600; }
-    .tels a img { width: 20px; height: 20px; }
+    .tels a { --cl-icono: 20px; }
   }
   @media (max-width: 767px) {
     .fotos { grid-template-columns: 1fr 1fr; gap: 8px; }

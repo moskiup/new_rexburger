@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import EventosBanner from '../components/EventosBanner.astro';
-import { sucursales, site } from '../data/config';
+import ContactoLink from '../components/ContactoLink.astro';
+import { sucursales } from '../data/config';
 ---
 
 <Layout title="Eventos | Rex Burger" description="Llevamos Rex Burger a tus eventos: cumpleaños, bodas y reuniones en Atotonilco, La Barca, Arandas, Capilla de Guadalupe y Zapotlanejo.">
@@ -14,7 +15,7 @@ import { sucursales, site } from '../data/config';
       {sucursales.map((s) => (
         <li>
           <strong>{s.nombre}</strong>
-          <a href={`https://wa.me/${site.ladaPais}${s.whatsapp.replace(/\s/g, '')}`} rel="noopener">{s.whatsapp}</a>
+          <ContactoLink tipo="whatsapp" numero={s.whatsapp} icono={false} />
         </li>
       ))}
     </ul>

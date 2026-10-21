@@ -35,31 +35,7 @@ const {
     <main><slot /></main>
     <Footer titulo={footerTitle} />
     <script>
-      const targets = [
-        '.menu h2', '.menu .item',
-        '.eventos > *:not(.bg)', '.merch > *:not(.bg)',
-        '.ubicaciones .frase', '.ubicaciones li',
-        '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl',
-        '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
-      ];
-      const els = [...document.querySelectorAll<HTMLElement>(targets.join(','))];
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-        }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
-        els.forEach((el, i) => {
-          if (el.closest('.hero')) return;
-          el.classList.add('reveal');
-          if (el.matches('.sec .a, .sec .fun, .sec .lbl')) {
-            // Menú: entran desde el lado en el que están colocados.
-            const r = el.getBoundingClientRect();
-            const sec = el.closest('.sec')!.getBoundingClientRect();
-            el.classList.add(r.left + r.width / 2 < sec.left + sec.width / 2 ? 'reveal-left' : 'reveal-right');
-          } else if (el.matches('.a, .ico')) el.classList.add('reveal-zoom');
-          el.style.setProperty('--d', `${(i % 3) * 0.08}s`);
-          io.observe(el);
-        });
-      }
+      import '../scripts/reveal';
     </script>
   </body>
 </html>

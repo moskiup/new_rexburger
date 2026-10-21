@@ -1,9 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import tel from '../assets/inicio/telefono-icono.webp';
-import wa from '../assets/inicio/whatsapp-icono.webp';
-import { sucursales, site } from '../data/config';
+import ContactoLink from '../components/ContactoLink.astro';
+import { sucursales } from '../data/config';
 ---
 
 <Layout title="Contacto | Rex Burger" description="Teléfonos y WhatsApp de todas las sucursales Rex Burger.">
@@ -14,12 +13,8 @@ import { sucursales, site } from '../data/config';
         <li>
           <h2>{s.corto}</h2>
           <p class="dir">{s.direccion}</p>
-          <a href={`https://wa.me/${site.ladaPais}${s.whatsapp.replace(/\s/g, '')}`} rel="noopener">
-            <Image src={wa} alt="WhatsApp" width={16} height={16} densities={[2, 3]} />{s.whatsapp}
-          </a>
-          <a href={`tel:+${site.ladaPais}${s.telefono.replace(/\s/g, '')}`}>
-            <Image src={tel} alt="Teléfono" width={16} height={16} densities={[2, 3]} />{s.telefono}
-          </a>
+          <ContactoLink tipo="whatsapp" numero={s.whatsapp} />
+          <ContactoLink tipo="telefono" numero={s.telefono} />
           <a class="mas" href={`/sucursales#${s.slug}`}>Ver sucursal</a>
         </li>
       ))}

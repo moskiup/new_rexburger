@@ -1,0 +1,54 @@
+---
+interface Props {
+  href: string;
+  /** 'amarillo' sobre fondo rojo (Eventos); 'ambar' sobre la foto de Merch. */
+  variante?: 'amarillo' | 'ambar';
+  class?: string;
+  [atributo: string]: unknown;
+}
+
+const { href, variante = 'amarillo', class: clase, ...resto } = Astro.props;
+
+/* Los tamaños van en cqw: escalan con la sección donde se coloca el botón. */
+const variantes = {
+  amarillo: { fondo: 'var(--yellow)', texto: 'var(--on-yellow)', fs: '2.4cqw', ls: '.12em', pr: '3.5cqw', flecha: '3.4cqw' },
+  ambar: { fondo: 'linear-gradient(90deg, #d89918, #e2a113)', texto: 'var(--on-orange)', fs: '2cqw', ls: '.1em', pr: '5cqw', flecha: '3.2cqw' },
+};
+const v = variantes[variante];
+const estilo = `--p-fondo:${v.fondo};--p-texto:${v.texto};--p-fs:${v.fs};--p-ls:${v.ls};--p-pr:${v.pr};--p-flecha:${v.flecha}`;
+---
+
+<!-- La posición y el tamaño los pone la sección que lo usa; {...resto} deja pasar el ámbito de sus estilos. -->
+<a class:list={['btn', 'pildora', clase]} href={href} style={estilo} {...resto}><slot /></a>
+
+<style>
+  .pildora {
+    display: grid;
+    place-items: center;
+    background: var(--p-fondo);
+    color: var(--p-texto);
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--p-ls);
+    font-size: max(var(--fs-xs), var(--p-fs));
+    padding-right: var(--p-pr);
+  }
+  .pildora:hover { filter: brightness(1.1); }
+  /* Triángulo de la derecha */
+  .pildora::after {
+    content: '';
+    position: absolute;
+    right: var(--p-flecha);
+    top: 50%;
+    translate: 0 -50%;
+    border-left: 1.5cqw solid var(--p-texto);
+    border-top: .85cqw solid transparent;
+    border-bottom: .85cqw solid transparent;
+  }
+
+  @media (max-width: 767px) {
+    .pildora { font-size: var(--fs-md); padding-right: 14px; }
+    .pildora::after { right: 22px; border-left-width: 9px; border-top-width: 5.5px; border-bottom-width: 5.5px; }
+  }
+</style>

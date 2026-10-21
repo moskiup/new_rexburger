@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import { telLink, waLink } from '../lib/contacto';
+import telCrema from '../assets/iconos/telefono-crema.webp';
+import waCrema from '../assets/iconos/whatsapp-crema.webp';
+import telRojo from '../assets/iconos/telefono-rojo.webp';
+import waRojo from '../assets/iconos/whatsapp-rojo.webp';
+
+interface Props {
+  tipo: 'whatsapp' | 'telefono';
+  /** Número local con espacios, como en `sucursales` de config.ts. */
+  numero: string;
+  /** Color del icono: 'crema' sobre fondos rojos, 'rojo' sobre fondos claros. */
+  tono?: 'crema' | 'rojo';
+  /** Sin icono, solo el número. */
+  icono?: boolean;
+  class?: string;
+  [atributo: string]: unknown;
+}
+
+const { tipo, numero, tono = 'crema', icono = true, class: clase, ...resto } = Astro.props;
+const whatsapp = tipo === 'whatsapp';
+const iconos = { crema: { whatsapp: waCrema, telefono: telCrema }, rojo: { whatsapp: waRojo, telefono: telRojo } };
+---
+
+<!-- {...resto} deja pasar el atributo de ámbito de los estilos de la página que lo usa -->
+<a
+  class:list={['contacto-link', clase]}
+  href={whatsapp ? waLink(numero) : telLink(numero)}
+  rel={whatsapp ? 'noopener' : undefined}
+  {...resto}
+>
+  {icono && <Image src={iconos[tono][tipo]} alt={whatsapp ? 'WhatsApp' : 'Teléfono'} width={16} height={16} densities={[2, 3]} />}{numero}
+</a>
+
+<style>
+  .contacto-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  /* Tamaño del icono: la página que lo usa puede cambiarlo con --cl-icono. */
+  .contacto-link img { width: var(--cl-icono, 16px); height: var(--cl-icono, 16px); }
+  .contacto-link:hover { text-decoration: underline; }
+</style>
