@@ -109,6 +109,9 @@ export const sucursales: Sucursal[] = [
     slug: 'capilla-de-gpe',
     nombre: 'Capilla de GPE',
     ciudad: 'Capilla de Guadalupe',
+    codigoPostal: '47700',
+    // Ficha de Google Maps: todos los días de 12:00 p. m. a 10:30 p. m.
+    horario: [{ dias: TODOS_LOS_DIAS, abre: '12:00', cierra: '22:30' }],
     corto: 'Suc. Capilla de GPE',
     direccion: 'San Antonio #248. Capilla de Guadalupe, Jal.',
     whatsapp: '378 218 2115',
