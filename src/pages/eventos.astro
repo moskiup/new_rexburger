@@ -3,14 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import EventosBanner from '../components/EventosBanner.astro';
 import ContactoLink from '../components/ContactoLink.astro';
 import { sucursales } from '../data/config';
+import { bannerEventos, eventos, paginas } from '../data/contenido';
 ---
 
-<Layout title="Eventos | Rex Burger" description="Llevamos Rex Burger a tus eventos: cumpleaños, bodas y reuniones en Atotonilco, La Barca, Arandas, Capilla de Guadalupe y Zapotlanejo.">
-  <EventosBanner heading="h1" ctaLabel="Cotiza tu evento" ctaHref="/contacto" />
+<Layout title={paginas.eventos.titulo} description={paginas.eventos.descripcion}>
+  <EventosBanner heading="h1" ctaLabel={bannerEventos.botonContacto} ctaHref="/contacto" />
 
   <section class="info">
-    <h2>Pide tu Rex donde quieras</h2>
-    <p>Cumpleaños, bodas, empresas o reuniones: llevamos el sabor rexquisito a tu evento. Escríbele por WhatsApp a la sucursal más cercana para cotizar.</p>
+    <h2>{eventos.titulo}</h2>
+    <p>{eventos.texto}</p>
     <ul>
       {sucursales.map((s) => (
         <li>

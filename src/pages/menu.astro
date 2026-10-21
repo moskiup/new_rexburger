@@ -7,9 +7,10 @@ import Cajita from '../components/menu/Cajita.astro';
 import Bebidas from '../components/menu/Bebidas.astro';
 import Malteadas from '../components/menu/Malteadas.astro';
 import '../styles/menu.css';
+import { paginas } from '../data/contenido';
 ---
 
-<Layout title="Menú | Rex Burger" description="Hamburguesas, combos, complementos, bebidas, malteadas y la Cajita Rexy Kids de Rex Burger California Style.">
+<Layout title={paginas.menu.titulo} description={paginas.menu.descripcion}>
   <h1 class="sr-only">Menú Rex Burger</h1>
   <Hamburguesas />
   <Combos />

@@ -4,6 +4,8 @@ import camion from '../assets/inicio/camion-rex-burger-eventos.webp';
 import circulo from '../assets/inicio/circulo-punteado-decorativo-amarillo.webp';
 import asterisco from '../assets/inicio/asterisco-decorativo-crema.webp';
 import BotonPildora from './BotonPildora.astro';
+import { bannerEventos } from '../data/contenido';
+import { ciudadesEventos } from '../data/config';
 
 interface Props {
   /** Nivel del título: h1 en la página de eventos, h2 en el inicio. */
@@ -11,7 +13,7 @@ interface Props {
   ctaLabel?: string;
   ctaHref?: string;
 }
-const { heading = 'h2', ctaLabel = 'Más información', ctaHref = '/eventos' } = Astro.props;
+const { heading = 'h2', ctaLabel = bannerEventos.boton, ctaHref = '/eventos' } = Astro.props;
 const Heading = heading;
 ---
 
@@ -21,10 +23,10 @@ const Heading = heading;
   <Image class="pieza camion" src={camion} alt="Camión de Rex Burger para eventos" widths={[400, 600]} sizes="(max-width: 767px) 95vw, 58vw" loading="eager" fetchpriority={heading === 'h1' ? 'high' : undefined} />
   <Image class="pieza asterisco" src={asterisco} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
   </div>
-  <p class="kicker">Llévanos a tus</p>
-  <Heading class="titulo" data-anim="escribir">Eventos</Heading>
+  <p class="kicker">{bannerEventos.kicker}</p>
+  <Heading class="titulo" data-anim="escribir">{bannerEventos.titulo}</Heading>
   <BotonPildora href={ctaHref}>{ctaLabel}{ctaHref === '/eventos' && <span class="sr-only"> sobre nuestros eventos</span>}</BotonPildora>
-  <p class="cities">Atotonilco | La Barca | Arandas | Capilla de GPE | Zapotlanejo</p>
+  <p class="cities">{ciudadesEventos.join(' | ')}</p>
 </section>
 
 <style>

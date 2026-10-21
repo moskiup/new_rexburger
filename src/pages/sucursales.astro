@@ -3,30 +3,23 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ContactoLink from '../components/ContactoLink.astro';
 import { sucursales } from '../data/config';
+import { paginas } from '../data/contenido';
 
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/sucursales/sucursal-*-[123].png', { eager: true });
-const slugFoto: Record<string, string> = {
-  atotonilco: 'atoto',
-  arandas: 'arandas',
-  'la-barca': 'barca',
-  'capilla-de-gpe': 'capilla',
-  zapotlanejo: 'zapo',
-};
-/* Ajuste vertical del recorte para fotos cuyo sujeto no está al centro. */
-const posicion: Record<string, string> = { 'atotonilco-2': '50% 72%' };
+/** Las 3 fotos de una sucursal: archivos `sucursal-<slug>-<n>.png`. */
 const fotosDe = (slug: string) =>
-  [1, 2, 3].map((n) => fotos[`../assets/sucursales/sucursal-${slugFoto[slug]}-${n}.png`].default);
+  [1, 2, 3].map((n) => fotos[`../assets/sucursales/sucursal-${slug}-${n}.png`].default);
 ---
 
-<Layout title="Sucursales | Rex Burger" description="Encuentra tu sucursal Rex Burger: Atotonilco, Arandas, La Barca, Capilla de Guadalupe y Zapotlanejo.">
-  <h1 class="sr-only">Sucursales Rex Burger</h1>
+<Layout title={paginas.sucursales.titulo} description={paginas.sucursales.descripcion}>
+  <h1 class="sr-only">{paginas.sucursales.h1}</h1>
   <div class="wrap">
     {sucursales.map((s, i) => (
       <section id={s.slug}>
         <h2>{s.nombre}</h2>
-        <div class="fotos" data-swap={s.slug === 'la-barca' || s.slug === 'zapotlanejo' ? '' : undefined}>
+        <div class="fotos" data-swap={s.mosaicoInvertido ? '' : undefined}>
           {fotosDe(s.slug).map((f, n) => (
-            <Image src={f} style={posicion[`${s.slug}-${n + 1}`] ? `object-position:${posicion[`${s.slug}-${n + 1}`]}` : undefined} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 767px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
+            <Image src={f} style={s.encuadreFotos?.[n + 1] ? `object-position:${s.encuadreFotos[n + 1]}` : undefined} alt={`Sucursal ${s.nombre}, foto ${n + 1}`} widths={[400, 800]} sizes="(max-width: 767px) 50vw, 360px" loading={i === 0 ? 'eager' : 'lazy'} />
           ))}
         </div>
         <p class="dir">{s.direccion}</p>

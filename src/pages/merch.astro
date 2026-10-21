@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Cart from '../components/Cart.astro';
+import { paginas } from '../data/contenido';
 import tsOverWhite from '../assets/merch/t-shirt-oversize-white.webp';
 import tsOverBlack from '../assets/merch/t-shirt-oversize-black.webp';
 import hoodBlack from '../assets/merch/hoodie-black.webp';
@@ -27,8 +28,8 @@ const productos = [
 ];
 ---
 
-<Layout title="Merch | Rex Burger" description="Playeras, hoodies y gorras oficiales de Rex Burger.">
-  <h1 class="sr-only">Merch Rex Burger</h1>
+<Layout title={paginas.merch.titulo} description={paginas.merch.descripcion}>
+  <h1 class="sr-only">{paginas.merch.h1}</h1>
   <ul class="grid">
     {productos.map((p, i) => (
       <li>

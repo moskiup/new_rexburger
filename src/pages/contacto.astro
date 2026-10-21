@@ -3,11 +3,12 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ContactoLink from '../components/ContactoLink.astro';
 import { sucursales } from '../data/config';
+import { contacto, paginas } from '../data/contenido';
 ---
 
-<Layout title="Contacto | Rex Burger" description="Teléfonos y WhatsApp de todas las sucursales Rex Burger.">
+<Layout title={paginas.contacto.titulo} description={paginas.contacto.descripcion}>
   <section class="contacto">
-    <h1>Contactos</h1>
+    <h1>{contacto.titulo}</h1>
     <ul>
       {sucursales.map((s) => (
         <li>
@@ -15,7 +16,7 @@ import { sucursales } from '../data/config';
           <p class="dir">{s.direccion}</p>
           <ContactoLink tipo="whatsapp" numero={s.whatsapp} />
           <ContactoLink tipo="telefono" numero={s.telefono} />
-          <a class="mas" href={`/sucursales#${s.slug}`}>Ver sucursal</a>
+          <a class="mas" href={`/sucursales#${s.slug}`}>{contacto.verSucursal}</a>
         </li>
       ))}
     </ul>
