@@ -6,9 +6,9 @@ import { hamburguesas } from '../../data/menu';
 
 <section class="sec shape" id="hamburguesas" style={shape(DIM.hamb, '#eeece1', '#bd0c16', '#f49300', `0 0 ${R} ${R}`)}>
   <h2 class="t t-hecto" style={title(S.hamb, 270, 125)}>Hamburguesas</h2>
-  {hamburguesas.map((b) => (
+  {hamburguesas.map((b, i) => (
     <>
-      <Image class="a" style={boxDe(S.hamb, b.box)} src={b.img} alt={b.label.join(' ')} widths={[400, 800, 1200]} sizes="60vw" />
+      <Image class="a" style={boxDe(S.hamb, b.box)} src={b.img} alt={b.label.join(' ')} widths={[400, 800, 1200]} sizes="60vw" loading={i < 2 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
       <p class="fun" style={`${txt(S.hamb, b.side, b.side === 'l' ? 120 : 778, b.Y + 23, 49)};color:${b.color}`}>
         {b.label[0]}<br />{b.label[1]}
       </p>
