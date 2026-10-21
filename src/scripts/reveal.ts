@@ -5,6 +5,8 @@
  * entran en pantalla. Si añades una sección nueva con elementos que deban animarse, agrega aquí su selector.
  * Con `prefers-reduced-motion` no se anima nada: el contenido queda visible desde el inicio.
  */
+import { sinMovimiento } from './utiles';
+
 const OBJETIVOS = [
   '.menu h2', '.menu .item',
   '.eventos > *:not(.bg)', '.merch > *:not(.bg)',
@@ -13,7 +15,7 @@ const OBJETIVOS = [
   '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
 ];
 
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+if (!sinMovimiento() && 'IntersectionObserver' in window) {
   const elementos = [...document.querySelectorAll<HTMLElement>(OBJETIVOS.join(','))];
   const observador = new IntersectionObserver(
     (entradas) => {

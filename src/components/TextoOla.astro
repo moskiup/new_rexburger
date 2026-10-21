@@ -1,0 +1,47 @@
+---
+interface Props {
+  texto: string;
+  /** Color de la sombra desplazada de cada letra. */
+  sombra: string;
+  /**
+   * Cuántas veces corre la ola cada vez que el texto entra en pantalla (la controla `animaciones.ts`).
+   * Sin este valor la ola es continua.
+   */
+  repeticiones?: number;
+  class?: string;
+  [atributo: string]: unknown;
+}
+
+const { texto, sombra, repeticiones, class: clase, ...resto } = Astro.props;
+---
+
+<!-- La tipografía, el tamaño y el color los pone quien lo usa; {...resto} deja pasar el ámbito de sus estilos. -->
+<span
+  class:list={['ola', clase]}
+  data-anim={repeticiones ? 'ola' : undefined}
+  style={`--sombra:${sombra};--rep:${repeticiones ?? 'infinite'}`}
+  aria-hidden="true"
+  {...resto}
+>{[...texto].map((letra, i) => <span class="letra" style={`--i:${i}`}>{letra}</span>)}</span>
+
+<style>
+  .letra {
+    display: inline-block;
+    transform-origin: 50% 85%;
+    text-shadow: .09em .12em 0 var(--sombra);
+    animation: wave 1.8s cubic-bezier(.3, .6, .4, 1) var(--rep) both;
+    animation-delay: calc(var(--i) * .08s);
+  }
+  /* Con repeticiones, la ola espera en pausa hasta que el script añade .on. */
+  .ola[data-anim] .letra { animation-play-state: paused; }
+  .ola[data-anim].on .letra { animation-play-state: running; }
+
+  /* Ola con rebote: se agacha, salta estirándose y se inclina, y asienta con un pequeño rebote. */
+  @keyframes wave {
+    0%, 62%, 100% { transform: translateY(0) rotate(0) scale(1, 1); }
+    12% { transform: translateY(.07em) rotate(0) scale(1.12, .88); }
+    28% { transform: translateY(-.4em) rotate(-7deg) scale(.94, 1.12); }
+    42% { transform: translateY(.04em) rotate(5deg) scale(1.06, .94); }
+    52% { transform: translateY(-.07em) rotate(-2deg) scale(.99, 1.02); }
+  }
+</style>

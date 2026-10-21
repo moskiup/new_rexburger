@@ -4,8 +4,8 @@ import pin from '../assets/inicio/icono-ubicacion.webp';
 import asterisco from '../assets/inicio/grafico-1-ubicaciones.webp';
 import equis from '../assets/inicio/grafico-2-ubicaciones.webp';
 import isotipo from '../assets/inicio/isotipo-mapa.webp';
+import TextoOla from './TextoOla.astro';
 import { sucursales } from '../data/config';
-const palabra = 'REXQUISITO'.split('');
 ---
 
 <section class="ubicaciones" aria-labelledby="ubic-title">
@@ -13,7 +13,7 @@ const palabra = 'REXQUISITO'.split('');
   <Image class="deco b" src={equis} alt="" width={56} />
   <h2 id="ubic-title" class="frase" aria-label="El sabor Rexquisito, más cerca de ti">
     <span class="l1" aria-hidden="true">El sabor</span>
-    <span class="l2" aria-hidden="true">{palabra.map((c, i) => <span class="wv" style={`--i:${i}`}>{c}</span>)}</span>
+    <span class="l2"><TextoOla texto="REXQUISITO" sombra="#d8d8c8" repeticiones={3} /></span>
     <span class="pildora" aria-hidden="true">Más cerca de ti</span>
   </h2>
   <ul>
@@ -61,23 +61,6 @@ const palabra = 'REXQUISITO'.split('');
     line-height: 1.05;
     white-space: nowrap;
     margin-top: 3cqw;
-  }
-  .wv {
-    display: inline-block;
-    transform-origin: 50% 85%;
-    text-shadow: .09em .12em 0 #d8d8c8;
-    animation: wave 1.8s cubic-bezier(.3, .6, .4, 1) 3 both paused;
-    animation-delay: calc(var(--i) * .08s);
-  }
-  /* Ola con rebote: se agacha, salta estirándose y se inclina, y asienta con un pequeño rebote. */
-  /* La ola corre 3 veces cada vez que el título entra en pantalla (la clase .on la pone el script). */
-  .frase.on :global(.wv) { animation-play-state: running; }
-  @keyframes wave {
-    0%, 62%, 100% { transform: translateY(0) rotate(0) scale(1, 1); }
-    12% { transform: translateY(.07em) rotate(0) scale(1.12, .88); }
-    28% { transform: translateY(-.4em) rotate(-7deg) scale(.94, 1.12); }
-    42% { transform: translateY(.04em) rotate(5deg) scale(1.06, .94); }
-    52% { transform: translateY(-.07em) rotate(-2deg) scale(.99, 1.02); }
   }
   .pildora {
     margin-top: 5cqw;
@@ -136,80 +119,5 @@ const palabra = 'REXQUISITO'.split('');
 </style>
 
 <script>
-  const el = document.getElementById('mapa');
-  const key = import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY;
-
-  type Sucursal = { n: string; d: string; c: [number, number]; slug: string };
-
-  function fallback(el: HTMLElement, msg: string) {
-    el.textContent = msg;
-    el.classList.add('mapa-vacio');
-  }
-
-  if (el) {
-    if (!key) {
-      fallback(el, 'Mapa no disponible: falta PUBLIC_GOOGLE_MAPS_API_KEY.');
-    } else {
-      const data: Sucursal[] = JSON.parse(el.dataset.sucursales || '[]');
-      (window as any).__initMapa = () => {
-        const g = (window as any).google.maps;
-        const bounds = new g.LatLngBounds();
-        const map = new g.Map(el, {
-          center: { lat: data[0].c[0], lng: data[0].c[1] },
-          zoom: 9,
-          disableDefaultUI: true,
-          zoomControl: true,
-          gestureHandling: 'cooperative',
-          styles: [
-            { stylers: [{ saturation: -100 }, { lightness: 12 }] },
-            { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-            { featureType: 'transit', stylers: [{ visibility: 'off' }] },
-          ],
-        });
-        const info = new g.InfoWindow();
-        data.forEach((s) => {
-          const position = { lat: s.c[0], lng: s.c[1] };
-          bounds.extend(position);
-          const marker = new g.Marker({
-            map,
-            position,
-            title: s.n,
-            icon: { url: el.dataset.icon, scaledSize: new g.Size(36, 33), anchor: new g.Point(18, 33) },
-          });
-          marker.addListener('click', () => {
-            info.setContent(
-              `<div style="font-family:Outfit,sans-serif;color:#bc1417"><strong>${s.n}</strong><br>${s.d}<br>` +
-                `<a style="color:#bc1417;font-weight:600" href="/sucursales#${s.slug}">Más información</a></div>`,
-            );
-            info.open({ map, anchor: marker });
-          });
-        });
-        map.fitBounds(bounds, 48);
-      };
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&callback=__initMapa&loading=async`;
-      script.async = true;
-      script.onerror = () => fallback(el, 'No se pudo cargar el mapa.');
-      document.head.appendChild(script);
-    }
-  }
-</script>
-
-<script>
-  // Reinicia la ola de "REXQUISITO" cada vez que el título aparece: se repite 3 veces y se detiene.
-  const frase = document.querySelector<HTMLElement>('.frase');
-  if (frase && 'IntersectionObserver' in window) {
-    new IntersectionObserver((entries) => {
-      const visible = entries[0].isIntersecting;
-      if (visible) {
-        frase.classList.remove('on');
-        void frase.offsetWidth; // reinicia las animaciones
-        frase.classList.add('on');
-      } else {
-        frase.classList.remove('on');
-      }
-    }, { threshold: 0.5 }).observe(frase);
-  } else if (frase) {
-    frase.classList.add('on');
-  }
+  import '../scripts/mapa';
 </script>

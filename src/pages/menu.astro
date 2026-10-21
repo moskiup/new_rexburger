@@ -18,21 +18,3 @@ import '../styles/menu.css';
   <Bebidas />
   <Malteadas />
 </Layout>
-
-<script>
-  // Combos y Complementos: cada texto activa el zoom de su imagen y al revés; ambos crecen juntos.
-  document.querySelectorAll<HTMLElement>('[data-zoom-par]').forEach((seccion) => {
-    const imgs = seccion.querySelectorAll<HTMLElement>('[data-zoom-img]');
-    const textos = seccion.querySelectorAll<HTMLElement>('[data-zoom-txt]');
-    imgs.forEach((img, i) => {
-      const t = textos[i];
-      if (!t) return;
-      const on = () => { img.classList.add('zoom'); t.classList.add('zoom'); };
-      const off = () => { img.classList.remove('zoom'); t.classList.remove('zoom'); };
-      [img, t].forEach((el) => {
-        el.addEventListener('pointerenter', on);
-        el.addEventListener('pointerleave', off);
-      });
-    });
-  });
-</script>
