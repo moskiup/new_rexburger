@@ -4,7 +4,7 @@ El flujo de GitHub Actions (`.github/workflows/ci.yml`) sigue la misma convenci�
 
 - **Cada push y pull request:** instala dependencias, revisa tipos (`bun run check`), compila y comprueba que se generen las 6 páginas, el 404, el sitemap, `robots.txt` y `.htaccess`.
 - **Cada push a `main`:** además sube `dist/` por FTP a **https://new.rexburger.com.mx**, en la carpeta `/public_html/new/`.
-- También se puede lanzar a mano: *Actions > CI > Run workflow*.
+- También se puede lanzar a mano: *Actions > CI > Run workflow*. Hay que elegir la rama `main`: en otras ramas solo se compila y el trabajo `Deploy` aparece como *skipped* (omitido).
 
 ## 1. Subdominio en Hostinger
 

@@ -1,6 +1,6 @@
 # CI/CD del sitio (Astro estático). Misma convención que el proyecto del Hospital Santa Fe.
 #  - Cada push y pull request: instala, revisa tipos, compila y comprueba que el build funcione.
-#  - Cada push a `main`: además publica la carpeta dist/ por FTP en new.rexburger.com.mx.
+#  - Cada push a `main` (o al lanzarlo a mano sobre main): además publica la carpeta dist/ por FTP en new.rexburger.com.mx.
 #
 # Configuración en GitHub (Settings > Secrets and variables > Actions):
 #   Secrets   : FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
@@ -91,7 +91,8 @@ jobs:
   deploy:
     name: Deploy por FTP
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Solo en main, tanto con un push como al lanzarlo a mano (Run workflow). Las pull requests no despliegan.
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     environment: production
     steps:
