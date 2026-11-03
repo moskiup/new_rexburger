@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Página no encontrada | Rex Burger" description="La página que buscas no existe. Vuelve al inicio o revisa nuestro menú.">
+  <section class="error">
+    <p class="codigo">404</p>
+    <h1>Esta página no existe</h1>
+    <p>Puede que el enlace esté roto o que la página haya cambiado de lugar.</p>
+    <p class="acciones">
+      <a class="boton" href="/">Ir al inicio</a>
+      <a class="boton" href="/menu">Ver el menú</a>
+    </p>
+  </section>
+</Layout>
+
+<style>
+  .error {
+    min-height: 60vh;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 14px;
+    padding: 56px var(--gutter);
+    background: var(--cream);
+    text-align: center;
+  }
+  .codigo { margin: 0; font-family: var(--font-fun); font-size: clamp(90px, 22vw, 180px); line-height: 1; color: var(--red); }
+  h1 { margin: 0; font-family: var(--font-display-light); font-weight: 400; font-size: clamp(36px, 7vw, 64px); line-height: 1; text-transform: uppercase; }
+  p { margin: 0; font-size: var(--fs-lg); max-width: 36ch; }
+  .acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px; }
+  .boton {
+    display: inline-grid;
+    place-items: center;
+    min-height: var(--tap);
+    padding: 0 28px;
+    border-radius: 999px;
+    background: var(--orange);
+    color: var(--on-orange);
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+</style>
