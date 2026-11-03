@@ -7,7 +7,7 @@ export const site = {
   idioma: 'es-MX',
   colorTema: '#bc1417',
   ladaPais: '52',
-  /** Dirección pública del sitio, sin barra final. Viene de `site` en astro.config.mjs (PUBLIC_SITE_URL). */
+  /** Dirección pública del sitio, sin barra final. Viene de `site` en astro.config.mjs (SITE_URL). */
   url: (import.meta.env.SITE || 'https://rexburger.com.mx').replace(/\/$/, ''),
   /** `true` en entornos de prueba o de subdominio: pide a los buscadores no indexar el sitio. */
   noindex: import.meta.env.PUBLIC_NOINDEX === 'true',

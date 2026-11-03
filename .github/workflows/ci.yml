@@ -1,0 +1,140 @@
+# CI/CD del sitio (Astro estático). Misma convención que el proyecto del Hospital Santa Fe.
+#  - Cada push y pull request: instala, revisa tipos, compila y comprueba que el build funcione.
+#  - Cada push a `main`: además publica la carpeta dist/ por FTP en new.rexburger.com.mx.
+#
+# Configuración en GitHub (Settings > Secrets and variables > Actions):
+#   Secrets   : FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+#               PUBLIC_GOOGLE_MAPS_API_KEY (opcional: clave del mapa)
+#   Variables : FTP_SERVER_DIR (OBLIGATORIA: carpeta del sitio, relativa a donde entra la cuenta FTP;
+#                              aquí /public_html/new/ . El flujo falla si falta)
+#               FTP_PROTOCOL   (opcional: ftps, ftp o ftps-legacy; por defecto ftps)
+#               FTP_PORT       (opcional, por defecto 21)
+#
+# Sitio de pruebas en el subdominio — crear como variables de REPOSITORIO:
+#   SITE_URL        https://new.rexburger.com.mx   (sin / final)
+#   PUBLIC_NOINDEX  true  -> pide a Google no indexarlo (robots.txt y meta noindex)
+# Para el lanzamiento real: BORRAR ambas variables, apuntar FTP_SERVER_DIR al dominio principal
+# y volver a ejecutar el flujo.
+#
+# Contenido del sitio (opcionales, variables): PUBLIC_WHATSAPP_PEDIDOS, PUBLIC_FACEBOOK_URL,
+#   PUBLIC_INSTAGRAM_URL, PUBLIC_TIKTOK_URL
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: # permite lanzarlo a mano desde la pestaña Actions
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache de dependencias
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      - name: Instalar dependencias
+        run: bun install --frozen-lockfile
+
+      - name: Revisar tipos
+        run: bun run check
+
+      - name: Compilar el sitio
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          PUBLIC_NOINDEX: ${{ vars.PUBLIC_NOINDEX }}
+          PUBLIC_WHATSAPP_PEDIDOS: ${{ vars.PUBLIC_WHATSAPP_PEDIDOS }}
+          PUBLIC_FACEBOOK_URL: ${{ vars.PUBLIC_FACEBOOK_URL }}
+          PUBLIC_INSTAGRAM_URL: ${{ vars.PUBLIC_INSTAGRAM_URL }}
+          PUBLIC_TIKTOK_URL: ${{ vars.PUBLIC_TIKTOK_URL }}
+          PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.PUBLIC_GOOGLE_MAPS_API_KEY }}
+        run: bun run build
+
+      - name: Comprobar que el build generó las páginas
+        run: |
+          for f in index.html menu/index.html sucursales/index.html merch/index.html eventos/index.html contacto/index.html 404.html sitemap-index.xml robots.txt .htaccess; do
+            test -f "dist/$f" || { echo "::error::Falta dist/$f"; exit 1; }
+          done
+          echo "Páginas generadas: $(find dist -name index.html | wc -l)"
+
+      - name: Guardar el build
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+          # Sin esto el artefacto omite los archivos que empiezan con punto, como .htaccess
+          include-hidden-files: true
+
+  deploy:
+    name: Deploy por FTP
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Descargar el build
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Verificar la configuración del FTP
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
+        run: |
+          missing=""
+          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD FTP_SERVER_DIR; do
+            if [ -z "${!name}" ]; then missing="$missing $name"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error title=Falta configuración del FTP::Define estos valores en GitHub (Settings > Environments > production, o Secrets and variables > Actions):$missing"
+            exit 1
+          fi
+          # Debe ser una subcarpeta (no la raíz) y empezar y terminar con /
+          case "$FTP_SERVER_DIR" in
+            /?*/) ;;
+            *)
+              echo "::error title=FTP_SERVER_DIR inválida::Debe empezar y terminar con / y no ser la raíz (por ejemplo /public_html/new/). Valor actual: $FTP_SERVER_DIR"
+              exit 1
+              ;;
+          esac
+          echo "Se publicará en: $FTP_SERVER_DIR"
+
+      - name: Publicar dist/ en el servidor
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          port: ${{ vars.FTP_PORT || 21 }}
+          local-dir: ./dist/
+          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          # Sube solo lo que cambió (guarda un registro .ftp-deploy-sync-state.json en el servidor)
+          dangerous-clean-slate: false
