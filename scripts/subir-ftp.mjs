@@ -50,6 +50,13 @@ const config = {
   tlsEstricto: cfg('FTP_TLS_ESTRICTO', 'true') !== 'false',
 };
 
+/* El servidor se escribe como nombre o IP, pero es común pegarlo como ftp://servidor/ o servidor:21: se limpia. */
+const limpio = config.host.trim().replace(/^[a-z]+:\/\//i, '').replace(/\/.*$/, '');
+const conPuerto = limpio.match(/^(.+):(\d+)$/);
+config.host = conPuerto ? conPuerto[1] : limpio;
+if (conPuerto) config.puerto = Number(conPuerto[2]);
+const esIp = /^\d{1,3}(\.\d{1,3}){3}$/.test(config.host);
+
 const produccion = args.has('--produccion');
 const url = produccion ? '' : cfg('SITE_URL', 'https://new.rexburger.com.mx');
 
@@ -87,7 +94,7 @@ console.log(`dist/: ${total} archivos, ${mb} MB`);
 
 /* ---------- simulación ---------- */
 if (args.has('--simular')) {
-  console.log(`\nSimulación: se subiría a ftp://${config.host}${config.carpeta} (${config.protocolo}, puerto ${config.puerto}).`);
+  console.log(`\nSimulación: se subiría a ${config.host}:${config.puerto}${config.carpeta} (${config.protocolo}).`);
   console.log('No se conectó al servidor ni se cambió nada.');
   process.exit(0);
 }
@@ -113,7 +120,7 @@ const base = posix.normalize('/' + config.carpeta.replace(/\\/g, '/'));
 const cliente = new Client(60_000);
 const tmp = mkdtempSync(join(tmpdir(), 'rexburger-ftp-'));
 try {
-  console.log(`\nConectando a ${config.host} como ${config.usuario} (${config.protocolo})...`);
+  console.log(`\nConectando a ${config.host}:${config.puerto} como ${config.usuario} (${config.protocolo})...`);
   await cliente.access({
     host: config.host,
     port: config.puerto,
@@ -167,7 +174,7 @@ try {
   const msg = String(e?.message ?? e);
   console.error(`\nError al subir por FTP: ${msg}`);
   if (/certificate|self.signed|altnames|hostname/i.test(msg)) {
-    console.error('Parece un problema con el certificado TLS del servidor. Prueba FTP_TLS_ESTRICTO=false en .env.ftp, o FTP_PROTOCOL=ftp.');
+    console.error('Parece un problema con el certificado TLS del servidor' + (esIp ? ' (con una IP el certificado no coincide: usa el nombre ftp.rexburger.com.mx en FTP_SERVER)' : '') + '. Prueba FTP_TLS_ESTRICTO=false en .env.ftp, o FTP_PROTOCOL=ftp.');
   } else if (/530|login|auth/i.test(msg)) {
     console.error('El servidor rechazó el usuario o la contraseña. Revisa FTP_USERNAME y FTP_PASSWORD.');
   } else if (/550|no such|not found/i.test(msg)) {
