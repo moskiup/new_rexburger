@@ -5,8 +5,9 @@
 # Configuración en GitHub (Settings > Secrets and variables > Actions):
 #   Secrets   : FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
 #               PUBLIC_GOOGLE_MAPS_API_KEY (opcional: clave del mapa)
-#   Variables : FTP_SERVER_DIR (OBLIGATORIA: carpeta del sitio, relativa a donde entra la cuenta FTP;
-#                              aquí /public_html/new/ . El flujo falla si falta)
+#   Variables : FTP_SERVER_DIR (OBLIGATORIA: carpeta del sitio, relativa a donde entra la cuenta FTP.
+#                              La cuenta FTP de new.rexburger.com.mx ya entra en public_html/new,
+#                              así que el valor es /  . El flujo falla si falta)
 #               FTP_PROTOCOL   (opcional: ftps, ftp o ftps-legacy; por defecto ftps)
 #               FTP_PORT       (opcional, por defecto 21)
 #
@@ -117,11 +118,11 @@ jobs:
             echo "::error title=Falta configuración del FTP::Define estos valores en GitHub (Settings > Environments > production, o Secrets and variables > Actions):$missing"
             exit 1
           fi
-          # Debe ser una subcarpeta (no la raíz) y empezar y terminar con /
+          # Debe empezar y terminar con /. La cuenta FTP ya está dentro de public_html/new, así que "/" es válido
           case "$FTP_SERVER_DIR" in
-            /?*/) ;;
+            /*/ | /) ;;
             *)
-              echo "::error title=FTP_SERVER_DIR inválida::Debe empezar y terminar con / y no ser la raíz (por ejemplo /public_html/new/). Valor actual: $FTP_SERVER_DIR"
+              echo "::error title=FTP_SERVER_DIR inválida::Debe empezar y terminar con / (aquí basta con /, porque la cuenta FTP ya entra en public_html/new). Valor actual: $FTP_SERVER_DIR"
               exit 1
               ;;
           esac

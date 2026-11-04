@@ -18,6 +18,7 @@ bun run dev              # http://localhost:4321
 | `bun run build` | Genera el sitio estático en `dist/` |
 | `bun run preview` | Sirve `dist/` para probar el build |
 | `bun run check` | Revisa tipos de los `.astro` y `.ts` |
+| `bun run subir` | Compila y sube por FTP a `new.rexburger.com.mx` (ver `docs/despliegue.md`) |
 
 ## Estructura
 

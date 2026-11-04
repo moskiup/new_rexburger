@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "subir": "node scripts/subir-ftp.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.11",
+    "basic-ftp": "^6.2.5",
     "typescript": "^6"
   }
 }

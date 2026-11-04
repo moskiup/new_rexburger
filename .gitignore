@@ -40,3 +40,6 @@ plan*.md
 
 # capturas de Playwright
 .playwright-mcp/
+
+# datos de acceso al FTP (nunca se versionan)
+.env.ftp
