@@ -94,8 +94,6 @@ h1, h2, h3, p { margin: 0; }
 .btn:active, .mas:active { transform: scale(.97); }
 
 /* Logo y navegación */
-.logo img { transition: transform .35s ease; }
-.logo:hover img { transform: scale(1.06) rotate(-1.5deg); }
 @media (hover: hover) {
   .header nav a { position: relative; border-bottom-color: transparent !important; }
   .header nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
