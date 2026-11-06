@@ -19,8 +19,8 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
     ))}
     <p class="lbl bold" style={`${txt(S.bebidas, 'r', 275, 4341, 22)};color:${C.red}`}>AGUA<br />NATURAL</p>
     <p class="lbl bold" style={`${txt(S.bebidas, 'l', 628, 4381, 22)};color:${C.red}`}>AGUA<br />FRESCA</p>
-    {logos.map((l, i) => (
-      <Image class="a logo" style={`${fit(S.bebidas, l.img, l.bb, l.cx, l.cy, l.w)};--fd:${-i * 0.7}s`} src={l.img} alt={l.alt} widths={[300, 600]} sizes="25vw" />
+    {logos.map((l) => (
+      <Image class="a logo" style={fit(S.bebidas, l.img, l.bb, l.cx, l.cy, l.w)} src={l.img} alt={l.alt} widths={[300, 600]} sizes="25vw" />
     ))}
   </div>
 
@@ -36,8 +36,8 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
       ))}
     </div>
     <div class="logos">
-      {logos.map((l, i) => (
-        <Image class="logo-m" style={`--fd:${-i * 0.7}s`} src={l.img} alt={l.alt} widths={[300, 500]} sizes="30vw" />
+      {logos.map((l) => (
+        <Image class="logo-m" src={l.img} alt={l.alt} widths={[300, 500]} sizes="30vw" />
       ))}
     </div>
   </div>
@@ -48,8 +48,6 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
   .movil { display: none; }
 
   .logo {
-    animation: logo-bob 3.6s ease-in-out infinite;
-    animation-delay: var(--fd, 0s);
     transition: scale .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1);
   }
   @keyframes logo-bob {
@@ -78,6 +76,6 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
     .foto { width: 100%; height: auto; max-height: 230px; object-fit: contain; }
     .nombre { margin: 0; text-align: center; font-weight: 700; font-size: var(--fs-sm); line-height: 1.2; color: var(--red); letter-spacing: .02em; }
     .logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 6px; align-items: center; margin-top: 30px; padding: 0 4px; }
-    .logo-m { flex: 0 0 calc(25% - 6px); max-width: 92px; height: 50px; object-fit: contain; animation: logo-bob 3.6s ease-in-out infinite; animation-delay: var(--fd, 0s); }
+    .logo-m { flex: 0 0 calc(25% - 6px); max-width: 92px; height: 50px; object-fit: contain; }
   }
 </style>
