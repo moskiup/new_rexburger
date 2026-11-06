@@ -120,4 +120,4 @@ export const malteadas = [
   { img: mazapan, box: [220.5, 4973, 288], label: 'MAZAPÁN', side: 'r', lx: 280, ly: 5161.5 },
   { img: oreo, box: [389, 5060, 288], label: 'OREO', side: 'l', lx: 633, ly: 5249.5 },
 ] as const;
-export const conoVainilla = { img: cono, box: [299.7, 5265, 130] as const, textoX: 458, textoY: 5417.5 };
+export const conoVainilla = { img: cono, box: [299.7, 5270, 130] as const, textoX: 458, textoY: 5417.5 };
