@@ -39,7 +39,7 @@ import { C, conoVainilla, malteadas } from '../../data/menu';
   .movil { display: none; }
 
   @media (max-width: 767px) {
-    .malteadas { aspect-ratio: auto; padding: 36px 14px 70px; }
+    .malteadas { aspect-ratio: auto; padding: 36px 14px 0; overflow: hidden; }
     .titulo { position: static; transform: none; text-align: center; font-size: 17cqw; margin-bottom: 14px; }
     .desk { display: none; }
     .movil { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; align-items: start; }
@@ -48,7 +48,7 @@ import { C, conoVainilla, malteadas } from '../../data/menu';
     .foto { width: 100%; max-width: 230px; height: auto; }
     .nombre { margin: -6px 0 0; font-family: var(--font-fun); font-size: 8.6cqw; color: var(--cream); text-align: center; text-shadow: .06em .08em 0 rgb(119 41 15 / .55); }
     .cono { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
-    .cono-foto { width: 38%; max-width: 170px; height: auto; }
+    .cono-foto { display: block; width: 38%; max-width: 170px; height: auto; }
     .cono-texto { margin: 0; font-family: var(--font-display-light); font-size: 16cqw; line-height: .95; color: #77290f; text-transform: uppercase; }
   }
 </style>
