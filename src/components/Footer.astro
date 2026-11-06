@@ -7,21 +7,25 @@ import { sucursales, redes } from '../data/config';
 
 interface Props {
   titulo?: string;
+  /** Con `false` se oculta la fila de sucursales (por ejemplo en Contacto, que ya las muestra en tarjetas). */
+  mostrarSucursales?: boolean;
 }
-const { titulo } = Astro.props;
+const { titulo, mostrarSucursales = true } = Astro.props;
 ---
 
-<footer class="footer" id="contacto">
+<footer class="footer" class:list={[{ 'sin-sucursales': !mostrarSucursales }]} id="contacto">
   {titulo && <h2>{titulo}</h2>}
-  <ul class="branches">
-    {sucursales.map((s) => (
-      <li>
-        <strong>{s.corto}</strong>
-        <ContactoLink tipo="whatsapp" numero={s.whatsapp} />
-        <ContactoLink tipo="telefono" numero={s.telefono} />
-      </li>
-    ))}
-  </ul>
+  {mostrarSucursales && (
+    <ul class="branches">
+      {sucursales.map((s) => (
+        <li>
+          <strong>{s.corto}</strong>
+          <ContactoLink tipo="whatsapp" numero={s.whatsapp} />
+          <ContactoLink tipo="telefono" numero={s.telefono} />
+        </li>
+      ))}
+    </ul>
+  )}
   <div class="bottom">
     <div class="social">
       <Image src={redesImg} alt="" width={96} />
@@ -84,6 +88,7 @@ const { titulo } = Astro.props;
     gap: 6px;
     color: var(--white);
   }
+  .sin-sucursales .bottom { margin-top: 0; }
   .bottom {
     max-width: var(--maxw);
     margin: clamp(24px, 4vw, 44px) auto 0;

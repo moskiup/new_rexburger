@@ -5,7 +5,7 @@ import { sucursales } from '../data/config';
 import { contacto, paginas } from '../data/contenido';
 ---
 
-<Layout title={paginas.contacto.titulo} description={paginas.contacto.descripcion}>
+<Layout title={paginas.contacto.titulo} description={paginas.contacto.descripcion} footerSucursales={false}>
   <section class="contacto">
     <h1>{contacto.titulo}</h1>
     <ul>
@@ -40,19 +40,25 @@ import { contacto, paginas } from '../data/contenido';
     li { flex: 0 0 calc((100% - 40px) / 3); }
   }
   li { background: var(--red); color: var(--white); border-radius: 24px; padding: clamp(16px, 2.2vw, 24px); display: grid; gap: 8px; justify-items: start; align-content: start; }
-  h2 { color: #fbb500; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  h2 { justify-self: center; text-align: center; color: #fbb500; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
   .dir { font-size: var(--fs-sm); line-height: 1.4; margin-bottom: 4px; }
   li a { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-md); }
   li a:hover { text-decoration: underline; }
   .mas {
+    justify-self: center;
     margin-top: 8px;
     background: var(--orange);
     color: var(--on-orange);
     font-weight: 700;
     font-size: var(--fs-sm);
-    letter-spacing: clamp(.06em, .5vw, .15em);
+    /* El espaciado entre letras también se aplica tras la última, lo que corría el texto hacia la izquierda:
+       se descuenta del relleno derecho para que el texto quede centrado en la píldora. */
+    --mas-x: clamp(14px, 1.6vw, 20px);
+    --mas-ls: clamp(.06em, .5vw, .15em);
+    letter-spacing: var(--mas-ls);
+    justify-content: center;
     text-transform: uppercase;
-    padding: 12px clamp(14px, 1.6vw, 20px);
+    padding: 12px calc(var(--mas-x) - var(--mas-ls)) 12px var(--mas-x);
     border-radius: 999px;
   }
   li { transition: transform .3s ease, box-shadow .3s ease; }

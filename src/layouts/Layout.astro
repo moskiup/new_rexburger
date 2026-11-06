@@ -9,11 +9,14 @@ interface Props {
   title?: string;
   description?: string;
   footerTitle?: string;
+  /** `false` oculta la fila de sucursales del pie de página. */
+  footerSucursales?: boolean;
 }
 const {
   title = site.titulo,
   description = site.descripcion,
   footerTitle,
+  footerSucursales = true,
 } = Astro.props;
 
 // Dirección absoluta de esta página y de la imagen para compartir (Astro.site viene de astro.config.mjs).
@@ -58,7 +61,7 @@ const imagen = new URL(site.imagenCompartir, Astro.site).href;
     <Loader />
     <Header />
     <main><slot /></main>
-    <Footer titulo={footerTitle} />
+    <Footer titulo={footerTitle} mostrarSucursales={footerSucursales} />
     <script>
       import '../scripts/reveal';
       import '../scripts/animaciones';
