@@ -52,6 +52,6 @@ export const eventos = {
 } as const;
 
 export const contacto = {
-  titulo: 'Contactos',
+  titulo: 'Contáctanos',
   verSucursal: 'Ver sucursal',
 } as const;

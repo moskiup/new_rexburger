@@ -31,10 +31,15 @@ import { contacto, paginas } from '../data/contenido';
     padding: 0;
     max-width: 1100px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr;
     gap: 20px;
   }
-  li { background: var(--red); color: var(--white); border-radius: 24px; padding: 24px; display: grid; gap: 8px; justify-items: start; align-content: start; }
+  /* Escritorio: 3 tarjetas arriba y 2 abajo, centradas. */
+  @media (min-width: 768px) {
+    ul { display: flex; flex-wrap: wrap; justify-content: center; }
+    li { flex: 0 0 calc((100% - 40px) / 3); }
+  }
+  li { background: var(--red); color: var(--white); border-radius: 24px; padding: clamp(16px, 2.2vw, 24px); display: grid; gap: 8px; justify-items: start; align-content: start; }
   h2 { color: #fbb500; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
   .dir { font-size: var(--fs-sm); line-height: 1.4; margin-bottom: 4px; }
   li a { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-md); }
@@ -45,9 +50,9 @@ import { contacto, paginas } from '../data/contenido';
     color: var(--on-orange);
     font-weight: 700;
     font-size: var(--fs-sm);
-    letter-spacing: .15em;
+    letter-spacing: clamp(.06em, .5vw, .15em);
     text-transform: uppercase;
-    padding: 12px 20px;
+    padding: 12px clamp(14px, 1.6vw, 20px);
     border-radius: 999px;
   }
   li { transition: transform .3s ease, box-shadow .3s ease; }
