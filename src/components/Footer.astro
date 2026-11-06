@@ -110,7 +110,10 @@ const { titulo, mostrarSucursales = true } = Astro.props;
     .domicilio img { width: 150px; }
     .branches { grid-template-columns: repeat(2, 1fr); }
     .branches li { border-left: 0; padding: 8px; }
-    .branches li:last-child { grid-column: 1 / -1; border-right: 0; }
+    /* Capilla de GPE (4.ª) tiene el nombre más largo: pasa a la fila final, centrada, y Zapotlanejo ocupa su lugar. */
+    .branches li:nth-child(4) { order: 5; grid-column: 1 / -1; }
+    .branches li:nth-child(5) { order: 4; grid-column: auto; }
+    .branches strong { letter-spacing: .05em; white-space: nowrap; }
     .branches li { font-size: var(--fs-sm); gap: 0; }
   }
 </style>
