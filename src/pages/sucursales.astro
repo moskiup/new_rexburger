@@ -55,16 +55,15 @@ const fotosDe = (slug: string) =>
     border: 2px solid var(--red);
     border-radius: clamp(14px, 2.2vw, 28px);
   }
-  .dir { font-size: clamp(var(--fs-md), 1.9vw, var(--fs-xl)); margin-top: clamp(14px, 2.4vw, 28px); }
-  .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(var(--fs-sm), 1.4vw, var(--fs-md)); }
-  .tels a { min-height: var(--tap); }
+  .dir { font-size: clamp(calc(var(--fs-md) + 4px), calc(1.9vw + 4px), calc(var(--fs-xl) + 4px)); margin-top: clamp(14px, 2.4vw, 28px); }
+  .tels { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 2px; font-size: clamp(var(--fs-lg), 1.9vw, 26px); }
+  .tels a { min-height: var(--tap); --cl-icono: 1.1em; gap: .45em; }
   @media (max-width: 767px) {
     section { padding-bottom: 14px; }
     h2 { font-size: clamp(56px, 17vw, 72px); line-height: .95; letter-spacing: .02em; padding: 30px 0 14px; }
-    .dir { font-size: var(--fs-xl); font-weight: 500; line-height: 1.35; margin-top: 18px; text-align: center; text-wrap: balance; }
+    .dir { font-size: calc(var(--fs-xl) + 4px); font-weight: 500; line-height: 1.35; margin-top: 18px; text-align: center; text-wrap: balance; }
     .tels { margin-top: 4px; gap: 0 26px; justify-content: center; }
-    .tels a { font-size: var(--fs-lg); font-weight: 600; }
-    .tels a { --cl-icono: 20px; }
+    .tels a { font-size: 22px; font-weight: 600; }
   }
   @media (max-width: 767px) {
     .fotos { grid-template-columns: 1fr 1fr; gap: 8px; }
