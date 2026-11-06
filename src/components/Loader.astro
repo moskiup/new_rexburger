@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import sello from '../assets/inicio/sello-circular-rex-burger-crema.webp';
 import isotipo from '../assets/inicio/isotipo-rex-burger-amarillo.webp';
-import TextoOla from './TextoOla.astro';
 ---
 
 <div id="loader" role="status" aria-live="polite" aria-label="Cargando">
@@ -10,7 +9,6 @@ import TextoOla from './TextoOla.astro';
     <Image class="sello" src={sello} alt="" width={180} height={181} loading="eager" decoding="sync" />
     <Image class="iso" src={isotipo} alt="" width={84} height={76} loading="eager" decoding="sync" />
   </div>
-  <p class="texto" aria-hidden="true"><TextoOla texto="CARGANDO" sombra="#8e0f14" /></p>
 </div>
 <noscript><style>#loader { display: none !important; }</style></noscript>
 
@@ -21,8 +19,6 @@ import TextoOla from './TextoOla.astro';
     z-index: 9999;
     display: grid;
     place-items: center;
-    align-content: center;
-    gap: clamp(18px, 4vw, 30px);
     background: var(--red);
     transition: opacity .55s ease, visibility .55s ease;
   }
@@ -31,16 +27,6 @@ import TextoOla from './TextoOla.astro';
   .caja img { position: absolute; max-width: none; height: auto; }
   .sello { width: 100%; animation: spin 6s linear infinite; }
   .iso { width: 46%; animation: latido 1.4s ease-in-out infinite; }
-  /* Mismo estilo que el título "Rexquisito": letras en Super Plants (la ola con sombra la pone TextoOla). */
-  .texto {
-    margin: 0;
-    font-family: var(--font-fun);
-    font-size: clamp(30px, 7vw, 44px);
-    letter-spacing: .04em;
-    color: var(--cream);
-    line-height: 1.1;
-    white-space: nowrap;
-  }
   @keyframes latido {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.14); }
