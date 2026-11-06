@@ -13,6 +13,8 @@
 
 /* Hamburguesas, Combos y Malteadas: la entrada lateral recorre más distancia para que se note (la sección recorta lo que sobra). */
 #hamburguesas, #combos, #malteadas { --slide: clamp(70px, 24vw, 280px); }
+/* Los textos son estrechos: con tanto recorrido saldrían del todo de la sección (que recorta) y el observador no los vería. */
+#hamburguesas .fun, #combos .fun, #malteadas .fun { --slide: clamp(24px, 9vw, 90px); }
 
 /* ---------- Piezas posicionadas ---------- */
 .a { position: absolute; left: var(--l); top: var(--t); width: var(--w); height: auto; max-width: none; }

@@ -115,9 +115,9 @@ export const logos = [
 
 /* ---------- Malteadas ---------- */
 export const malteadas = [
-  { img: cajeta, box: [220.5, 4716.2, 288], label: 'CAJETA', side: 'r', lx: 280, ly: 4904.5 },
-  { img: vainilla, box: [388.4, 4816.2, 287], label: 'VAINILLA', side: 'l', lx: 633, ly: 4985.5 },
-  { img: mazapan, box: [220.5, 4973, 288], label: 'MAZAPÁN', side: 'r', lx: 280, ly: 5161.5 },
-  { img: oreo, box: [389, 5060, 288], label: 'OREO', side: 'l', lx: 633, ly: 5249.5 },
+  { img: cajeta, box: [185.5, 4716.2, 288], label: 'CAJETA', side: 'r', lx: 245, ly: 4904.5 },
+  { img: vainilla, box: [423.4, 4816.2, 287], label: 'VAINILLA', side: 'l', lx: 668, ly: 4985.5 },
+  { img: mazapan, box: [185.5, 4973, 288], label: 'MAZAPÁN', side: 'r', lx: 245, ly: 5161.5 },
+  { img: oreo, box: [424, 5060, 288], label: 'OREO', side: 'l', lx: 668, ly: 5249.5 },
 ] as const;
 export const conoVainilla = { img: cono, box: [299.7, 5270, 130] as const, textoX: 458, textoY: 5417.5 };
