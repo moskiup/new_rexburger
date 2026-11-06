@@ -11,12 +11,12 @@ const OBJETIVOS = [
   '.menu h2', '.menu .item',
   '.eventos > *:not(.bg)', '.merch > *:not(.bg)',
   '.ubicaciones .frase', '.ubicaciones li',
-  '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl', '.combos .item',
+  '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl', '.combos .item', '.malteadas .item', '.malteadas .cono',
   '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
 ];
 
 /** Secciones cuya entrada se repite al volver a verlas. */
-const REPETIR = '#hamburguesas, #combos';
+const REPETIR = '#hamburguesas, #combos, #malteadas';
 /** Los elementos que ya están a la vista al cargar la página esperan este tiempo antes de entrar. */
 const RETARDO_CARGA_MS = 300;
 let cargando = true;
@@ -47,9 +47,9 @@ if (!sinMovimiento() && 'IntersectionObserver' in window) {
       const r = el.getBoundingClientRect();
       const sec = el.closest('.sec')!.getBoundingClientRect();
       el.classList.add(r.left + r.width / 2 < sec.left + sec.width / 2 ? 'reveal-left' : 'reveal-right');
-    } else if (el.matches('.combos .item')) {
-      // Combos en móvil (una columna): entran alternando izquierda y derecha.
-      el.classList.add(el.matches(':nth-child(odd)') ? 'reveal-left' : 'reveal-right');
+    } else if (el.matches('.combos .item, .malteadas .item, .malteadas .cono')) {
+      // Móvil: Combos (una columna) entran alternando lado; Malteadas (dos columnas) desde su propia columna; el cono, desde la derecha.
+      el.classList.add(el.matches('.cono, :nth-child(even)') ? 'reveal-right' : 'reveal-left');
     } else if (el.matches('.a, .ico')) {
       el.classList.add('reveal-zoom');
     }
