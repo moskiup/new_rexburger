@@ -15,12 +15,18 @@ const OBJETIVOS = [
   '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
 ];
 
+/** Secciones cuya entrada se repite al volver a verlas. */
+const REPETIR = '#hamburguesas, #combos';
+
 if (!sinMovimiento() && 'IntersectionObserver' in window) {
   const elementos = [...document.querySelectorAll<HTMLElement>(OBJETIVOS.join(','))];
   const observador = new IntersectionObserver(
     (entradas) => {
       entradas.forEach((e) => {
-        if (e.isIntersecting) {
+        if (e.target.closest(REPETIR)) {
+          // Hamburguesas y Combos: la entrada lateral se repite cada vez que vuelven a aparecer.
+          e.target.classList.toggle('in', e.isIntersecting);
+        } else if (e.isIntersecting) {
           e.target.classList.add('in');
           observador.unobserve(e.target);
         }
