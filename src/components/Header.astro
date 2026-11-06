@@ -51,8 +51,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: 6px;
     border: 0;
     border-radius: 16px;
-    /* Plano, sin sombra, en el rojo exacto del logotipo (#c01414). */
-    background: #c01414;
+    /* Sin fondo: solo las tres rayas, en el rojo exacto del logotipo (#c01414). */
+    background: transparent;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: background .2s ease, transform .15s ease;
@@ -63,7 +63,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     width: 26px;
     height: 3.5px;
     border-radius: 3px;
-    background: var(--white);
+    background: #c01414;
     transition: transform .3s ease, opacity .2s ease;
   }
   .header.open .burger span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
