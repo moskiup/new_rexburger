@@ -70,7 +70,7 @@ h1, h2, h3, p { margin: 0; }
   font-size: clamp(var(--fs-xs), 1.3vw, var(--fs-md));
   transition: transform .15s ease, filter .15s ease;
 }
-.pill:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.pill:hover { transform: translateY(-2px); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -89,8 +89,8 @@ h1, h2, h3, p { margin: 0; }
 :root { --slide: clamp(24px, 9vw, 90px); }
 
 /* Botones y píldoras */
-.btn, .mas, .pill { transition: transform .25s ease, filter .25s ease, box-shadow .25s ease; }
-.btn:hover, .mas:hover { transform: scale(1.06); box-shadow: 0 6px 16px rgb(0 0 0 / .22); }
+.btn, .mas, .pill { transition: transform .25s ease; }
+.btn:hover, .mas:hover { transform: scale(1.06); }
 .btn:active, .mas:active { transform: scale(.97); }
 
 /* Logo y navegación */

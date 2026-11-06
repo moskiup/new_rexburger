@@ -7,9 +7,12 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
 ---
 
 <section class="sec bebidas" id="bebidas" style={`${ratio(DIM.bebidas)};background:#fff`}>
-  <Image class="a cuadros" style={box(S.bebidas, 0, 4078.9, 279.75)} src={cuadrosIzq} alt="" widths={[300, 600]} sizes="35vw" />
-  <Image class="a cuadros der" style={box(S.bebidas, 619.9, 4078.9, 280.1)} src={cuadrosDer} alt="" widths={[300, 600]} sizes="35vw" />
-  <h2 class="t t-hecto titulo" style={`${title(S.bebidas, 4107, 112)};color:${C.red}`}>Bebidas</h2>
+  <!-- Encabezado con flexbox: adorno, título y adorno en una fila centrada (horizontal y vertical) sobre el centro del título. -->
+  <div class="encabezado" style={title(S.bebidas, 4107, 112)}>
+    <Image class="a cuadros" src={cuadrosIzq} alt="" widths={[300, 600]} sizes="35vw" />
+    <h2 class="t t-hecto titulo" style={`color:${C.red}`}>Bebidas</h2>
+    <Image class="a cuadros" src={cuadrosDer} alt="" widths={[300, 600]} sizes="35vw" />
+  </div>
 
   <!-- Escritorio: posiciones calculadas sobre la referencia -->
   <div class="desk">
@@ -47,6 +50,13 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
   .desk { display: contents; }
   .movil { display: none; }
 
+  /* Fila flexible centrada sobre el centro del título; los adornos miden lo mismo, así el título queda en medio. */
+  .encabezado { position: absolute; left: 0; right: 0; top: var(--t); transform: translateY(-50%); display: flex; align-items: center; justify-content: space-between; font-size: var(--fs); }
+  .encabezado .cuadros { position: static; width: 31.1%; flex: none; }
+  .encabezado .titulo { position: static; transform: none; flex: 1; text-align: center; font-size: var(--fs);
+    /* El glifo queda unos .1em por encima del centro de su caja de línea; este relleno lo compensa para centrarlo de verdad. */
+    padding-top: .192em; }
+
   .logo {
     transition: scale .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1);
   }
@@ -66,10 +76,9 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
   /* ---------- Móvil ---------- */
   @media (max-width: 767px) {
     .bebidas { aspect-ratio: auto; padding: 0 0 54px; overflow: hidden; }
-    .cuadros { top: 34px; width: 24%; }
-    /* El de la derecha se pega al borde derecho (su posición de escritorio lo dejaba a ~7% del borde). */
-    .cuadros.der { left: auto; right: 0; }
-    .titulo { position: static; transform: none; text-align: center; font-size: 15.5cqw; padding: 28px 0 10px; }
+    .encabezado { position: static; transform: none; padding: 28px 0 10px; }
+    .encabezado .cuadros { width: 24%; }
+    .encabezado .titulo { font-size: 15.5cqw; }
     .desk { display: none; }
     .movil { display: block; padding: 0 12px; }
     .rotulo { margin: 0 0 4px; text-align: center; font-weight: 700; font-size: var(--fs-lg); letter-spacing: .12em; color: var(--red); }
