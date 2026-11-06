@@ -121,7 +121,7 @@ export const sucursales: Sucursal[] = [
     direccion: 'San Antonio #248. Capilla de Guadalupe, Jal.',
     whatsapp: '378 218 2115',
     telefono: '378 104 7289',
-    coords: [20.9442, -102.5253],
+    coords: [20.8221279, -102.5970507],
     altFotos: [
       'Edificio de Rex Burger con letrero circular y estacionamiento',
       'Vista aérea de Rex Burger sobre la carretera de Capilla de Guadalupe',
