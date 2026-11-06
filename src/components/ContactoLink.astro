@@ -30,12 +30,13 @@ const iconos = { crema: { whatsapp: waCrema, telefono: telCrema }, rojo: { whats
   rel={whatsapp ? 'noopener' : undefined}
   {...resto}
 >
-  {icono && <Image src={iconos[tono][tipo]} alt={whatsapp ? 'WhatsApp' : 'Teléfono'} width={16} height={16} densities={[2, 3]} />}{numero}
+  {icono && <Image src={iconos[tono][tipo]} alt={whatsapp ? 'WhatsApp' : 'Teléfono'} width={16} densities={[2, 3]} />}{numero}
 </a>
 
 <style>
   .contacto-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-  /* Tamaño del icono: la página que lo usa puede cambiarlo con --cl-icono. */
-  .contacto-link img { width: var(--cl-icono, 16px); height: var(--cl-icono, 16px); }
+  /* Ancho del icono: la página que lo usa puede cambiarlo con --cl-icono. */
+  /* Solo se fija el ancho: el icono de teléfono no es cuadrado y, con alto y ancho fijos, se recortaba. */
+  .contacto-link img { width: var(--cl-icono, 16px); height: auto; }
   .contacto-link:hover { text-decoration: underline; }
 </style>

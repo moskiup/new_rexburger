@@ -103,5 +103,4 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* Latido suave del pin de ubicación y giro de los gráficos decorativos */
-@keyframes pop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes spin { to { transform: rotate(360deg); } }
