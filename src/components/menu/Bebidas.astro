@@ -8,7 +8,7 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
 
 <section class="sec bebidas" id="bebidas" style={`${ratio(DIM.bebidas)};background:#fff`}>
   <Image class="a cuadros" style={box(S.bebidas, 0, 4078.9, 279.75)} src={cuadrosIzq} alt="" widths={[300, 600]} sizes="35vw" />
-  <Image class="a cuadros" style={box(S.bebidas, 619.9, 4078.9, 280.1)} src={cuadrosDer} alt="" widths={[300, 600]} sizes="35vw" />
+  <Image class="a cuadros der" style={box(S.bebidas, 619.9, 4078.9, 280.1)} src={cuadrosDer} alt="" widths={[300, 600]} sizes="35vw" />
   <h2 class="t t-hecto titulo" style={`${title(S.bebidas, 4107, 112)};color:${C.red}`}>Bebidas</h2>
 
   <!-- Escritorio: posiciones calculadas sobre la referencia -->
@@ -67,6 +67,8 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
   @media (max-width: 767px) {
     .bebidas { aspect-ratio: auto; padding: 0 0 54px; overflow: hidden; }
     .cuadros { top: 34px; width: 24%; }
+    /* El de la derecha se pega al borde derecho (su posición de escritorio lo dejaba a ~7% del borde). */
+    .cuadros.der { left: auto; right: 0; }
     .titulo { position: static; transform: none; text-align: center; font-size: 15.5cqw; padding: 28px 0 10px; }
     .desk { display: none; }
     .movil { display: block; padding: 0 12px; }
