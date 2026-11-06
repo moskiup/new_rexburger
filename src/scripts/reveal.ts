@@ -11,7 +11,7 @@ const OBJETIVOS = [
   '.menu h2', '.menu .item',
   '.eventos > *:not(.bg)', '.merch > *:not(.bg)',
   '.ubicaciones .frase', '.ubicaciones li',
-  '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl',
+  '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl', '.combos .item',
   '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
 ];
 
@@ -37,6 +37,9 @@ if (!sinMovimiento() && 'IntersectionObserver' in window) {
       const r = el.getBoundingClientRect();
       const sec = el.closest('.sec')!.getBoundingClientRect();
       el.classList.add(r.left + r.width / 2 < sec.left + sec.width / 2 ? 'reveal-left' : 'reveal-right');
+    } else if (el.matches('.combos .item')) {
+      // Combos en móvil (una columna): entran alternando izquierda y derecha.
+      el.classList.add(el.matches(':nth-child(odd)') ? 'reveal-left' : 'reveal-right');
     } else if (el.matches('.a, .ico')) {
       el.classList.add('reveal-zoom');
     }

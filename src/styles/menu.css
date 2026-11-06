@@ -11,6 +11,9 @@
 .shape { isolation: isolate; background: linear-gradient(to right, var(--cl) 50%, var(--cr) 50%); }
 .shape::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fill); border-radius: var(--r); }
 
+/* Hamburguesas y Combos: la entrada lateral recorre más distancia para que se note (la sección recorta lo que sobra). */
+#hamburguesas, #combos { --slide: clamp(70px, 24vw, 280px); }
+
 /* ---------- Piezas posicionadas ---------- */
 .a { position: absolute; left: var(--l); top: var(--t); width: var(--w); height: auto; max-width: none; }
 
