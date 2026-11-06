@@ -70,8 +70,12 @@ const { titulo } = Astro.props;
   /* Escritorio: el texto de cada sucursal arranca a la izquierda de su columna, de modo que "CONTACTOS",
      "SUC. ATOTONILCO" y los iconos de redes quedan alineados en el mismo borde. */
   @media (min-width: 768px) {
+    /* Columnas del ancho de su contenido, repartidas de borde a borde: el último texto termina donde
+       termina la fila, y ahí queda alineado "Servicio a domicilio". */
+    .branches { grid-template-columns: repeat(5, auto); justify-content: space-between; }
     .branches li { justify-items: start; text-align: left; padding: 4px 8px 4px clamp(14px, 2vw, 32px); }
     .branches li:first-child { padding-left: 0; }
+    .branches li:last-child { padding-right: 0; }
   }
   strong { color: #fbb500; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
   .branches a {
