@@ -17,6 +17,9 @@ const OBJETIVOS = [
 
 /** Secciones cuya entrada se repite al volver a verlas. */
 const REPETIR = '#hamburguesas, #combos';
+/** Los elementos que ya están a la vista al cargar la página esperan este tiempo antes de entrar. */
+const RETARDO_CARGA_MS = 300;
+let cargando = true;
 
 if (!sinMovimiento() && 'IntersectionObserver' in window) {
   const elementos = [...document.querySelectorAll<HTMLElement>(OBJETIVOS.join(','))];
@@ -25,7 +28,8 @@ if (!sinMovimiento() && 'IntersectionObserver' in window) {
       entradas.forEach((e) => {
         if (e.target.closest(REPETIR)) {
           // Hamburguesas y Combos: la entrada lateral se repite cada vez que vuelven a aparecer.
-          e.target.classList.toggle('in', e.isIntersecting);
+          if (cargando && e.isIntersecting) setTimeout(() => e.target.classList.add('in'), RETARDO_CARGA_MS);
+          else e.target.classList.toggle('in', e.isIntersecting);
         } else if (e.isIntersecting) {
           e.target.classList.add('in');
           observador.unobserve(e.target);
@@ -53,4 +57,6 @@ if (!sinMovimiento() && 'IntersectionObserver' in window) {
     el.style.setProperty('--d', `${(i % 3) * 0.08}s`);
     observador.observe(el);
   });
+  // El primer aviso del observador llega justo después de observar: pasado ese instante ya no se considera carga.
+  setTimeout(() => (cargando = false), 150);
 }
