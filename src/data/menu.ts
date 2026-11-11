@@ -23,12 +23,12 @@ import logoSprite from '../assets/menu/bebidas-sprite.webp';
 import logoMundet from '../assets/menu/bebidas-mundet.webp';
 import logoFanta from '../assets/menu/bebidas-fanta.webp';
 import logoFuze from '../assets/menu/bebidas-fuze-tea.webp';
-import kCaja from '../assets/menu/menukids-caja-rexykids.webp';
+import kCaja from '../assets/menu/menukids-caja-rexykids.png';
 import kHamb from '../assets/menu/menukids-hamburguesa.webp';
 import kJuguete from '../assets/menu/menukids-juguete.webp';
 import kNuggets from '../assets/menu/menukids-nuggets.webp';
 import kPapas from '../assets/menu/menukids-papas.webp';
-import kJugo from '../assets/menu/bebidas-jugo.webp';
+import kJugo from '../assets/menu/bebidas-jugo.png';
 import cajeta from '../assets/menu/malteada-cajeta.webp';
 import vainilla from '../assets/menu/malteada-vainilla.webp';
 import mazapan from '../assets/menu/malteada-mazapan.webp';
@@ -84,12 +84,12 @@ export const complementosMovil = complementos.map((c) => ({
 
 /* ---------- Cajita Rexy Kids ---------- */
 const piezas = [
-  { img: kCaja, alt: 'Caja Rexy Kids', bb: [48, 56, 533, 519] as BB, cx: 492, cy: 215, w: 385, dur: 6, delay: 0, rot: 1.5 },
+  { img: kCaja, alt: 'Caja Rexy Kids', bb: [110, 128, 1216, 1185] as BB, cx: 492, cy: 215, w: 385, dur: 6, delay: 0, rot: 1.5 },
   { img: kNuggets, alt: 'Nuggets de pollo', bb: [81, 137, 485, 463] as BB, cx: 745, cy: 255, w: 200, dur: 5, delay: -1.2, rot: 3 },
   { img: kPapas, alt: 'Papas a la francesa', bb: [62, 66, 530, 673] as BB, cx: 201, cy: 381, w: 178, dur: 5.5, delay: -2.4, rot: 3 },
   { img: kJuguete, alt: 'Dinosaurio de juguete', bb: [121, 116, 471, 490] as BB, cx: 222, cy: 180, w: 115, dur: 4, delay: -0.6, rot: 5 },
   { img: kHamb, alt: 'Hamburguesa Kids', bb: [85, 78, 547, 458] as BB, cx: 604, cy: 411, w: 208, dur: 5.2, delay: -3, rot: 3 },
-  { img: kJugo, alt: 'Jugo', bb: [74, 42, 209, 348] as BB, cx: 815, cy: 361, w: 100, dur: 4.6, delay: -1.8, rot: 4 },
+  { img: kJugo, alt: 'Jugo', bb: [157, 89, 443, 736] as BB, cx: 815, cy: 361, w: 100, dur: 4.6, delay: -1.8, rot: 4 },
 ];
 export const kids = piezas.map((p) => ({
   img: p.img,

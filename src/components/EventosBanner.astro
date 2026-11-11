@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import camion from '../assets/inicio/camion-rex-burger-eventos.webp';
+import camion from '../assets/inicio/camion-rex-burger-eventos.png';
 import circulo from '../assets/inicio/circulo-punteado-decorativo-amarillo.webp';
 import asterisco from '../assets/inicio/asterisco-decorativo-crema.webp';
 import isotipo from '../assets/inicio/isotipo-rex-burger-amarillo.webp';
@@ -21,16 +21,15 @@ const Heading = heading;
 <section class="eventos" data-anim="deslizar">
   <div class="escena">
   <Image class="pieza circulo" src={circulo} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
-  <Image class="pieza camion" src={camion} alt="Camión de Rex Burger para eventos" widths={[400, 600]} sizes="(max-width: 767px) 95vw, 58vw" loading="eager" fetchpriority={heading === 'h1' ? 'high' : undefined} />
+  <Image class="pieza camion" src={camion} alt="Camión de Rex Burger para eventos" widths={[600, 900, 1200, 1600, 2000]} sizes="(max-width: 767px) 70vw, 45vw" quality={85} loading="eager" fetchpriority={heading === 'h1' ? 'high' : undefined} />
   <Image class="pieza asterisco" src={asterisco} alt="" widths={[200, 400]} sizes="12vw" loading="eager" />
   </div>
   <p class="kicker">{bannerEventos.kicker}</p>
   <Heading class="titulo">{bannerEventos.titulo}</Heading>
   <BotonPildora href={ctaHref}>{ctaLabel}{ctaHref === '/eventos' && <span class="sr-only"> sobre nuestros eventos</span>}</BotonPildora>
   <p class="cities">
-    {ciudadesEventos.map((c, i) => (
+    {ciudadesEventos.map((c) => (
       <>
-        {i > 0 && <Image class="sep" src={isotipo} alt="" width={24} densities={[2, 3]} />}
         <span><Image class="viñeta" src={isotipo} alt="" width={24} densities={[2, 3]} />{c}</span>
       </>
     ))}
@@ -48,7 +47,7 @@ const Heading = heading;
   .eventos > :not(.pieza) { position: absolute; margin: 0; }
   /* Piezas sueltas (posiciones sobre el diseño original de 1000 x 560). */
   .pieza { position: absolute; display: block; height: auto; max-width: none; }
-  .camion { left: 59.6%; top: 17.5%; width: 58.33%; animation: camion-bob 5s ease-in-out infinite; transform-origin: 50% 100%; }
+  .camion { left: 55.6%; top: 17.5%; width: 44.4%; animation: camion-bob 5s ease-in-out infinite; transform-origin: 50% 100%; }
   .circulo { left: 65.5%; top: 19%; width: 11%; animation: spin 16s linear infinite; }
   .asterisco { left: -3.75%; top: 61.7%; width: 11.3%; animation: spin 24s linear infinite reverse; }
   /* Entrada: el camión llega deslizándose desde la derecha (la clase la pone el script, sin JS queda en su sitio). */
@@ -89,10 +88,10 @@ const Heading = heading;
     letter-spacing: .15em;
     text-transform: uppercase;
   }
-  /* Ciudades: cada una es un bloque que no se parte; entre ellas va el isotipo amarillo, pequeño. */
+  /* Ciudades: cada una es un bloque que no se parte. Escritorio: separadas por "|". Móvil: isotipo como viñeta. */
   .cities span { white-space: nowrap; }
+  .cities span + span::before { content: '|'; margin: 0 .55em; }
   .cities .viñeta { display: none; }
-  .cities .sep { display: inline-block; width: 1.5em; height: auto; margin: 0 .6em; vertical-align: -.35em; }
   .escena { display: contents; }
 
   /* ---------- Móvil: se apila (texto, botón y camión) en vez de encoger el banner de escritorio ---------- */
@@ -111,13 +110,13 @@ const Heading = heading;
     .eventos .btn::after { right: 18px; }
     .eventos > .escena { display: block; position: relative; order: 4; width: 100%; aspect-ratio: 1.55; margin-top: 8px; }
     .escena .pieza { position: absolute; }
-    .escena .camion { left: 14%; top: 14%; width: 100%; }
+    .escena .camion { left: 30%; top: 0; width: 70%; }
     .escena .circulo { left: 31%; top: 0; width: 24%; }
     .escena .asterisco { left: -8%; top: 62%; width: 22%; }
     /* Móvil: centradas y sin barras; si no caben en una línea, bajan completas a la siguiente. */
     .cities { order: 5; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; text-align: center; align-items: center; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; line-height: 1.5; }
     /* En móvil el isotipo va como viñeta delante de cada ciudad (como separador acababa al final de las líneas). */
-    .cities .sep { display: none; }
+    .cities span + span::before { display: none; }
     .cities .viñeta { display: inline-block; width: 20px; height: auto; margin-right: 8px; vertical-align: -4px; }
   }
 </style>

@@ -2,16 +2,16 @@
 import { Image } from 'astro:assets';
 import { DIM, S, box, boxDe, fit, ratio, title, txt } from '../../lib/menu-layout';
 import { C, botellas, logos } from '../../data/menu';
-import cuadrosIzq from '../../assets/menu/bebidas-fondo-izquierdo.webp';
-import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.webp';
+import cuadrosIzq from '../../assets/menu/bebidas-fondo-izquierdo.png';
+import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.png';
 ---
 
 <section class="sec bebidas" id="bebidas" style={`${ratio(DIM.bebidas)};background:#fff`}>
   <!-- Encabezado con flexbox: adorno, título y adorno en una fila centrada (horizontal y vertical) sobre el centro del título. -->
   <div class="encabezado" style={title(S.bebidas, 4107, 112)}>
-    <Image class="a cuadros" src={cuadrosIzq} alt="" widths={[300, 600]} sizes="35vw" />
+    <Image class="a cuadros" src={cuadrosIzq} alt="" widths={[300, 600, 900, 1200]} sizes="35vw" />
     <h2 class="t t-hecto titulo" style={`color:${C.red}`}>Bebidas</h2>
-    <Image class="a cuadros" src={cuadrosDer} alt="" widths={[300, 600]} sizes="35vw" />
+    <Image class="a cuadros" src={cuadrosDer} alt="" widths={[300, 600, 900, 1200]} sizes="35vw" />
   </div>
 
   <!-- Escritorio: posiciones calculadas sobre la referencia -->
