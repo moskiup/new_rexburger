@@ -17,24 +17,27 @@ const { titulo, mostrarSucursales = true } = Astro.props;
   {titulo && <h2>{titulo}</h2>}
   {mostrarSucursales && (
     <ul class="branches">
-      {sucursales.map((s) => (
-        <li>
-          <strong>{s.corto}</strong>
-          <ContactoLink tipo="whatsapp" numero={s.whatsapp} />
-          <ContactoLink tipo="telefono" numero={s.telefono} />
-        </li>
+      {sucursales.map((s, i) => (
+        <>
+          {i > 0 && <li class="sep" role="presentation" aria-hidden="true" />}
+          <li>
+            <strong>{s.corto}</strong>
+            <ContactoLink tipo="whatsapp" numero={s.whatsapp} />
+            <ContactoLink tipo="telefono" numero={s.telefono} />
+          </li>
+        </>
       ))}
     </ul>
   )}
   <div class="bottom">
     <div class="social">
-      <Image src={redesImg} alt="" widths={[110, 220, 330]} sizes="(max-width: 767px) 110px, 96px" />
+      <Image src={redesImg} alt="" widths={[110, 220, 330]} sizes="(max-width: 767px) 110px, 96px" quality={95} />
       {redes.facebook && <a class="s1" href={redes.facebook} aria-label="Facebook"></a>}
       {redes.instagram && <a class="s2" href={redes.instagram} aria-label="Instagram"></a>}
       {redes.tiktok && <a class="s3" href={redes.tiktok} aria-label="TikTok"></a>}
     </div>
     <div class="domicilio">
-      <Image src={domicilio} alt="Servicio a domicilio" widths={[170, 340, 510]} sizes="(max-width: 767px) 120px, 170px" />
+      <Image src={domicilio} alt="Servicio a domicilio" widths={[120, 170, 220, 330, 440, 660]} sizes="(max-width: 767px) 120px, 170px" quality={95} />
     </div>
   </div>
 </footer>
@@ -76,10 +79,12 @@ const { titulo, mostrarSucursales = true } = Astro.props;
   @media (min-width: 768px) {
     /* Columnas del ancho de su contenido, repartidas de borde a borde: el último texto termina donde
        termina la fila, y ahí queda alineado "Servicio a domicilio". */
-    .branches { grid-template-columns: repeat(5, auto); justify-content: space-between; }
-    .branches li { justify-items: start; text-align: left; padding: 4px 8px 4px clamp(14px, 2vw, 32px); }
-    .branches li:first-child { padding-left: 0; }
-    .branches li:last-child { padding-right: 0; }
+    /* Entre cada sucursal hay una columna flexible (li.sep) con la línea en su centro: queda siempre a la
+       misma distancia del texto de la izquierda y del de la derecha. */
+    .branches { grid-template-columns: auto repeat(4, 1fr auto); }
+    .branches li { justify-items: start; text-align: left; padding: 4px 0; border-left: 0; }
+    .branches li.sep { position: relative; padding: 0; }
+    .branches li.sep::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgb(251 181 0 / .6); }
   }
   strong { color: #fbb500; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
   .branches a {
@@ -110,9 +115,10 @@ const { titulo, mostrarSucursales = true } = Astro.props;
     .domicilio img { width: 120px; }
     .branches { grid-template-columns: repeat(2, 1fr); }
     .branches li { border-left: 0; padding: 8px; }
-    /* Capilla de GPE (4.ª) tiene el nombre más largo: pasa a la fila final, centrada, y Zapotlanejo ocupa su lugar. */
-    .branches li:nth-child(4) { order: 5; grid-column: 1 / -1; }
-    .branches li:nth-child(5) { order: 4; grid-column: auto; }
+    /* Capilla de GPE (4.ª; hijo 7 por los separadores) tiene el nombre más largo: pasa a la fila final, centrada, y Zapotlanejo ocupa su lugar. */
+    .branches li.sep { display: none; }
+    .branches li:nth-child(7) { order: 5; grid-column: 1 / -1; }
+    .branches li:nth-child(9) { order: 4; grid-column: auto; }
     .branches strong { letter-spacing: .05em; white-space: nowrap; }
     .branches li { font-size: var(--fs-sm); gap: 0; }
   }

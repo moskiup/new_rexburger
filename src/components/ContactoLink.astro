@@ -28,6 +28,7 @@ const iconos = { crema: { whatsapp: waCrema, telefono: telCrema }, rojo: { whats
   class:list={['contacto-link', clase]}
   href={whatsapp ? waLink(numero) : telLink(numero)}
   rel={whatsapp ? 'noopener' : undefined}
+  data-tel={whatsapp ? undefined : telLink(numero)}
   {...resto}
 >
   {icono && <Image src={iconos[tono][tipo]} alt={whatsapp ? 'WhatsApp' : 'Teléfono'} width={16} densities={[2, 3]} />}{numero}
@@ -38,5 +39,19 @@ const iconos = { crema: { whatsapp: waCrema, telefono: telCrema }, rojo: { whats
   /* Ancho del icono: la página que lo usa puede cambiarlo con --cl-icono. */
   /* Solo se fija el ancho: el icono de teléfono no es cuadrado y, con alto y ancho fijos, se recortaba. */
   .contacto-link img { width: var(--cl-icono, 16px); height: auto; }
-  .contacto-link:hover { text-decoration: underline; }
+  /* Sin href (teléfonos en escritorio) es texto simple: no se subraya. */
+  .contacto-link[href]:hover { text-decoration: underline; }
 </style>
+
+<script>
+  /* Los teléfonos (tel:) solo son enlaces en móvil, donde se puede llamar. En escritorio se quita el href
+     y quedan como texto simple (sin enlace, sin foco, sin subrayado). WhatsApp sigue siendo enlace. */
+  const escritorio = matchMedia('(min-width: 768px)');
+  const aplicar = () =>
+    document.querySelectorAll<HTMLAnchorElement>('a.contacto-link[data-tel]').forEach((a) => {
+      if (escritorio.matches) a.removeAttribute('href');
+      else a.setAttribute('href', a.dataset.tel!);
+    });
+  aplicar();
+  escritorio.addEventListener('change', aplicar);
+</script>

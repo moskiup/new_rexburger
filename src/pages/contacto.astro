@@ -45,7 +45,7 @@ import { contacto, paginas } from '../data/contenido';
   h2 { text-align: center; color: #fbb500; font-size: 22px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; text-wrap: balance; }
   .dir { font-size: var(--fs-sm); line-height: 1.4; margin-bottom: 4px; text-align: center; text-wrap: balance; }
   li a { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-md); }
-  li a:not(.mas):hover { text-decoration: underline; }
+  li a[href]:not(.mas):hover { text-decoration: underline; }
   .mas:hover { text-decoration: none; }
   /* El botón baja siempre al fondo de la tarjeta: así queda a la misma altura en todas las de una fila,
      aunque la dirección de una ocupe dos líneas. */

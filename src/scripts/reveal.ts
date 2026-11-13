@@ -12,7 +12,7 @@ const OBJETIVOS = [
   '.eventos > *:not(.bg)', '.merch > *:not(.bg)',
   '.ubicaciones .frase', '.ubicaciones li',
   '.sec h2', '.sec .a', '.sec .fun', '.sec .lbl', '.combos .item', '.malteadas .item', '.malteadas .cono', '.complementos .fila',
-  '.wrap section', '.grid li', '.footer .branches li', '.info > *', '.contacto h1, .contacto li',
+  '.wrap section', '.grid li', '.footer .branches li:not(.sep)', '.info > *', '.contacto h1, .contacto li',
 ];
 
 /** Secciones cuya entrada se repite al volver a verlas. */

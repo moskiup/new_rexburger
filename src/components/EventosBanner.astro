@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import camion from '../assets/inicio/camion-rex-burger-eventos.png';
 import circulo from '../assets/inicio/circulo-punteado-decorativo-amarillo.webp';
 import asterisco from '../assets/inicio/asterisco-decorativo-crema.webp';
-import isotipo from '../assets/inicio/isotipo-rex-burger-amarillo.webp';
 import BotonPildora from './BotonPildora.astro';
 import { bannerEventos } from '../data/contenido';
 import { ciudadesEventos } from '../data/config';
@@ -28,9 +27,10 @@ const Heading = heading;
   <Heading class="titulo">{bannerEventos.titulo}</Heading>
   <BotonPildora href={ctaHref}>{ctaLabel}{ctaHref === '/eventos' && <span class="sr-only"> sobre nuestros eventos</span>}</BotonPildora>
   <p class="cities">
-    {ciudadesEventos.map((c) => (
+    {ciudadesEventos.map((c, i) => (
       <>
-        <span><Image class="viñeta" src={isotipo} alt="" width={24} densities={[2, 3]} />{c}</span>
+        {i > 0 && <span class="sep" aria-hidden="true">|</span>}
+        <span class="ciudad">{c}</span>
       </>
     ))}
   </p>
@@ -47,8 +47,8 @@ const Heading = heading;
   .eventos > :not(.pieza) { position: absolute; margin: 0; }
   /* Piezas sueltas (posiciones sobre el diseño original de 1000 x 560). */
   .pieza { position: absolute; display: block; height: auto; max-width: none; }
-  .camion { left: 55.6%; top: 17.5%; width: 44.4%; animation: camion-bob 5s ease-in-out infinite; transform-origin: 50% 100%; }
-  .circulo { left: 65.5%; top: 19%; width: 11%; animation: spin 16s linear infinite; }
+  .camion { left: 42%; top: -5%; width: 84%; }
+  .circulo { left: 57%; top: 9%; width: 11%; animation: spin 16s linear infinite; }
   .asterisco { left: -3.75%; top: 61.7%; width: 11.3%; animation: spin 24s linear infinite reverse; }
   /* Entrada: el camión llega deslizándose desde la derecha (la clase la pone el script, sin JS queda en su sitio). */
   .eventos.slide .camion {
@@ -57,10 +57,6 @@ const Heading = heading;
   }
   .eventos.slide.go .camion { translate: 0 0; }
   .eventos.slide.instant .camion { transition: none; }
-  @keyframes camion-bob {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-1.2%) rotate(-.4deg); }
-  }
   .kicker {
     left: 9.5%; top: 19%;
     color: var(--white);
@@ -79,7 +75,7 @@ const Heading = heading;
     text-transform: uppercase;
   }
   /* Posición del botón; su aspecto (píldora con triángulo) está en BotonPildora.astro. */
-  .btn { left: 12.8%; width: 33.8%; top: 56%; height: 7.7%; }
+  .btn { left: 9.5%; width: 33.8%; top: 56%; height: 7.7%; }
   .cities {
     left: 0; right: 0; top: 87%;
     text-align: center;
@@ -88,10 +84,9 @@ const Heading = heading;
     letter-spacing: .15em;
     text-transform: uppercase;
   }
-  /* Ciudades: cada una es un bloque que no se parte. Escritorio: separadas por "|". Móvil: isotipo como viñeta. */
-  .cities span { white-space: nowrap; }
-  .cities span + span::before { content: '|'; margin: 0 .55em; }
-  .cities .viñeta { display: none; }
+  /* Ciudades separadas por "|". Cada ciudad es un bloque que no se parte. */
+  .cities .ciudad { white-space: nowrap; }
+  .cities .sep { margin: 0 .55em; }
   .escena { display: contents; }
 
   /* ---------- Móvil: se apila (texto, botón y camión) en vez de encoger el banner de escritorio ---------- */
@@ -106,17 +101,17 @@ const Heading = heading;
     .eventos > :not(.escena) { position: static; margin: 0; }
     .kicker { font-size: 30px; }
     .titulo { font-size: 21cqw; margin-top: -4px; }
-    .eventos .btn { justify-self: center; width: min(95%, 237px); height: 44px; margin-top: 10px; font-size: var(--fs-sm); padding-right: 12px; }
+    .eventos .btn { justify-self: start; width: min(95%, 237px); height: 44px; margin-top: 10px; font-size: var(--fs-sm); padding-right: 12px; }
     .eventos .btn::after { right: 18px; }
-    .eventos > .escena { display: block; position: relative; order: 4; width: calc(100% + 22px); margin-right: -22px; aspect-ratio: 1.55; margin-top: 8px; }
+    .eventos > .escena { display: block; position: relative; order: 4; width: calc(100% + 44px); margin: 8px -22px 0; aspect-ratio: 1.25; }
     .escena .pieza { position: absolute; }
-    .escena .camion { left: 30%; top: 0; width: 70%; }
-    .escena .circulo { left: 31%; top: 0; width: 24%; }
-    .escena .asterisco { left: -8%; top: 62%; width: 22%; }
-    /* Móvil: una ciudad por renglón, centradas y sin barras. */
-    .cities { order: 5; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; line-height: 1.5; }
-    /* En móvil el isotipo va como viñeta delante de cada ciudad (como separador acababa al final de las líneas). */
-    .cities span + span::before { display: none; }
-    .cities .viñeta { display: inline-block; width: 20px; height: auto; margin-right: 8px; vertical-align: -4px; }
+    .escena .camion { left: 15%; top: 10%; width: 125%; }
+    .escena .circulo { left: 34%; top: 15%; width: 24%; }
+    .escena .asterisco { left: -6%; top: 66%; width: 20%; }
+    /* Móvil: 3 ciudades en la primera línea y 2 en la segunda, separadas por "|". El separador n.º 3 (hijo 6)
+       ocupa todo el ancho sin altura: fuerza el salto de línea. */
+    .cities { order: 5; width: 100%; padding-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; row-gap: 6px; text-align: center; font-size: var(--fs-sm); font-weight: 600; letter-spacing: .1em; line-height: 1.5; }
+    .cities .sep { margin: 0 .45em; }
+    .cities .sep:nth-child(6) { flex-basis: 100%; height: 0; margin: 0; overflow: hidden; font-size: 0; }
   }
 </style>

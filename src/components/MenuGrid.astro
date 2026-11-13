@@ -3,21 +3,27 @@ import { Image } from 'astro:assets';
 import cuadrosIzq from '../assets/inicio/menu-cuadros-izquierda.png';
 import cuadrosDer from '../assets/inicio/menu-cuadros-derecha.png';
 import hamburguesas from '../assets/inicio/hamburguesas.webp';
-import combos from '../assets/inicio/combos.webp';
-import complementos from '../assets/inicio/complementos.webp';
+import combos from '../assets/inicio/combos.png';
+import complementos from '../assets/inicio/complementos.png';
 import bebidas from '../assets/inicio/bebidas.webp';
 import postres from '../assets/inicio/postres-malteadas.webp';
 import cajita from '../assets/inicio/cajita-rexy-kids.webp';
 
-/* Posiciones en coordenadas de la referencia (1000px de ancho, sección de 689px): centro horizontal del icono, borde inferior común de cada fila (by) y centro de la etiqueta. Cada icono conserva su escala (w = ancho). Iconos y etiquetas quedan alineados hacia abajo. */
+/* Posiciones en coordenadas de la referencia (1000px de ancho, sección de 689px): centro horizontal del icono (cx), borde inferior común de cada fila (by) y centro de la etiqueta.
+   Todos los productos se ven con la misma altura (ALTO_VISIBLE). Cada imagen trae margen transparente y sombra, así que se mide el producto: `a` = ancho/alto del archivo,
+   `fh` = fracción de alto que ocupa el producto y `fb` = dónde acaba por abajo (medidos en el PNG/WebP). El ancho sale de ahí y el producto queda apoyado en `by`. */
+const ALTO_VISIBLE = 80;
 const items = [
-  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, cx: 200, w: 175, by: 912, lx: 200, ly: 948 },
-  { label: 'Combos', href: '/menu#combos', img: combos, cx: 505, w: 160, by: 912, lx: 505, ly: 948 },
-  { label: 'Complementos', href: '/menu#complementos', img: complementos, cx: 785, w: 130, by: 912, lx: 788, ly: 948 },
-  { label: 'Bebidas', href: '/menu#bebidas', img: bebidas, cx: 200, w: 101, by: 1134, lx: 200, ly: 1165 },
-  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, cx: 505, w: 135, by: 1134, lx: 505, ly: 1165 },
-  { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, cx: 790, w: 190, by: 1134, lx: 788, ly: 1165 },
-];
+  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, a: 2.308, fh: 0.821, fb: 0.929, cx: 200, by: 912, lx: 200, ly: 948 },
+  { label: 'Combos', href: '/menu#combos', img: combos, a: 1.543, fh: 0.647, fb: 0.718, cx: 505, by: 912, lx: 505, ly: 948 },
+  { label: 'Complementos', href: '/menu#complementos', img: complementos, a: 1.333, fh: 0.636, fb: 0.783, cx: 785, by: 912, lx: 788, ly: 948 },
+  { label: 'Bebidas', href: '/menu#bebidas', img: bebidas, a: 0.965, fh: 0.859, fb: 0.921, cx: 200, by: 1134, lx: 200, ly: 1165 },
+  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, a: 1.352, fh: 0.869, fb: 0.927, cx: 505, by: 1134, lx: 505, ly: 1165 },
+  { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, a: 2.291, fh: 0.869, fb: 0.928, cx: 790, by: 1134, lx: 788, ly: 1165 },
+].map((it) => {
+  const alto = ALTO_VISIBLE / it.fh; // alto del archivo completo
+  return { ...it, w: alto * it.a, base: it.by + (1 - it.fb) * alto }; // `base`: borde inferior del archivo
+});
 const TOP = 588;
 const FONDO = { width: 2400, height: 1654 };
 const H = (FONDO.height * 1000) / FONDO.width;
@@ -32,7 +38,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
   <h2 id="menu-title">Menú</h2>
   {items.map((it) => (
     <a class="item" href={it.href}>
-      <Image class="ico" style={`left:${px(it.cx)};top:${py(it.by)};width:${px(it.w)}`} src={it.img} alt="" widths={[200, 360, 480]} sizes="20vw" />
+      <Image class="ico" style={`left:${px(it.cx)};top:${py(it.base)};width:${px(it.w)}`} src={it.img} alt="" widths={[240, 360, 480, 640, 800]} sizes="(max-width: 767px) 50vw, 24vw" />
       <span style={`left:${px(it.lx)};top:${py(it.ly)}`}>{it.label.replace(' & ', ' &\n')}</span>
     </a>
   ))}

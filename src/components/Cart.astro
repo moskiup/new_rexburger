@@ -226,7 +226,7 @@ import { site } from '../data/config';
   $('checkout').addEventListener('click', () => {
     if (!cart.length) return;
     const lines = cart.map((l) => `• ${l.qty} x ${l.nombre} (Talla ${l.talla})`);
-    const msg = ['¡Hola Rex Burger! Quiero hacer el siguiente pedido de merch:', '', ...lines, '', `Total de piezas: ${pieces()}`].join('\n');
+    const msg = ['¡Hola Rex Burger! Quiero hacer el siguiente pedido de merch:', '', ...lines, '', `Total de piezas: ${pieces()}`, '', '(Pedido enviado desde la página web)'].join('\n');
     window.open(`https://wa.me/${cartModal.dataset.wa}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
   });
 
