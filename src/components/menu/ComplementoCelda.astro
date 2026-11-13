@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+
+/*
+ * Un complemento: franja de color con un extremo redondeado y la foto del producto.
+ * La franja es CSS (la foto ya no la trae; la sombra sí viene en la foto). Todas las medidas son fracciones de la celda
+ * (el alto sale de `ar`), así que sirve igual en escritorio, donde la celda ocupa media sección,
+ * y en móvil, donde ocupa todo el ancho.
+ */
+interface Props {
+  c: {
+    img: ImageMetadata;
+    alt: string;
+    /** Proporción ancho/alto de la celda. */
+    ar: number;
+    /** Extremo redondeado de la franja: 'd' (derecha) o 'i' (izquierda). */
+    fin: 'd' | 'i';
+    fondo: string;
+    /** Franja: [x0, x1, y0, y1] en fracción de la celda. */
+    banda: readonly [number, number, number, number];
+    /** Foto: left, ancho y top en % de la celda. */
+    prod: { l: number; w: number; t: number };
+  };
+  sizes?: string;
+}
+const { c, sizes = '50vw' } = Astro.props;
+const p = (v: number) => `${(v * 100).toFixed(2)}%`;
+const [bx0, bx1, by0, by1] = c.banda;
+---
+
+<div class="celda" style={`aspect-ratio:${c.ar}`}>
+  <span class="banda" data-fin={c.fin} style={`left:${p(bx0)};top:${p(by0)};width:${p(bx1 - bx0)};height:${p(by1 - by0)};background:${c.fondo}`}></span>
+  <Image
+    class="prod"
+    style={`left:${c.prod.l}%;top:${c.prod.t}%;width:${c.prod.w}%`}
+    src={c.img}
+    alt={c.alt}
+    widths={[400, 800, 1200]}
+    sizes={sizes}
+  />
+</div>
+
+<style>
+  .celda { position: relative; width: 100%; container-type: inline-size; }
+  .banda { position: absolute; }
+  /* Extremo redondeado: radio horizontal del 15% del ancho de la celda y vertical de la mitad del alto. */
+  .banda[data-fin='d'] { border-radius: 0 15cqw 15cqw 0 / 0 50% 50% 0; }
+  .banda[data-fin='i'] { border-radius: 15cqw 0 0 15cqw / 50% 0 0 50%; }
+  .prod { position: absolute; display: block; height: auto; max-width: none; }
+</style>

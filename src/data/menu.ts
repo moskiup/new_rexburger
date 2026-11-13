@@ -1,4 +1,4 @@
-import { cmPos, kid, logoRect, type BB } from '../lib/menu-layout';
+import { kid, logoRect, type BB } from '../lib/menu-layout';
 
 import rexClasica from '../assets/menu/rex-clasica.webp';
 import rexDoble from '../assets/menu/rex-doble.webp';
@@ -9,10 +9,10 @@ import comboClasica from '../assets/menu/combo-rex-clasica.webp';
 import comboDoble from '../assets/menu/combo-rex-doble.webp';
 import comboPollo from '../assets/menu/combo-rex-pollo.webp';
 import comboGreen from '../assets/menu/combo-rex-green.webp';
-import papasFrancesa from '../assets/menu/papas-a-la-francesa.webp';
-import papasRex from '../assets/menu/papas-rex.webp';
-import papasWaffle from '../assets/menu/papas-waffle.webp';
-import aros from '../assets/menu/aros-de-cebolla-y-nuggets.webp';
+import papasFrancesa from '../assets/menu/papas-a-la-francesa.png';
+import papasRex from '../assets/menu/papas-rex.png';
+import papasWaffle from '../assets/menu/papas-waffle.png';
+import aros from '../assets/menu/aros-de-cebolla-y-nuggets.png';
 import aguaNatural from '../assets/menu/agua-natural.webp';
 import refrescos from '../assets/menu/refrescos.webp';
 import aguaFresca from '../assets/menu/agua-fresca.webp';
@@ -65,21 +65,41 @@ export const combos = [
 export const COMBO_W = 371;
 
 /* ---------- Complementos ---------- */
-/** Versión de escritorio: caja de la imagen y posición de su texto, en coordenadas de referencia. */
+/**
+ * Cada complemento es una celda de media sección (450 de ancho de referencia): franja de color y foto
+ * del producto. La franja es CSS; las fotos (PNG) vienen solo con el producto y su sombra.
+ * - `box`: [X, Y, ancho] de la celda en coordenadas de referencia; `ar`: ancho/alto de la celda.
+ * - `fin`: extremo redondeado de la franja ('d' derecha, 'i' izquierda); `banda`: [x0, x1, y0, y1] en fracción de la celda.
+ * - `prod`: left, ancho y top de la foto en % de la celda (medidos para que el producto ocupe el mismo sitio que antes).
+ * - `lado`, `tx`, `ty`: posición del texto en coordenadas de referencia.
+ */
 export const complementos = [
-  { img: papasFrancesa, alt: 'Papas a la francesa', box: [0, 2787.5, 450], texto: 'PAPAS A LA<br>FRANCESA', color: C.red, lado: 'l', tx: 161, ty: 2863 },
-  { img: papasRex, alt: 'Papas Rex', box: [450, 2787.5, 450], texto: 'PAPAS REX', color: C.red, lado: 'l', tx: 670, ty: 2863 },
-  { img: papasWaffle, alt: 'Papas waffle', box: [0, 2971, 450], texto: 'PAPAS WAFFLE', color: C.orange, lado: 'l', tx: 100, ty: 3049 },
-  { img: aros, alt: 'Aros de cebolla y nuggets', box: [450, 2971, 450], texto: 'AROS DE<br>CEBOLLA Y<br>NUGGETS', color: C.red, lado: 'r', tx: 784, ty: 3049 },
+  {
+    img: papasFrancesa, alt: 'Papas a la francesa', box: [0, 2788, 450], ar: 450 / 150.0, fin: 'd', fondo: '#f39300',
+    banda: [0, 0.811, 0, 1], prod: { l: 46.67, w: 60.13, t: -3.6 },
+    texto: 'PAPAS A LA<br>FRANCESA', color: C.red, lado: 'r', tx: 248.7, ty: 2863,
+  },
+  {
+    img: papasRex, alt: 'Papas Rex', box: [450, 2788, 450], ar: 450 / 150.0, fin: 'i', fondo: '#eeece1',
+    banda: [0.189, 1, 0, 1], prod: { l: 1.22, w: 43.69, t: 27.3 },
+    texto: 'PAPAS REX', color: C.red, lado: 'l', tx: 656.3, ty: 2863,
+  },
+  {
+    img: papasWaffle, alt: 'Papas waffle', box: [0, 2976.5, 450], ar: 450 / 145.0, fin: 'd', fondo: '#900413',
+    banda: [0, 0.811, 0, 1], prod: { l: 47.08, w: 59.61, t: 18.36 },
+    texto: 'PAPAS WAFFLE', color: C.orange, lado: 'r', tx: 248.7, ty: 3049,
+  },
+  {
+    img: aros, alt: 'Aros de cebolla y nuggets', box: [450, 2976.5, 450], ar: 450 / 145.0, fin: 'i', fondo: '#f7b000',
+    banda: [0.189, 1, 0, 1], prod: { l: -7.74, w: 60.21, t: -15.33 },
+    texto: 'AROS DE<br>CEBOLLA Y<br>NUGGETS', color: C.red, lado: 'l', tx: 656.3, ty: 3049,
+  },
 ] as const;
-/** Versión móvil: lo mismo, con el texto expresado en % de su imagen. */
+/** Versión móvil: lo mismo, con el texto expresado en % de su celda. */
 export const complementosMovil = complementos.map((c) => ({
-  img: c.img,
-  alt: c.alt,
-  texto: c.texto,
-  color: c.color,
-  lado: c.lado,
-  ...cmPos(c.img, c.box[0], c.box[1], c.tx, c.ty),
+  ...c,
+  lx: ((c.tx - c.box[0]) / 450) * 100,
+  ly: ((c.ty - c.box[1]) / (450 / c.ar)) * 100,
 }));
 
 /* ---------- Cajita Rexy Kids ---------- */

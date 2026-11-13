@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import Celda from './ComplementoCelda.astro';
 import { DIM, S, boxDe, ratio, title, txt } from '../../lib/menu-layout';
 import { C, complementos, complementosMovil } from '../../data/menu';
 ---
@@ -11,8 +11,10 @@ import { C, complementos, complementosMovil } from '../../data/menu';
   <div class="desk">
     {complementos.map((c) => (
       <>
-        <Image class="a" data-zoom-img style={boxDe(S.compl, c.box)} src={c.img} alt={c.alt} widths={[400, 800]} sizes="50vw" />
-        <p class="lbl" data-zoom-txt style={`${txt(S.compl, c.lado, c.tx, c.ty, 19)};color:${c.color}`} set:html={c.texto} />
+        <div class="a" data-zoom-img style={boxDe(S.compl, c.box)}>
+          <Celda c={c} />
+        </div>
+        <p class="lbl" style={`${txt(S.compl, c.lado, c.tx, c.ty, 19)};color:${c.color}`} set:html={c.texto} />
       </>
     ))}
     <p class="lbl c" style={`${txt(S.compl, 'c', 450, 3165, 17)};color:${C.orange}`}>¡AGREGA SALSA DE QUESO EXTRA!</p>
@@ -22,7 +24,7 @@ import { C, complementos, complementosMovil } from '../../data/menu';
   <div class="movil">
     {complementosMovil.map((c) => (
       <div class="fila" style={`--lx:${c.lx};--ly:${c.ly}`} data-lado={c.lado}>
-        <Image class="foto" src={c.img} alt={c.alt} widths={[480, 800, 1000]} sizes="100vw" />
+        <Celda c={c} sizes="100vw" />
         <p class="texto" style={`color:${c.color}`} set:html={c.texto} />
       </div>
     ))}
@@ -40,7 +42,6 @@ import { C, complementos, complementosMovil } from '../../data/menu';
     .desk { display: none; }
     .movil { display: grid; gap: 37px; }
     .fila { position: relative; container-type: inline-size; }
-    .foto { display: block; width: 100%; height: auto; max-width: none; }
     .texto {
       position: absolute;
       top: calc(var(--ly) * 1%);
@@ -52,7 +53,7 @@ import { C, complementos, complementosMovil } from '../../data/menu';
       letter-spacing: .02em;
     }
     .fila[data-lado='l'] .texto { left: calc(var(--lx) * 1%); text-align: left; }
-    .fila[data-lado='r'] .texto { right: calc((100 - var(--lx)) * 1%); text-align: left; }
+    .fila[data-lado='r'] .texto { right: calc((100 - var(--lx)) * 1%); text-align: right; }
     .nota { margin: 14px 20px 0; text-align: center; font-size: var(--fs-md); font-weight: 700; color: var(--yellow-text); }
   }
 </style>
