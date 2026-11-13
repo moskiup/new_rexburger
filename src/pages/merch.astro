@@ -68,9 +68,9 @@ const productos = [
   .foto .prod { width: 100%; height: 100%; object-fit: contain; }
   h2 {
     margin-top: clamp(14px, 2.6vw, 30px);
-    font-size: max(var(--fs-sm), 2.2vw);
+    font-size: 22px;
     font-weight: 500;
-    letter-spacing: .18em;
+    letter-spacing: .1em;
     text-transform: uppercase;
   }
   p {
@@ -91,7 +91,7 @@ const productos = [
   @media (max-width: 767px) {
     .grid { grid-template-columns: 1fr; gap: 34px; max-width: 460px; }
     .foto { aspect-ratio: 1 / .92; }
-    h2 { font-size: var(--fs-lg); margin-top: 14px; }
+    h2 { font-size: var(--fs-md); margin-top: 14px; }
     p { font-size: var(--fs-sm); }
     h2 { letter-spacing: .08em; line-height: 1.25; }
     p { letter-spacing: .08em; }

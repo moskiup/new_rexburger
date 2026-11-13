@@ -9,13 +9,14 @@ import { bannerEventos, eventos, paginas } from '../data/contenido';
 
   <section class="info">
     <h2>{eventos.titulo}</h2>
-    <p>{eventos.texto}</p>
+    <p set:html={eventos.texto} />
   </section>
 </Layout>
 
 <style>
   .info { background: var(--cream); padding: clamp(32px, 6vw, 80px) var(--gutter); text-align: center; }
   h2 { font-family: var(--font-display-light); font-weight: 400; font-size: clamp(40px, 6.5vw, 88px); line-height: 1; text-transform: uppercase; }
+  .info > p :global(strong) { font-weight: 700; }
   .info > p { max-width: 900px; margin: 20px auto 0; font-size: clamp(var(--fs-lg), 2.2vw, 30px); line-height: 1.45; }
   @media (max-width: 767px) {
     .info { padding: 40px 22px 48px; }

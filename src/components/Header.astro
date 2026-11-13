@@ -8,7 +8,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <header class="header" id="site-header">
   <a href="/" class="logo" aria-label="Rex Burger, inicio">
-    <Image src={logo} alt="Rex Burger California Style" widths={[240, 360, 480, 720]} sizes="(max-width: 767px) 140px, 34vw" loading="eager" fetchpriority="high" />
+    <Image src={logo} alt="Rex Burger California Style" widths={[240, 360, 480, 720, 980, 1300]} sizes="(max-width: 767px) 160px, 34vw" quality={90} loading="eager" fetchpriority="high" />
   </a>
   <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="menu-nav" aria-label="Abrir menú">
     <span></span><span></span><span></span>
@@ -34,21 +34,21 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     align-items: center;
     justify-content: space-between;
     min-height: 68px;
-    padding: 8px max(16px, env(safe-area-inset-right)) 6px max(16px, env(safe-area-inset-left));
+    padding: 7px max(16px, env(safe-area-inset-right)) 7px max(16px, env(safe-area-inset-left));
     background: var(--white);
     transition: box-shadow .25s ease;
   }
   .header.scrolled { box-shadow: 0 4px 16px rgb(0 0 0 / .12); }
   .logo { display: block; flex: none; }
-  .logo img { width: 128px; height: auto; }
+  .logo img { width: 160px; height: auto; }
 
   .burger {
     flex: none;
-    width: 52px;
-    height: 52px;
+    width: 44px;
+    height: 44px;
     display: grid;
     place-content: center;
-    gap: 6px;
+    gap: 5px;
     border: 0;
     border-radius: 16px;
     /* Sin fondo: solo las tres rayas, en el rojo exacto del logotipo (#c01414). */
@@ -60,15 +60,15 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   .burger:active { transform: scale(.94); }
   .burger span {
     display: block;
-    width: 26px;
-    height: 3.5px;
+    width: 22px;
+    height: 3px;
     border-radius: 3px;
     background: #c01414;
     transition: transform .3s ease, opacity .2s ease;
   }
-  .header.open .burger span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+  .header.open .burger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
   .header.open .burger span:nth-child(2) { opacity: 0; }
-  .header.open .burger span:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+  .header.open .burger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
   nav {
     position: fixed;

@@ -12,7 +12,7 @@
 .shape::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fill); border-radius: var(--r); }
 
 /* Hamburguesas, Combos y Malteadas: la entrada lateral recorre más distancia para que se note (la sección recorta lo que sobra). */
-#hamburguesas, #combos, #malteadas { --slide: clamp(70px, 24vw, 280px); }
+#hamburguesas, #combos, #malteadas, #complementos { --slide: clamp(70px, 24vw, 280px); }
 /* Los textos son estrechos: con tanto recorrido saldrían del todo de la sección (que recorta) y el observador no los vería. */
 #hamburguesas .fun, #combos .fun, #malteadas .fun { --slide: clamp(24px, 9vw, 90px); }
 /* Hamburguesas: el nombre sube 15px para separarlo de la imagen (el transform ya se usa para centrarlo, por eso margen). */

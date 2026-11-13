@@ -65,7 +65,8 @@ import BotonPildora from './BotonPildora.astro';
     .promo.merch > :not(.bg) { position: relative; z-index: 1; }
     .promo.merch > h2 { left: auto; top: auto; font-size: 16cqw; line-height: .88; margin: 0; }
     .promo.merch > .sub { left: auto; top: auto; font-size: 6.6cqw; line-height: 1; margin: 2px 0 0; }
-    .promo.merch > .btn { left: auto; top: auto; width: min(100%, 320px); height: 50px; margin: 12px 0 0; }
+    .promo.merch > .btn { left: auto; top: auto; width: min(95%, 237px); height: 44px; margin: 12px 0 0; font-size: var(--fs-sm); padding-right: 12px; }
+    .promo.merch > .btn::after { right: 18px; }
   }
   .merch .bg { transition: transform 1.2s ease; }
   @media (hover: hover) { .merch:hover .bg { transform: scale(1.03); } }

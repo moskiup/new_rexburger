@@ -29,10 +29,10 @@ import kJuguete from '../assets/menu/menukids-juguete.webp';
 import kNuggets from '../assets/menu/menukids-nuggets.webp';
 import kPapas from '../assets/menu/menukids-papas.webp';
 import kJugo from '../assets/menu/bebidas-jugo.png';
-import cajeta from '../assets/menu/malteada-cajeta.webp';
-import vainilla from '../assets/menu/malteada-vainilla.webp';
-import mazapan from '../assets/menu/malteada-mazapan.webp';
-import oreo from '../assets/menu/malteada-oreo.webp';
+import cajeta from '../assets/menu/menu-malteada-cajeta.png';
+import vainilla from '../assets/menu/menu-malteada-vainilla.png';
+import mazapan from '../assets/menu/menu-malteada-mazapan.png';
+import oreo from '../assets/menu/menu-malteada-oreo.png';
 import cono from '../assets/menu/cono-de-vainilla.webp';
 
 /** Paleta del menú (colores de los nombres de producto y de los fondos). */
@@ -67,10 +67,10 @@ export const COMBO_W = 371;
 /* ---------- Complementos ---------- */
 /** Versión de escritorio: caja de la imagen y posición de su texto, en coordenadas de referencia. */
 export const complementos = [
-  { img: papasFrancesa, alt: 'Papas a la francesa', box: [0, 2787.5, 450], texto: 'PAPAS A LA<br>FRANCESA', color: C.red, lado: 'l', tx: 120, ty: 2863 },
-  { img: papasRex, alt: 'Papas Rex', box: [450, 2787.5, 450], texto: 'PAPAS REX', color: C.red, lado: 'l', tx: 675, ty: 2863 },
-  { img: papasWaffle, alt: 'Papas waffle', box: [0, 2971, 450], texto: 'PAPAS WAFFLE', color: C.orange, lado: 'l', tx: 120, ty: 3049 },
-  { img: aros, alt: 'Aros de cebolla y nuggets', box: [450, 2971, 450], texto: 'AROS DE<br>CEBOLLA Y<br>NUGGETS', color: C.red, lado: 'r', tx: 780, ty: 3049 },
+  { img: papasFrancesa, alt: 'Papas a la francesa', box: [0, 2787.5, 450], texto: 'PAPAS A LA<br>FRANCESA', color: C.red, lado: 'l', tx: 161, ty: 2863 },
+  { img: papasRex, alt: 'Papas Rex', box: [450, 2787.5, 450], texto: 'PAPAS REX', color: C.red, lado: 'l', tx: 670, ty: 2863 },
+  { img: papasWaffle, alt: 'Papas waffle', box: [0, 2971, 450], texto: 'PAPAS WAFFLE', color: C.orange, lado: 'l', tx: 100, ty: 3049 },
+  { img: aros, alt: 'Aros de cebolla y nuggets', box: [450, 2971, 450], texto: 'AROS DE<br>CEBOLLA Y<br>NUGGETS', color: C.red, lado: 'r', tx: 784, ty: 3049 },
 ] as const;
 /** Versión móvil: lo mismo, con el texto expresado en % de su imagen. */
 export const complementosMovil = complementos.map((c) => ({
@@ -115,9 +115,9 @@ export const logos = [
 
 /* ---------- Malteadas ---------- */
 export const malteadas = [
-  { img: cajeta, box: [185.5, 4716.2, 288], label: 'CAJETA', side: 'r', lx: 245, ly: 4904.5 },
-  { img: vainilla, box: [423.4, 4816.2, 287], label: 'VAINILLA', side: 'l', lx: 668, ly: 4985.5 },
-  { img: mazapan, box: [185.5, 4973, 288], label: 'MAZAPÁN', side: 'r', lx: 245, ly: 5161.5 },
-  { img: oreo, box: [424, 5060, 288], label: 'OREO', side: 'l', lx: 668, ly: 5249.5 },
+  { img: cajeta, box: [183.2, 4716.2, 292.7], label: 'CAJETA', side: 'r', lx: 245, ly: 4904.5 },
+  { img: vainilla, box: [414.9, 4816.2, 291.3], label: 'VAINILLA', side: 'l', lx: 668, ly: 4985.5 },
+  { img: mazapan, box: [184.1, 4973, 292.6], label: 'MAZAPÁN', side: 'r', lx: 245, ly: 5161.5 },
+  { img: oreo, box: [424.9, 5060, 292.3], label: 'OREO', side: 'l', lx: 668, ly: 5249.5 },
 ] as const;
 export const conoVainilla = { img: cono, box: [299.7, 5270, 130] as const, textoX: 458, textoY: 5417.5 };

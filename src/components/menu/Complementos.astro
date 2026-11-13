@@ -38,7 +38,7 @@ import { C, complementos, complementosMovil } from '../../data/menu';
     .complementos { aspect-ratio: auto; padding: 34px 0 36px; }
     .titulo { position: static; transform: none; text-align: center; font-size: 15cqw; margin-bottom: 18px; }
     .desk { display: none; }
-    .movil { display: grid; gap: 12px; }
+    .movil { display: grid; gap: 37px; }
     .fila { position: relative; container-type: inline-size; }
     .foto { display: block; width: 100%; height: auto; max-width: none; }
     .texto {
@@ -52,7 +52,7 @@ import { C, complementos, complementosMovil } from '../../data/menu';
       letter-spacing: .02em;
     }
     .fila[data-lado='l'] .texto { left: calc(var(--lx) * 1%); text-align: left; }
-    .fila[data-lado='r'] .texto { right: calc((100 - var(--lx)) * 1%); text-align: right; }
+    .fila[data-lado='r'] .texto { right: calc((100 - var(--lx)) * 1%); text-align: left; }
     .nota { margin: 14px 20px 0; text-align: center; font-size: var(--fs-md); font-weight: 700; color: var(--yellow-text); }
   }
 </style>

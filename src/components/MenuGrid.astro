@@ -9,14 +9,14 @@ import bebidas from '../assets/inicio/bebidas.webp';
 import postres from '../assets/inicio/postres-malteadas.webp';
 import cajita from '../assets/inicio/cajita-rexy-kids.webp';
 
-/* Posiciones en coordenadas de la referencia (1000px de ancho, sección de 689px): centro del icono, ancho del icono y centro de la etiqueta. */
+/* Posiciones en coordenadas de la referencia (1000px de ancho, sección de 689px): centro horizontal del icono, borde inferior común de cada fila (by) y centro de la etiqueta. Cada icono conserva su escala (w = ancho). Iconos y etiquetas quedan alineados hacia abajo. */
 const items = [
-  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, cx: 200, cy: 878, w: 175, lx: 200, ly: 948 },
-  { label: 'Combos', href: '/menu#combos', img: combos, cx: 505, cy: 868, w: 160, lx: 505, ly: 948 },
-  { label: 'Complementos', href: '/menu#complementos', img: complementos, cx: 785, cy: 865, w: 130, lx: 788, ly: 948 },
-  { label: 'Bebidas', href: '/menu#bebidas', img: bebidas, cx: 200, cy: 1085, w: 101, lx: 200, ly: 1165 },
-  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, cx: 505, cy: 1083, w: 135, lx: 505, ly: 1176 },
-  { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, cx: 790, cy: 1090, w: 190, lx: 788, ly: 1165 },
+  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, cx: 200, w: 175, by: 912, lx: 200, ly: 948 },
+  { label: 'Combos', href: '/menu#combos', img: combos, cx: 505, w: 160, by: 912, lx: 505, ly: 948 },
+  { label: 'Complementos', href: '/menu#complementos', img: complementos, cx: 785, w: 130, by: 912, lx: 788, ly: 948 },
+  { label: 'Bebidas', href: '/menu#bebidas', img: bebidas, cx: 200, w: 101, by: 1134, lx: 200, ly: 1165 },
+  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, cx: 505, w: 135, by: 1134, lx: 505, ly: 1165 },
+  { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, cx: 790, w: 190, by: 1134, lx: 788, ly: 1165 },
 ];
 const TOP = 588;
 const FONDO = { width: 2400, height: 1654 };
@@ -32,7 +32,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
   <h2 id="menu-title">Menú</h2>
   {items.map((it) => (
     <a class="item" href={it.href}>
-      <Image class="ico" style={`left:${px(it.cx)};top:${py(it.cy)};width:${px(it.w)}`} src={it.img} alt="" widths={[200, 360, 480]} sizes="20vw" />
+      <Image class="ico" style={`left:${px(it.cx)};top:${py(it.by)};width:${px(it.w)}`} src={it.img} alt="" widths={[200, 360, 480]} sizes="20vw" />
       <span style={`left:${px(it.lx)};top:${py(it.ly)}`}>{it.label.replace(' & ', ' &\n')}</span>
     </a>
   ))}
@@ -55,9 +55,9 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
     text-transform: uppercase;
     white-space: nowrap;
   }
-  .ico { position: absolute; height: auto; max-width: none; transform: translate(-50%, -50%); transition: transform .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1), scale .7s cubic-bezier(.2, .7, .2, 1); }
+  .ico { position: absolute; height: auto; max-width: none; transform: translate(-50%, -100%); transform-origin: 50% 100%; transition: transform .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1), scale .7s cubic-bezier(.2, .7, .2, 1); }
   @media (hover: hover) and (min-width: 768px) {
-    .item:hover .ico, .item:focus-visible .ico { transform: translate(-50%, -50%) scale(1.4); }
+    .item:hover .ico, .item:focus-visible .ico { transform: translate(-50%, -100%) scale(1.4); }
   }
   span {
     position: absolute;
@@ -76,7 +76,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
     .menu {
       aspect-ratio: auto !important;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 30px 12px;
       padding: 0 20px 44px;
       align-items: start;
@@ -94,6 +94,7 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
     .item {
       display: grid;
       justify-items: center;
+      grid-template-columns: minmax(0, 1fr);
       align-content: start;
       gap: 10px;
       padding: 6px 0;
@@ -102,10 +103,11 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
     .item .ico {
       position: static !important;
       transform: none !important;
-      width: min(100%, 170px) !important;
-      height: 120px !important;
-      object-fit: contain;
+      width: auto !important;
+      justify-self: center;
+      height: 80px !important;
       max-width: none;
+      object-position: 50% 100%;
     }
     .item span {
       position: static !important;
@@ -113,7 +115,8 @@ const py = (v: number) => pct(((v - TOP) / H) * 100);
       width: auto;
       max-width: 100%;
       font-size: var(--fs-sm);
-      letter-spacing: .1em;
+      letter-spacing: .05em;
+      text-align: center;
       font-weight: 600;
       line-height: 1.25;
       text-wrap: balance;

@@ -11,7 +11,7 @@ import { C, conoVainilla, malteadas } from '../../data/menu';
   <div class="desk">
     {malteadas.map((m) => (
       <>
-        <Image class="a" style={boxDe(S.malt, m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[300, 600]} sizes="35vw" />
+        <Image class="a" style={boxDe(S.malt, m.box)} src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[400, 700, 1000, 1400]} sizes="35vw" />
         <p class="fun" style={`${txt(S.malt, m.side, m.lx, m.ly, 40)};color:${C.cream}`}>{m.label}</p>
       </>
     ))}
@@ -23,7 +23,7 @@ import { C, conoVainilla, malteadas } from '../../data/menu';
   <div class="movil">
     {malteadas.map((m) => (
       <div class="item">
-        <Image class="foto" src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[400, 700]} sizes="(max-width: 767px) 50vw, 35vw" />
+        <Image class="foto" src={m.img} alt={`Malteada de ${m.label.toLowerCase()}`} widths={[400, 700, 1000, 1400]} sizes="(max-width: 767px) 50vw, 35vw" />
         <p class="nombre">{m.label}</p>
       </div>
     ))}

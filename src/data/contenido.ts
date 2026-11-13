@@ -46,9 +46,10 @@ export const bannerEventos = {
 } as const;
 
 export const eventos = {
-  titulo: 'Pide tu Rex donde quieras',
+  titulo: '¡Pide tu Rex donde quieras!',
+  /** HTML propio del sitio (no viene de usuarios): las frases en mayúsculas van en negritas. */
   texto:
-    'Cumpleaños, bodas, empresas o reuniones: llevamos el sabor rexquisito a tu evento. Escríbele por WhatsApp a la sucursal más cercana para cotizar.',
+    'Cumpleaños - Bodas - Empresas - Reuniones<br><br><strong>NOSOTROS LLEVAMOS EL SABOR REXQUISITO A TU EVENTO</strong><br>Contacta tu sucursal más cercana<br><strong>¡Y COTÍZANOS!</strong>',
 } as const;
 
 export const contacto = {

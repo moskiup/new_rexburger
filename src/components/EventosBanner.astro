@@ -106,15 +106,15 @@ const Heading = heading;
     .eventos > :not(.escena) { position: static; margin: 0; }
     .kicker { font-size: 30px; }
     .titulo { font-size: 21cqw; margin-top: -4px; }
-    .eventos .btn { justify-self: center; width: min(100%, 250px); height: 44px; margin-top: 10px; font-size: var(--fs-sm); padding-right: 12px; }
+    .eventos .btn { justify-self: center; width: min(95%, 237px); height: 44px; margin-top: 10px; font-size: var(--fs-sm); padding-right: 12px; }
     .eventos .btn::after { right: 18px; }
-    .eventos > .escena { display: block; position: relative; order: 4; width: 100%; aspect-ratio: 1.55; margin-top: 8px; }
+    .eventos > .escena { display: block; position: relative; order: 4; width: calc(100% + 22px); margin-right: -22px; aspect-ratio: 1.55; margin-top: 8px; }
     .escena .pieza { position: absolute; }
     .escena .camion { left: 30%; top: 0; width: 70%; }
     .escena .circulo { left: 31%; top: 0; width: 24%; }
     .escena .asterisco { left: -8%; top: 62%; width: 22%; }
-    /* Móvil: centradas y sin barras; si no caben en una línea, bajan completas a la siguiente. */
-    .cities { order: 5; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; text-align: center; align-items: center; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; line-height: 1.5; }
+    /* Móvil: una ciudad por renglón, centradas y sin barras. */
+    .cities { order: 5; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; font-size: var(--fs-md); font-weight: 600; letter-spacing: .12em; line-height: 1.5; }
     /* En móvil el isotipo va como viñeta delante de cada ciudad (como separador acababa al final de las líneas). */
     .cities span + span::before { display: none; }
     .cities .viñeta { display: inline-block; width: 20px; height: auto; margin-right: 8px; vertical-align: -4px; }

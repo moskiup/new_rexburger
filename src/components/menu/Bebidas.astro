@@ -57,15 +57,9 @@ import cuadrosDer from '../../assets/menu/bebidas-fondo-derecho.png';
     /* El glifo queda unos .1em por encima del centro de su caja de línea; este relleno lo compensa para centrarlo de verdad. */
     padding-top: .192em; }
 
-  .logo {
-    transition: scale .3s ease, opacity .7s ease, translate .7s cubic-bezier(.2, .7, .2, 1);
-  }
   @keyframes logo-bob {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-7%); }
-  }
-  @media (hover: hover) {
-    .logo:hover { scale: 1.15; }
   }
   .float { animation: bebida-float 4.2s ease-in-out infinite; animation-delay: var(--fd, 0s); transform-origin: 50% 90%; }
   @keyframes bebida-float {
