@@ -10,19 +10,20 @@ import postres from '../assets/inicio/postres-malteadas.webp';
 import cajita from '../assets/inicio/cajita-rexy-kids.webp';
 
 /* Posiciones en coordenadas de la referencia (1000px de ancho, sección de 689px): centro horizontal del icono (cx), borde inferior común de cada fila (by) y centro de la etiqueta.
-   Todos los productos se ven con la misma altura (ALTO_VISIBLE). Cada imagen trae margen transparente y sombra, así que se mide el producto: `a` = ancho/alto del archivo,
+   Los productos se ven con la misma altura (ALTO_VISIBLE), salvo los que fijan su ancho con `w` (la hamburguesa: 150 = 15% de la sección). Cada imagen trae margen transparente y sombra, así que se mide el producto: `a` = ancho/alto del archivo,
    `fh` = fracción de alto que ocupa el producto y `fb` = dónde acaba por abajo (medidos en el PNG/WebP). El ancho sale de ahí y el producto queda apoyado en `by`. */
 const ALTO_VISIBLE = 80;
 const items = [
-  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, a: 2.308, fh: 0.821, fb: 0.929, cx: 200, by: 912, lx: 200, ly: 948 },
+  { label: 'Hamburguesas', href: '/menu#hamburguesas', img: hamburguesas, a: 2.308, fh: 0.821, fb: 0.929, w: 150, cx: 200, by: 912, lx: 200, ly: 948 },
   { label: 'Combos', href: '/menu#combos', img: combos, a: 1.543, fh: 0.647, fb: 0.718, cx: 505, by: 912, lx: 505, ly: 948 },
   { label: 'Complementos', href: '/menu#complementos', img: complementos, a: 1.333, fh: 0.636, fb: 0.783, cx: 785, by: 912, lx: 788, ly: 948 },
   { label: 'Bebidas', href: '/menu#bebidas', img: bebidas, a: 0.965, fh: 0.859, fb: 0.921, cx: 200, by: 1134, lx: 200, ly: 1165 },
-  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, a: 1.352, fh: 0.869, fb: 0.927, cx: 505, by: 1134, lx: 505, ly: 1165 },
+  { label: 'Postres & Malteadas', href: '/menu#malteadas', img: postres, a: 1.352, fh: 0.869, fb: 0.927, w: 144.6, cx: 505, by: 1134, lx: 505, ly: 1165 },
   { label: 'Cajita Rexy Kids', href: '/menu#cajita', img: cajita, a: 2.291, fh: 0.869, fb: 0.928, cx: 790, by: 1134, lx: 788, ly: 1165 },
 ].map((it) => {
-  const alto = ALTO_VISIBLE / it.fh; // alto del archivo completo
-  return { ...it, w: alto * it.a, base: it.by + (1 - it.fb) * alto }; // `base`: borde inferior del archivo
+  // `w` (opcional) fija el ancho a mano; si no, sale de ALTO_VISIBLE.
+  const alto = it.w !== undefined ? it.w / it.a : ALTO_VISIBLE / it.fh; // alto del archivo completo
+  return { ...it, w: it.w ?? alto * it.a, base: it.by + (1 - it.fb) * alto }; // `base`: borde inferior del archivo
 });
 const TOP = 588;
 const FONDO = { width: 2400, height: 1654 };

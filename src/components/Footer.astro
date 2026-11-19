@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import ContactoLink from './ContactoLink.astro';
-import redesImg from '../assets/inicio/redes.webp';
+import Icono from './Icono.astro';
 import domicilio from '../assets/inicio/servicio-a-domicilio.webp';
 import { sucursales, redes } from '../data/config';
 
@@ -31,10 +31,13 @@ const { titulo, mostrarSucursales = true } = Astro.props;
   )}
   <div class="bottom">
     <div class="social">
-      <Image src={redesImg} alt="" widths={[110, 220, 330]} sizes="(max-width: 767px) 110px, 96px" quality={95} />
-      {redes.facebook && <a class="s1" href={redes.facebook} aria-label="Facebook"></a>}
-      {redes.instagram && <a class="s2" href={redes.instagram} aria-label="Instagram"></a>}
-      {redes.tiktok && <a class="s3" href={redes.tiktok} aria-label="TikTok"></a>}
+      {([['facebook', redes.facebook, 'Facebook'], ['instagram', redes.instagram, 'Instagram'], ['tiktok', redes.tiktok, 'TikTok']] as const).map(([nombre, url, etiqueta]) =>
+        url ? (
+          <a class="red" href={url} aria-label={etiqueta} target="_blank" rel="noopener noreferrer"><Icono nombre={nombre} /></a>
+        ) : (
+          <span class="red" aria-hidden="true"><Icono nombre={nombre} /></span>
+        ),
+      )}
     </div>
     <div class="domicilio">
       <Image src={domicilio} alt="Servicio a domicilio" widths={[120, 170, 220, 330, 440, 660]} sizes="(max-width: 767px) 120px, 170px" quality={95} />
@@ -102,16 +105,16 @@ const { titulo, mostrarSucursales = true } = Astro.props;
     align-items: center;
     gap: 16px;
   }
-  .social { position: relative; width: 96px; }
-  .social a { position: absolute; top: 0; bottom: 0; width: 33%; }
-  .s1 { left: 0; } .s2 { left: 33%; } .s3 { right: 0; }
+  /* Iconos de redes (SVG): zona táctil de 40px por icono; el margen negativo alinea el primero con el texto. */
+  .social { display: flex; align-items: center; margin-left: -10px; color: #f0ece2; }
+  .red { display: grid; place-items: center; min-width: 40px; min-height: 40px; padding: 0 10px; }
+  .red :global(svg) { height: 20px; width: auto; }
   .domicilio img { width: clamp(120px, 14vw, 170px); }
   @media (max-width: 767px) {
     .footer { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
     h2 { font-size: 22px; text-align: center; padding-left: .15em; }
     .branches a { min-height: 26px; font-size: var(--fs-sm); --cl-icono: 14px; }
-    .social { width: 110px; }
-    .social a { width: 33.3%; }
+    .red :global(svg) { height: 22px; }
     .domicilio img { width: 120px; }
     .branches { grid-template-columns: repeat(2, 1fr); }
     .branches li { border-left: 0; padding: 8px; }

@@ -1,0 +1,41 @@
+---
+/*
+ * Iconos vectoriales en línea, tomados de los SVG de src/assets/iconos/: nítidos a cualquier tamaño y densidad,
+ * y toman el color del texto (`currentColor`). El tamaño lo pone quien lo usa con CSS (width; el alto sale de la
+ * proporción). Para cambiar un icono basta con reemplazar su archivo .svg.
+ */
+import facebook from '../assets/iconos/facebook.svg?raw';
+import instagram from '../assets/iconos/instagram.svg?raw';
+import tiktok from '../assets/iconos/tiktok.svg?raw';
+import telefono from '../assets/iconos/telefono.svg?raw';
+import whatsapp from '../assets/iconos/whatsapp.svg?raw';
+
+type Nombre = 'facebook' | 'instagram' | 'tiktok' | 'telefono' | 'whatsapp';
+interface Props {
+  nombre: Nombre;
+  class?: string;
+  [atributo: string]: unknown;
+}
+const { nombre, class: clase, ...resto } = Astro.props;
+
+const FUENTES: Record<Nombre, string> = { facebook, instagram, tiktok, telefono, whatsapp };
+
+/** Saca del SVG su viewBox y sus trazos; `fill-rule: evenodd` se lee de las clases del <style> del archivo. */
+function leer(svg: string) {
+  const evenodd = new Set<string>();
+  for (const [, selectores, cuerpo] of svg.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+    if (/fill-rule:\s*evenodd/.test(cuerpo)) selectores.split(',').forEach((c) => evenodd.add(c.trim().replace(/^\./, '')));
+  }
+  const vb = svg.match(/viewBox="([^"]+)"/)?.[1] ?? '0 0 24 24';
+  const paths = [...svg.matchAll(/<path\s([^>]*)>/g)].map(([, attrs]) => ({
+    d: attrs.match(/\sd="([^"]+)"/)?.[1] ?? '',
+    evenodd: evenodd.has(attrs.match(/class="([^"]+)"/)?.[1] ?? ''),
+  }));
+  return { vb, paths };
+}
+const icono = leer(FUENTES[nombre]);
+---
+
+<svg class={clase} viewBox={icono.vb} fill="currentColor" aria-hidden="true" focusable="false" {...resto}>
+  {icono.paths.map((p) => <path d={p.d} fill-rule={p.evenodd ? 'evenodd' : undefined} />)}
+</svg>

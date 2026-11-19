@@ -1,10 +1,6 @@
 ---
-import { Image } from 'astro:assets';
+import Icono from './Icono.astro';
 import { telLink, waLink } from '../lib/contacto';
-import telCrema from '../assets/iconos/telefono-crema.webp';
-import waCrema from '../assets/iconos/whatsapp-crema.webp';
-import telRojo from '../assets/iconos/telefono-rojo.webp';
-import waRojo from '../assets/iconos/whatsapp-rojo.webp';
 
 interface Props {
   tipo: 'whatsapp' | 'telefono';
@@ -20,25 +16,25 @@ interface Props {
 
 const { tipo, numero, tono = 'crema', icono = true, class: clase, ...resto } = Astro.props;
 const whatsapp = tipo === 'whatsapp';
-const iconos = { crema: { whatsapp: waCrema, telefono: telCrema }, rojo: { whatsapp: waRojo, telefono: telRojo } };
 ---
 
 <!-- {...resto} deja pasar el atributo de ámbito de los estilos de la página que lo usa -->
 <a
   class:list={['contacto-link', clase]}
+  data-tono={tono}
   href={whatsapp ? waLink(numero) : telLink(numero)}
   rel={whatsapp ? 'noopener' : undefined}
   data-tel={whatsapp ? undefined : telLink(numero)}
   {...resto}
 >
-  {icono && <Image src={iconos[tono][tipo]} alt={whatsapp ? 'WhatsApp' : 'Teléfono'} width={16} densities={[2, 3]} />}{numero}
+  {icono && <Icono nombre={tipo} class="cl-ico" />}<span class="sr-only">{whatsapp ? 'WhatsApp ' : 'Teléfono '}</span>{numero}
 </a>
 
 <style>
   .contacto-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-  /* Ancho del icono: la página que lo usa puede cambiarlo con --cl-icono. */
-  /* Solo se fija el ancho: el icono de teléfono no es cuadrado y, con alto y ancho fijos, se recortaba. */
-  .contacto-link img { width: var(--cl-icono, 16px); height: auto; }
+  /* Ancho del icono: la página que lo usa puede cambiarlo con --cl-icono. El alto sale de la proporción del SVG. */
+  .contacto-link :global(.cl-ico) { width: var(--cl-icono, 16px); height: auto; flex: none; color: #f0ece2; }
+  .contacto-link[data-tono='rojo'] :global(.cl-ico) { color: var(--red); }
   /* Sin href (teléfonos en escritorio) es texto simple: no se subraya. */
   .contacto-link[href]:hover { text-decoration: underline; }
 </style>

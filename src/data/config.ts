@@ -161,11 +161,11 @@ export const nav = [
   { label: 'Contacto', href: '/contacto' },
 ];
 
-/** Redes sociales. Se configuran en .env; sin valor, el icono no lleva enlace. */
+/** Redes sociales. Se pueden cambiar con PUBLIC_*_URL en .env; sin valor se usan las cuentas oficiales (sin parámetros de rastreo). */
 export const redes = {
-  facebook: import.meta.env.PUBLIC_FACEBOOK_URL || undefined,
-  instagram: import.meta.env.PUBLIC_INSTAGRAM_URL || undefined,
-  tiktok: import.meta.env.PUBLIC_TIKTOK_URL || undefined,
+  facebook: import.meta.env.PUBLIC_FACEBOOK_URL || 'https://www.facebook.com/share/1F8tTjrxcQ/',
+  instagram: import.meta.env.PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/rexburger.mx',
+  tiktok: import.meta.env.PUBLIC_TIKTOK_URL || 'https://www.tiktok.com/@rexburger.mx',
 };
 
 /** Orden en que se listan las ciudades del banner de Eventos (la referencia no sigue el orden de `sucursales`). */
